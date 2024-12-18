@@ -1,0 +1,36 @@
+.new-message-modal-search-user-container {
+  height: 320px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.new-message-modal-search-user-input {
+  height: 45px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.new-message-modal-search-user-list {
+  height: 275px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.new-message-modal-user-selected-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--hover-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.new-message-modal-user-selected-quit-icon {
+  position: absolute;
+  right: 20px;
+  z-index: 100;
+  cursor: pointer;
+}

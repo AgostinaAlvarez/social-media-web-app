@@ -1,0 +1,41 @@
+.user-item-container {
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px;
+  padding: 10px 20px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.user-item-hover:hover {
+  background-color: var(--hover-color);
+}
+
+.user-item-hover-conversation:hover {
+  background-color: var(--hover-color);
+}
+
+.user-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-item-info-username {
+  font-size: 14px;
+  color: var(--light-text-color);
+}
+
+.user-item-conversation-info-username {
+  font-size: 15px;
+}
+
+.user-item-conversation-info-message {
+  font-size: 13px;
+  color: var(--light-text-color);
+}
+
+.user-item-conversation-container {
+  padding: 13px 16px;
+}

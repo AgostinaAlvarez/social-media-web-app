@@ -1,0 +1,20 @@
+/* styles/themes.css */
+:root {
+  --primary-color: #4096ff;
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --border-color: #a7a7a771;
+  --light-text-color: #727272ea;
+  --hover-color: #f5f5f5;
+  --sender-message-color: #272727;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4096ff;
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --border-color: #8a8a8a76;
+  --light-text-color: #929292;
+  --hover-color: #3c3c3cac;
+  --sender-message-color: #ffffff;
+}
