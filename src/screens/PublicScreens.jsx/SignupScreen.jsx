@@ -1,11 +1,32 @@
-import { Button, Modal } from "antd";
+import { Button, Modal, Spin } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import SignupFirstStep from "../../components/PublicComponents/SignupFirstStep";
+import SignupCodeStep from "../../components/PublicComponents/SignupCodeStep";
+import SignupPasswordStep from "../../components/PublicComponents/SignupPasswordStep";
+import ggl_icon from "../../assets/ggl-icon.png";
+import SignupPreferencesStep from "../../components/PublicComponents/SignupPreferencesStep";
+import OverlayComponent from "../../components/OverlayComponent";
+import { LoadingOutlined } from "@ant-design/icons";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import SignupUsernameStep from "../../components/PublicComponents/SignupUsernameStep";
+import { SignupUser } from "../../data/api/authApi";
+import { useDispatch } from "react-redux";
+
+const showErrorModal = () => {
+  Modal.error({
+    title: "Algo salió mal!",
+    icon: <ExclamationCircleFilled />,
+    content: "Intenta de nuevo más tarde",
+  });
+};
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
-
-  const [setp, setStep] = useState(1);
+  const stepInitialState = 1;
+  const dispatch = useDispatch();
+  const [step, setStep] = useState(stepInitialState);
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -19,12 +40,150 @@ const SignUpScreen = () => {
       setOpen(false);
     }, 3000);
   };
+
   const handleCancel = () => {
     setOpen(false);
+    setStep(stepInitialState);
+  };
+
+  const HandleSetStep = (value) => {
+    setStep(value);
+  };
+
+  const HandleFinishSteps = (data) => {
+    console.log("handle finish data:");
+    console.log(data);
+
+    setLoading(true);
+
+    setOpen(false);
+    setStep(1);
+    //
+    setTimeout(async () => {
+      await SignupUser(dispatch, data, setLoading);
+    }, 1500);
+  };
+
+  const HandleServerError = () => {
+    setOpen(false);
+    setStep(1);
+    setTimeout(() => {
+      showErrorModal();
+    }, 1000);
+  };
+
+  /*Error de servidor*/
+
+  /*
+  1.pasos email y nombre
+  2.codigo de seguridad
+  
+  lista de preferencias
+  username
+  password
+
+  */
+
+  const RenderModalComponent = (step) => {
+    switch (step) {
+      case 1:
+        return (
+          <SignupFirstStep
+            HandleSetStep={HandleSetStep}
+            HandleServerError={HandleServerError}
+          />
+        );
+      case 2:
+        return <SignupCodeStep HandleSetStep={HandleSetStep} />;
+      case 3:
+        return <SignupPreferencesStep HandleSetStep={HandleSetStep} />;
+      case 4:
+        return <SignupUsernameStep HandleSetStep={HandleSetStep} />;
+      case 5:
+        return <SignupPasswordStep HandleFinishSteps={HandleFinishSteps} />;
+    }
   };
 
   return (
     <>
+      {loading ? (
+        <OverlayComponent>
+          <Spin indicator={<LoadingOutlined spin style={{ fontSize: 60 }} />} />
+        </OverlayComponent>
+      ) : (
+        <></>
+      )}
+      <div className="auth-bg">
+        <div className="auth-bg-col auth-bg-col-left">
+          <div className="auth-signup-box">
+            <span className="auth-signup-ttl">Sign up</span>
+            <div className="auth-signup-btn-container">
+              <div className="auth-signup-btn">
+                <img src={ggl_icon} style={{ height: 15 }} />
+                <span>Registrarse con Google</span>
+              </div>
+              <div className="auth-signup-divider-container">
+                <div className="auth-signup-divider-line"></div>
+                <span>o</span>
+                <div className="auth-signup-divider-line"></div>
+              </div>
+              <div
+                className="auth-signup-btn auth-signup-btn-cta"
+                onClick={showModal}
+              >
+                <span>Crear cuenta</span>
+              </div>
+              <p className="auth-signup-box-info-p">
+                Al registrarte, aceptas los{" "}
+                <span
+                  style={{
+                    color: "#4096ff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Términos de servicio
+                </span>{" "}
+                y la{" "}
+                <span
+                  style={{
+                    color: "#4096ff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Política de privacidad
+                </span>
+                , incluida la política de{" "}
+                <span
+                  style={{
+                    color: "#4096ff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Uso de Cookies
+                </span>
+                .
+              </p>
+            </div>
+            <span>
+              ¿Ya tienes una cuenta?{" "}
+              <span
+                onClick={() => {
+                  navigate("/login");
+                }}
+                style={{
+                  color: "#4096ff",
+                  cursor: "pointer",
+                }}
+              >
+                Iniar sesion
+              </span>
+            </span>
+          </div>
+        </div>
+        <div className="auth-bg-col auth-bg-col-right"></div>
+      </div>
+      {/*
+            <button onClick={showModal}>Abrir modal</button>
       <div>
         <p>Signup Screen</p>
         <button
@@ -36,44 +195,20 @@ const SignUpScreen = () => {
         </button>
         <button onClick={showModal}>Abrir modal</button>
       </div>
+      
+    */}
       <Modal
         open={open}
-        title="Title"
-        onOk={handleOk}
+        title=""
+        //onOk={handleOk}
         onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Return
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-          >
-            Submit
-          </Button>,
-          <Button
-            key="link"
-            href="https://google.com"
-            target="_blank"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-          >
-            Search on Google
-          </Button>,
-        ]}
+        footer={[<></>]}
+        width={600}
+        style={{
+          top: 25,
+        }}
       >
-        {step === 1 ? (
-          <>
-            <div>Primera paso</div>
-          </>
-        ) : (
-          <>
-            <div>Segundo paso</div>
-          </>
-        )}
+        {RenderModalComponent(step)}
       </Modal>
     </>
   );

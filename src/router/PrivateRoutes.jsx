@@ -34,13 +34,7 @@ const PrivateRoutes = () => {
   const token = useSelector((state) => state.authSlice.token);
 
   const [api, contextHolder] = notification.useNotification();
-  const { theme, toggleTheme } = useTheme();
-
-  /*
-  const selectedConversationSlice = useSelector(
-    (state) => state.messageSlice.selectedConversationSlice
-  );
-  */
+  const { theme } = useTheme();
 
   useEffect(() => {
     socket.emit("authenticate", userData._id);
@@ -160,6 +154,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route path="/login" element={<Navigate to="/" />} />
+        <Route path="/signup" element={<Navigate to="/" />} />
       </Routes>
     </ConfigProvider>
   );

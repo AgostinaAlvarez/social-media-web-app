@@ -4,6 +4,7 @@ const initialState = {
   loading: true,
   logged: false,
   token: null,
+  loadingLoginScreen: false,
 };
 
 export const authSlice = createSlice({
@@ -19,9 +20,13 @@ export const authSlice = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
+    setLoadingLoginScreen: (state, action) => {
+      state.loadingLoginScreen = action.payload;
+    },
   },
 });
 
-export const { setLoading, setLogged, setToken } = authSlice.actions;
+export const { setLoading, setLogged, setToken, setLoadingLoginScreen } =
+  authSlice.actions;
 
 export default authSlice.reducer;
