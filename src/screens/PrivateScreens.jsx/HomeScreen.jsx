@@ -1,6 +1,9 @@
-import { ConfigProvider, Switch } from "antd";
+import { Button, ConfigProvider, Switch } from "antd";
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
+import { useDispatch } from "react-redux";
+import { setLogged } from "../../slice/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
   const { theme, toggleTheme } = useTheme();
@@ -10,6 +13,9 @@ const HomeScreen = () => {
     toggleTheme();
   };
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="home-screen-private-container">
@@ -18,6 +24,15 @@ const HomeScreen = () => {
         </div>
         <div className="layout-private-aside">
           <div>Otro aside</div>
+          <Button
+            onClick={() => {
+              localStorage.clear();
+              dispatch(setLogged(false));
+              navigate("/signup");
+            }}
+          >
+            Cerrar sesion
+          </Button>
           <div>Modo oscuro</div>
           <ConfigProvider
             theme={{

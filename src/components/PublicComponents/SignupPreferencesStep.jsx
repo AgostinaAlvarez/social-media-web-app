@@ -48,6 +48,10 @@ const categorys = [
   "Tarot",
   "Spirituality",
   "Alchemy",
+  "Family Activities",
+  "Simple Family Moments",
+  "Creative Inspiration",
+  "Fashion Trends",
 ];
 
 const SignupPreferencesStep = ({ HandleSetStep }) => {
