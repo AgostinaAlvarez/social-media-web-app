@@ -146,42 +146,6 @@ const LayoutPrivate = ({ children }) => {
         </aside>
         <div className="layout-private-children-container">{children}</div>
       </div>
-      {/*
-        <ConfigProvider
-          theme={{
-            token: {
-              lineType: "transparent",
-              paddingLG: 0,
-              colorText: theme === "dark" ? "white" : "black",
-              colorIcon: theme === "dark" ? "white" : "black",
-              colorBgElevated: theme === "dark" ? "black" : "white",
-              colorBgMask:
-                theme === "dark"
-                  ? "rgba(124, 124, 124, 0.173)"
-                  : "rgba(0, 0, 0, 0.45)",
-            },
-          }}
-        >
-          <Drawer
-            title={RenderDrawTitle(drawerType)}
-            onClose={onCloseDrawer}
-            open={openDrawer}
-            closable={false}
-            headerStyle={{
-              paddingLeft: 20,
-              paddingRight: 20,
-            }}
-            placement="left"
-            style={{
-              borderTopRightRadius: 15,
-              borderBottomRightRadius: 15,
-            }}
-          >
-            {RenderDrawComponent(drawerType)}
-          </Drawer>
-        </ConfigProvider>
-        
-        */}
       <LayoutDrawer
         showDrawer={showDrawer}
         openDrawer={openDrawer}

@@ -14,7 +14,7 @@ const NewMessageModal = ({
   loading,
   setLoading,
 }) => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -85,11 +85,6 @@ const NewMessageModal = ({
         <Modal
           title="Nuevo Mensaje"
           open={isModalOpen}
-          /*
-          onOk={() => {
-            handleOk(selectedUser);
-          }}
-          */
           onCancel={() => {
             resetData();
             handleCancel();

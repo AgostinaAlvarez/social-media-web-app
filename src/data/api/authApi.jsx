@@ -12,7 +12,7 @@ import {
   HandleDennyAccess,
 } from "../functions/authFunctions";
 import { getDataConversations } from "../functions/conversationsFunctions";
-import { data } from "react-router-dom";
+import { getMyPostsFunction } from "../functions/postsFunctions";
 
 const authToken = new AuthToken();
 
@@ -32,6 +32,7 @@ export const LogIn = async (dispatch, data, setLoading) => {
     authToken.setToken("auth-token", token);
 
     getDataConversations(dispatch, token);
+    getMyPostsFunction(dispatch, token);
 
     setTimeout(() => {
       dispatch(setLoading(true));
@@ -60,6 +61,8 @@ export const HandleVerifyToken = async (dispatch, token) => {
     const { user } = response.data;
     //pedir datos de las conversaciones
     getDataConversations(dispatch, token);
+    getMyPostsFunction(dispatch, token);
+
     HandleAllowAcces(dispatch, user, token);
   } catch (error) {
     HandleDennyAccess(dispatch);
@@ -80,6 +83,7 @@ export const SignupUser = async (dispatch, data, setLoading) => {
     const { token, user } = response.data;
     authToken.setToken("auth-token", token);
     getDataConversations(dispatch, token);
+    getMyPostsFunction(dispatch, token);
 
     setTimeout(() => {
       dispatch(setLoading(true));

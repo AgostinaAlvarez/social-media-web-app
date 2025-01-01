@@ -5,6 +5,9 @@ import { useSelector } from "react-redux";
 import { getPosts } from "../../data/api/postApi";
 import { Button, ConfigProvider, Switch } from "antd";
 import { useTheme } from "../../context/ThemeContext";
+import ProfileCard from "../../components/PrivateComponents/Home/ProfileCard";
+import RecomendationAcountsCard from "../../components/PrivateComponents/Home/RecomendationAcountsCard";
+import YouMightLikeCard from "../../components/PrivateComponents/User/YouMightLikeCard";
 
 const UserScreen = () => {
   const params = useParams();
@@ -179,24 +182,8 @@ const UserScreen = () => {
                 </div>
 
                 <div className="layout-private-aside">
-                  <div>Otro aside</div>
-                  <div>Modo oscuro</div>
-                  <ConfigProvider
-                    theme={{
-                      token: {
-                        colorPrimary: "rgba(54,54,54,255)",
-                      },
-                      components: {
-                        Switch: {
-                          handleBg: "pink",
-                        },
-                      },
-                    }}
-                  >
-                    <Switch
-                    //onChange={onChange}
-                    />
-                  </ConfigProvider>
+                  <ProfileCard />
+                  <YouMightLikeCard />
                 </div>
               </div>
             </>

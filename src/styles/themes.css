@@ -7,6 +7,9 @@
   --light-text-color: #727272ea;
   --hover-color: #f5f5f5;
   --sender-message-color: #272727;
+  --transparent-bg: #ffffff2f;
+  --feed-bg: #f5f5f5;
+  --post-bg: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -17,4 +20,7 @@
   --light-text-color: #929292;
   --hover-color: #3c3c3cac;
   --sender-message-color: #ffffff;
+  --transparent-bg: #1212122f;
+  --feed-bg: #101010;
+  --post-bg: #181818;
 }

@@ -25,6 +25,8 @@ import { useTheme } from "../context/ThemeContext";
 import { store } from "../store/store";
 import UserScreen from "../screens/PrivateScreens.jsx/UserScreen";
 import { getConverstionByUserId } from "../data/api/conversationApi";
+import ProfileScreen from "../screens/PrivateScreens.jsx/ProfileScreen";
+import EditProfileScreen from "../screens/PrivateScreens.jsx/Profile/EditProfileScreen";
 export const socket = io("http://localhost:8002");
 
 const PrivateRoutes = () => {
@@ -126,6 +128,22 @@ const PrivateRoutes = () => {
           element={
             <LayoutPrivate>
               <HomeScreen />
+            </LayoutPrivate>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <LayoutPrivate>
+              <ProfileScreen />
+            </LayoutPrivate>
+          }
+        />
+        <Route
+          path="/edit-profile/*"
+          element={
+            <LayoutPrivate>
+              <EditProfileScreen />
             </LayoutPrivate>
           }
         />
