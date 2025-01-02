@@ -27,6 +27,7 @@ import UserScreen from "../screens/PrivateScreens.jsx/UserScreen";
 import { getConverstionByUserId } from "../data/api/conversationApi";
 import ProfileScreen from "../screens/PrivateScreens.jsx/ProfileScreen";
 import EditProfileScreen from "../screens/PrivateScreens.jsx/Profile/EditProfileScreen";
+import PostScreen from "../screens/PrivateScreens.jsx/Post/PostScreen";
 export const socket = io("http://localhost:8002");
 
 const PrivateRoutes = () => {
@@ -164,10 +165,18 @@ const PrivateRoutes = () => {
           }
         />
         <Route
+          path="/post/*"
+          element={
+            <LayoutPrivate>
+              <PostScreen />
+            </LayoutPrivate>
+          }
+        />
+        <Route
           path="/user/:userId"
           element={
             <LayoutPrivate>
-              <UserScreen />
+              <UserScreen key={window.location.pathname} />
             </LayoutPrivate>
           }
         />

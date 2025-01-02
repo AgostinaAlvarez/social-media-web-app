@@ -60,10 +60,12 @@ const RecomendationAcountsCard = () => {
                   <div className="recomendation-acounts-card-acount-info">
                     <Avatar icon={<UserOutlined />} />
                     <div className="recomendation-acounts-card-acount-name-container">
-                      <span className="recomendation-acounts-card-acount-username">
+                      <span className="recomendation-acounts-card-acount-username info-name-lbl">
                         {item.name} {item.lastname}
                       </span>
-                      <span>@{item.username}</span>
+                      <span className="info-username-lbl">
+                        @{item.username}
+                      </span>
                     </div>
                   </div>
                   <Button type="primary">Follow</Button>

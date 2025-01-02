@@ -80,7 +80,12 @@ const LayoutPrivate = ({ children }) => {
         <aside className="layout-private-navigation">
           <div className="layout-private-navigation-options">
             {/*HOME*/}
-            <div className="layout-private-navigation-item">
+            <div
+              className="layout-private-navigation-item"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               <Badge>
                 <Avatar
                   shape="square"

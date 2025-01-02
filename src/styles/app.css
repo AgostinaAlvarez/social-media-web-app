@@ -1,4 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap");
+
+/**/
+.info-name-lbl {
+  color: var(--text-primary-color);
+  font-weight: 500;
+}
+
+.info-username-lbl {
+  color: var(--text-secondary-color);
+}
+
+.info-date-lbl {
+  color: var(--text-secondary-color);
+  font-size: 13px;
+}
+
+/**/
 .app {
   height: 100vh;
   width: 100%;
@@ -1182,6 +1199,33 @@ Layout Private
   font-size: 12px;
   line-height: 1.5;
   width: 95%;
+}
+
+/*-------*/
+/*POST SCREEN*/
+
+.post-screen {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  background-color: var(--feed-bg);
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px;
+  box-sizing: border-box;
+}
+
+.post-screen-container {
+  width: 80%;
+  height: fit-content;
+  box-sizing: border-box;
+  background-color: var(--post-bg);
+  padding: 15px 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /*--------------------------------------------------------------------------------------------*/

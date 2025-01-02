@@ -11,10 +11,11 @@ import YouMightLikeCard from "../../components/PrivateComponents/User/YouMightLi
 
 const UserScreen = () => {
   const params = useParams();
+  const { userId } = params;
+  const token = useSelector((state) => state.authSlice.token);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  const token = useSelector((state) => state.authSlice.token);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +25,6 @@ const UserScreen = () => {
   const [postError, setPostError] = useState(null);
 
   useEffect(() => {
-    const { userId } = params;
     getData(token, userId);
   }, []);
 

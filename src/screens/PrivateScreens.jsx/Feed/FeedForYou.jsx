@@ -1,12 +1,16 @@
-import { Avatar } from "antd";
+import { Avatar, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { UserOutlined } from "@ant-design/icons";
 import { postDateTranform } from "../../../data/utils/dates";
 import SkeletonTest from "../../../components/PrivateComponents/Feed/SkeletonTest";
 import SkeletonPostFeed from "../../../components/PrivateComponents/Skeletons/SkeletonPostFeed";
+import { AntDesignOutlined } from "@ant-design/icons";
+import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const FeedForYou = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoadign] = useState(true);
 
@@ -310,18 +314,27 @@ const FeedForYou = () => {
         ) : (
           <>
             {tester_feed_data.map((item, index) => (
-              <div className="post-container" key={index}>
+              <div
+                className="post-container"
+                key={index}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  navigate("/post");
+                }}
+              >
                 <div className="post-header">
                   <div className="post-header-user-data-container">
                     <Avatar icon={<UserOutlined />} />
                     <div className="post-header-user-data">
                       <div className="post-header-user-data-name">
-                        <span>
+                        <span className="info-name-lbl">
                           {item.user.name} {item.user.lastname}
                         </span>
-                        <span>@{item.user.username}</span>
+                        <span className="info-username-lbl">
+                          @{item.user.username}
+                        </span>
                       </div>
-                      <span className="post-header-date">
+                      <span className="post-header-date info-date-lbl">
                         {postDateTranform(item.post.createdAt)}
                       </span>
                     </div>
@@ -329,6 +342,27 @@ const FeedForYou = () => {
                   <BsThreeDots />
                 </div>
                 <p className="post-content">{item.post.content}</p>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="post-content-footer-stats-item">
+                    <FaRegComment />
+                    <span>10</span>
+                  </div>
+                  <div className="post-content-footer-stats-item">
+                    <FaRegHeart />
+                    <span>10</span>
+                  </div>
+                  <div className="post-content-footer-stats-item">
+                    <FaRegBookmark />
+                    <span>10</span>
+                  </div>
+                </div>
               </div>
             ))}
           </>
