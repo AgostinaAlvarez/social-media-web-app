@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getUserDataById } from "../../data/api/userApi";
 import { useSelector } from "react-redux";
 import { getPosts } from "../../data/api/postApi";
-import { Button, ConfigProvider, Switch } from "antd";
+import { Avatar, Button, ConfigProvider, Image, Switch } from "antd";
 import { useTheme } from "../../context/ThemeContext";
 import ProfileCard from "../../components/PrivateComponents/Home/ProfileCard";
 import RecomendationAcountsCard from "../../components/PrivateComponents/Home/RecomendationAcountsCard";
@@ -99,6 +99,19 @@ const UserScreen = () => {
                     {/*Header */}
                     <div className="user-screen-header">
                       <div className="user-screen-profile-image"></div>
+                      <div
+                        className="user-screen-profile-image"
+                        style={{ overflow: "hidden" }}
+                      >
+                        <Image
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: "50%",
+                          }}
+                          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        />
+                      </div>
                     </div>
                     {/*Informacion del usuario*/}
                     <div className="user-screen-info-container">

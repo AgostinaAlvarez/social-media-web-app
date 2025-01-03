@@ -28,6 +28,9 @@ import { getConverstionByUserId } from "../data/api/conversationApi";
 import ProfileScreen from "../screens/PrivateScreens.jsx/ProfileScreen";
 import EditProfileScreen from "../screens/PrivateScreens.jsx/Profile/EditProfileScreen";
 import PostScreen from "../screens/PrivateScreens.jsx/Post/PostScreen";
+import MyCommentsScreen from "../screens/PrivateScreens.jsx/Profile/MyCommentsScreen";
+import MyLikesScreen from "../screens/PrivateScreens.jsx/Profile/MyLikesScreen";
+import MySavedScreen from "../screens/PrivateScreens.jsx/Profile/MySavedScreen";
 export const socket = io("http://localhost:8002");
 
 const PrivateRoutes = () => {
@@ -137,6 +140,30 @@ const PrivateRoutes = () => {
           element={
             <LayoutPrivate>
               <ProfileScreen />
+            </LayoutPrivate>
+          }
+        />
+        <Route
+          path="/profile/comments"
+          element={
+            <LayoutPrivate>
+              <MyCommentsScreen />
+            </LayoutPrivate>
+          }
+        />
+        <Route
+          path="/profile/likes"
+          element={
+            <LayoutPrivate>
+              <MyLikesScreen />
+            </LayoutPrivate>
+          }
+        />
+        <Route
+          path="/profile/saved"
+          element={
+            <LayoutPrivate>
+              <MySavedScreen />
             </LayoutPrivate>
           }
         />

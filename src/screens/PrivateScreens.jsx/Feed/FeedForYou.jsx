@@ -8,6 +8,10 @@ import SkeletonPostFeed from "../../../components/PrivateComponents/Skeletons/Sk
 import { AntDesignOutlined } from "@ant-design/icons";
 import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import zIndex from "@mui/material/styles/zIndex";
+import LikesOnPostModal from "../../../components/PrivateComponents/Post/LikesOnPostModal";
+import CommentsModal from "../../../components/PrivateComponents/Post/CommentsModal";
+import { PostFeedCard } from "../../../components/PrivateComponents/Post/PostCard";
 
 const FeedForYou = () => {
   const navigate = useNavigate();
@@ -306,6 +310,31 @@ const FeedForYou = () => {
 
   const skeleton_render = Array(10).fill(null);
 
+  const [isLikesModalOpen, setIsLikesModalOpen] = useState(false);
+
+  const HandleOpenLikesModal = () => {
+    setIsLikesModalOpen(true);
+  };
+
+  const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
+  const [loadingCommentData, setLoadingCommentData] = useState(true);
+
+  const HandleOpenCommentsModal = () => {
+    setLoadingCommentData(true);
+    setIsCommentsModalOpen(true);
+    HandleDataOnCommentModal();
+  };
+
+  const HandleDataOnCommentModal = () => {
+    setTimeout(() => {
+      setLoadingCommentData(false);
+    }, 3000);
+  };
+
+  const HandleSelectPost = () => {
+    navigate("/post");
+  };
+
   return (
     <>
       <div className="feed-for-you-container">
@@ -314,60 +343,27 @@ const FeedForYou = () => {
         ) : (
           <>
             {tester_feed_data.map((item, index) => (
-              <div
-                className="post-container"
-                key={index}
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  navigate("/post");
-                }}
-              >
-                <div className="post-header">
-                  <div className="post-header-user-data-container">
-                    <Avatar icon={<UserOutlined />} />
-                    <div className="post-header-user-data">
-                      <div className="post-header-user-data-name">
-                        <span className="info-name-lbl">
-                          {item.user.name} {item.user.lastname}
-                        </span>
-                        <span className="info-username-lbl">
-                          @{item.user.username}
-                        </span>
-                      </div>
-                      <span className="post-header-date info-date-lbl">
-                        {postDateTranform(item.post.createdAt)}
-                      </span>
-                    </div>
-                  </div>
-                  <BsThreeDots />
-                </div>
-                <p className="post-content">{item.post.content}</p>
-                <div
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div className="post-content-footer-stats-item">
-                    <FaRegComment />
-                    <span>10</span>
-                  </div>
-                  <div className="post-content-footer-stats-item">
-                    <FaRegHeart />
-                    <span>10</span>
-                  </div>
-                  <div className="post-content-footer-stats-item">
-                    <FaRegBookmark />
-                    <span>10</span>
-                  </div>
-                </div>
-              </div>
+              <PostFeedCard
+                index={index}
+                item={item}
+                HandleSelect={HandleSelectPost}
+                HandleOpenCommentsModal={HandleOpenCommentsModal}
+                HandleOpenLikesModal={HandleOpenLikesModal}
+              />
             ))}
           </>
         )}
       </div>
+      <LikesOnPostModal
+        isModalOpen={isLikesModalOpen}
+        setIsModalOpen={setIsLikesModalOpen}
+      />
+      <CommentsModal
+        isModalOpen={isCommentsModalOpen}
+        setIsModalOpen={setIsCommentsModalOpen}
+        loadingCommentData={loadingCommentData}
+        //setLoadingCommentData={setLoadingCommentData}
+      />
     </>
   );
 };

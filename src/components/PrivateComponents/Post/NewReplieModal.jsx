@@ -99,7 +99,16 @@ const NewReplieModal = ({ isModalOpen, setIsModalOpen }) => {
           <div className="comment-container replie-container">
             <Avatar icon={<UserOutlined />} size={40} />
             <div className="comment-container-info-box">
-              <span>User Name @username DATE</span>
+              <div
+                className="post-header-user-data-name"
+                style={{ fontSize: 14 }}
+              >
+                <span className="info-name-lbl">User Name</span>
+                <span className="info-username-lbl">@username</span>
+                <span className="info-date-lbl" style={{ fontSize: 12 }}>
+                  | Wednesday, Oct 16, 6:02 PM
+                </span>
+              </div>
 
               <p className="comment-container-info-box-p">
                 The Alchemist by Paulo Coelho. It taught me to trust my journey

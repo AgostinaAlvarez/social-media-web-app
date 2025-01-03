@@ -1,3 +1,14 @@
+.post-feed-card {
+  cursor: pointer;
+}
+
+.post-feed-card-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .post-list-container {
   width: 100%;
   box-sizing: border-box;
@@ -5,6 +16,28 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.comment-replies-footer-no-replies-found {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 0px;
+  color: grey;
+}
+
+.comment-replies-footer-replies-found {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.comment-replies-footer-add-reply-lbl {
+  color: #4096ff;
+  cursor: pointer;
 }
 
 .post-container {
@@ -43,7 +76,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
 .post-header-date {
@@ -146,6 +179,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  color: var(--primary-color);
 }
 
 .post-content-input-box-icons-container:nth-child(2) {
@@ -207,7 +241,6 @@
 }
 
 .comment-container-more-replies-span {
-  background-color: pink;
   box-sizing: border-box;
 }
 .comment-container-replies-span-value {
@@ -239,4 +272,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.post-like-stat-hover:hover {
+  color: #f91980;
+}
+
+.post-save-stat-hover:hover {
+  color: #00ba7c;
+}
+
+.post-comment-stat-hover:hover {
+  color: #1d9bf0;
+}
+
+.post-feed-stat-item {
+  z-index: 150;
+  gap: 10px;
+  box-sizing: border-box;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.post-feed-stat-item-hover:hover:nth-child(1) {
+  background-color: #1d9cf041;
+}
+
+.post-feed-stat-item-hover:hover:nth-child(2) {
+  background-color: #f9198134;
+}
+
+.post-feed-stat-item-hover:hover:nth-child(3) {
+  background-color: #00ba7c37;
 }

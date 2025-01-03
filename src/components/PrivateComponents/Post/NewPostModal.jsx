@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { clasificateNewPost, createNewPost } from "../../../data/api/postApi";
 
 const NewPostModal = ({ isModalOpen, setIsModalOpen, handleOk }) => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const token = useSelector((state) => state.authSlice.token);
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
