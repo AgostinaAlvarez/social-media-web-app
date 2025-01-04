@@ -93,16 +93,9 @@ const SignupUsernameStep = ({ HandleSetStep }) => {
   }, [username_value]);
 
   const onSubmit = (data) => {
-    //console.log(data);
-
     setLoading(true);
-
     const update_data = { ...preSignupData, ...data };
-    console.log("update data");
-    console.log(update_data);
-
     dispatch(setPreSignupData(update_data));
-
     setTimeout(() => {
       setLoading(false);
     }, 2500);

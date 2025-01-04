@@ -901,8 +901,10 @@ Layout Private
   position: relative;
   box-sizing: border-box;
   padding: 20px 30px;
+  /*
   background-image: linear-gradient(to top, #88d3ce 0%, #6e45e2 100%);
   background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+  */
 }
 
 .user-screen-profile-image {
@@ -1059,8 +1061,22 @@ Layout Private
   position: absolute;
   top: 70px;
   left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.edit-profile-acount-component-header-avatar-icon-container {
+  height: 35px;
+  width: 35px;
+  background-color: rgba(0, 0, 0, 0.165);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
 .edit-profile-acount-component-form {
   width: 100%;
   box-sizing: border-box;

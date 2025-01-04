@@ -4,14 +4,13 @@ import { Button, Modal, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 
-const TesterScreen = () => {
+const UploadComponent = ({ children, aspect }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [fileList, setFileList] = useState([]);
-
   const handleUpload = (file) => {
     const objectUrl = URL.createObjectURL(file);
     setImageUrl(objectUrl);
@@ -90,10 +89,8 @@ const TesterScreen = () => {
       console.error("Error al recortar o subir la imagen:", error);
     }
   };
-
   return (
-    <div>
-      <div>Tester Screen</div>
+    <>
       <Upload
         beforeUpload={handleUpload}
         accept="image/*"
@@ -105,9 +102,9 @@ const TesterScreen = () => {
           setFileList([]);
         }}
       >
-        <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+        {/*<Button icon={<UploadOutlined />}>Subir Imagen</Button>*/}
+        {children}
       </Upload>
-
       <Modal
         open={isModalOpen}
         onCancel={HandleCancelModal}
@@ -120,7 +117,7 @@ const TesterScreen = () => {
               image={imageUrl}
               crop={crop}
               zoom={zoom}
-              aspect={25 / 9} // imagen cuadrada 1/1 - imagen rectangural 25/9
+              aspect={aspect} // imagen cuadrada 1/1 - imagen rectangural 25/9
               onCropChange={setCrop}
               onCropComplete={onCropComplete}
               onZoomChange={setZoom}
@@ -128,8 +125,8 @@ const TesterScreen = () => {
           </div>
         )}
       </Modal>
-    </div>
+    </>
   );
 };
 
-export default TesterScreen;
+export default UploadComponent;

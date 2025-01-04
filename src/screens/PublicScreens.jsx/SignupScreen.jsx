@@ -11,8 +11,9 @@ import OverlayComponent from "../../components/OverlayComponent";
 import { LoadingOutlined } from "@ant-design/icons";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import SignupUsernameStep from "../../components/PublicComponents/SignupUsernameStep";
-import { SignupUser } from "../../data/api/authApi";
+import { SignUpUser, SignupUser } from "../../data/api/authApi";
 import { useDispatch } from "react-redux";
+import SignupAvatarStep from "../../components/PublicComponents/SignupAvatarStep";
 
 const showErrorModal = () => {
   Modal.error({
@@ -50,17 +51,12 @@ const SignUpScreen = () => {
     setStep(value);
   };
 
-  const HandleFinishSteps = (data) => {
-    console.log("handle finish data:");
-    console.log(data);
-
+  const HandleFinishSteps = (user, token) => {
     setLoading(true);
-
     setOpen(false);
     setStep(1);
-    //
     setTimeout(async () => {
-      await SignupUser(dispatch, data, setLoading);
+      await SignUpUser(dispatch, user, token, setLoading);
     }, 1500);
   };
 
@@ -71,18 +67,6 @@ const SignUpScreen = () => {
       showErrorModal();
     }, 1000);
   };
-
-  /*Error de servidor*/
-
-  /*
-  1.pasos email y nombre
-  2.codigo de seguridad
-  
-  lista de preferencias
-  username
-  password
-
-  */
 
   const RenderModalComponent = (step) => {
     switch (step) {
@@ -100,7 +84,9 @@ const SignUpScreen = () => {
       case 4:
         return <SignupUsernameStep HandleSetStep={HandleSetStep} />;
       case 5:
-        return <SignupPasswordStep HandleFinishSteps={HandleFinishSteps} />;
+        return <SignupPasswordStep HandleSetStep={HandleSetStep} />;
+      case 6:
+        return <SignupAvatarStep HandleFinishSteps={HandleFinishSteps} />;
     }
   };
 

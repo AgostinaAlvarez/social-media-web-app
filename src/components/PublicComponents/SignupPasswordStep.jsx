@@ -11,8 +11,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import { Button, ConfigProvider } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { setPreSignupData } from "../../slice/preSignupSlice";
+import { CreateNewUser } from "../../data/api/authApi";
 
-const SignupPasswordStep = ({ HandleFinishSteps }) => {
+const SignupPasswordStep = ({ HandleSetStep }) => {
   const theme = "light";
   const [loading, setLoading] = useState(false);
 
@@ -44,9 +45,31 @@ const SignupPasswordStep = ({ HandleFinishSteps }) => {
 
   const passwordValue = watch("password", ""); // Observa el valor del campo password
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setLoading(true);
     const new_data = { password: data.password, ...preSignupData };
-    HandleFinishSteps(new_data);
+    //HandleFinishSteps(new_data);
+    //dispatch(setPreSignupData(new_data))
+    const { data: response, error } = await CreateNewUser(dispatch, new_data);
+    if (response) {
+      console.log("usuario creado exitosamente!");
+
+      dispatch(setPreSignupData({ ...response.user, token: response.token }));
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 2500);
+      setTimeout(() => {
+        HandleSetStep(6);
+      }, 2600);
+    } else {
+      console.log("algo salio mal");
+      console.log(error);
+      //hacer la validacion de errores
+      setTimeout(() => {
+        setLoading(false);
+      }, 2500);
+    }
   };
 
   return (

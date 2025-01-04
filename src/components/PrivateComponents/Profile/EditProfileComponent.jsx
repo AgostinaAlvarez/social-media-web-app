@@ -3,15 +3,25 @@ import TextArea from "antd/es/input/TextArea";
 import React from "react";
 import { MdModeEdit } from "react-icons/md";
 import { LuAtSign } from "react-icons/lu";
+import UploadComponent from "../Upload/UploadComponent";
+import { LuImagePlus } from "react-icons/lu";
 
 const EditProfileComponent = () => {
   return (
     <>
       <div className="edit-profile-acount-component-header">
         <div className="edit-profile-acount-component-header-edit-container">
-          <MdModeEdit />
+          <UploadComponent aspect={25 / 9}>
+            <MdModeEdit />
+          </UploadComponent>
         </div>
-        <div className="edit-profile-acount-component-header-avatar"></div>
+        <div className="edit-profile-acount-component-header-avatar">
+          <UploadComponent aspect={1 / 1}>
+            <div className="edit-profile-acount-component-header-avatar-icon-container">
+              <LuImagePlus />
+            </div>
+          </UploadComponent>
+        </div>
       </div>
       <form className="edit-profile-acount-component-form">
         <div className="edit-profile-acount-component-form-grid">

@@ -99,7 +99,7 @@ const SignupFirstStep = ({ HandleSetStep, HandleServerError }) => {
         setTimeout(() => {
           setLoading(false);
           setError("email", {
-            type: "manual", // Tipo de error manual
+            type: "manual",
             message: "El email que intentas registrar ya esta en uso",
           });
         }, 1500);

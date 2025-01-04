@@ -13,6 +13,13 @@ import {
 } from "../functions/authFunctions";
 import { getDataConversations } from "../functions/conversationsFunctions";
 import { getMyPostsFunction } from "../functions/postsFunctions";
+import {
+  setConversationsInbox,
+  setConversationsRequest,
+  setLoadingConversationsInbox,
+  setLoadingConversationsRequest,
+} from "../../slice/conversationSlice";
+import { setPosts } from "../../slice/postsSlice";
 
 const authToken = new AuthToken();
 
@@ -100,6 +107,50 @@ export const SignupUser = async (dispatch, data, setLoading) => {
   }
 };
 
+export const CreateNewUser = async (dispatch, data) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8002/auth/signup",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { token, user } = response.data;
+    authToken.setToken("auth-token", token);
+
+    /*
+    dispatch(setConversationsRequest([]));
+    dispatch(setConversationsInbox([]));
+    dispatch(setLoadingConversationsRequest(false));
+    dispatch(setLoadingConversationsInbox(false));
+    dispatch(setPosts([]));
+    */
+    return { data: { user, token }, error: null };
+  } catch (error) {
+    return { data: null, error: error };
+  }
+};
+
+export const SignUpUser = async (dispatch, user, token, setLoading) => {
+  //esta funcion es para permitir el login
+  dispatch(setConversationsRequest([]));
+  dispatch(setConversationsInbox([]));
+  dispatch(setLoadingConversationsRequest(false));
+  dispatch(setLoadingConversationsInbox(false));
+  dispatch(setPosts([]));
+
+  setTimeout(() => {
+    dispatch(setLoading(true));
+  }, 2500);
+  setTimeout(() => {
+    setLoading(false);
+    HandleAllowAcces(dispatch, user, token);
+  }, 2800);
+};
 /*
 
 {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import RecomendationAcountsCard from "../../components/PrivateComponents/Home/RecomendationAcountsCard";
-import { Avatar, Button, Spin } from "antd";
+import { Avatar, Button, Image, Spin } from "antd";
 import ProfileStatsCard from "../../components/PrivateComponents/Profile/ProfileStatsCard";
 import NewPostModal from "../../components/PrivateComponents/Post/NewPostModal";
 import "../../styles/postComponent.css";
@@ -45,8 +45,35 @@ const ProfileScreen = () => {
         <div className="home-screen-feed">
           <div className="user-screen">
             {/*Header */}
-            <div className="user-screen-header">
-              <div className="user-screen-profile-image"></div>
+            <div
+              className="user-screen-header"
+              style={
+                userData.front_page_img === ""
+                  ? { backgroundColor: "red" }
+                  : {
+                      backgroundImage: `url(${userData.front_page_img})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }
+              }
+            >
+              <div
+                className="user-screen-profile-image"
+                style={{ overflow: "hidden" }}
+              >
+                {userData.avatar_img === "" ? (
+                  <></>
+                ) : (
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "50%",
+                    }}
+                    src={userData.avatar_img}
+                  />
+                )}
+              </div>
             </div>
             {/*Informacion del usuario*/}
             <div className="user-screen-info-container">

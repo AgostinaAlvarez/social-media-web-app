@@ -94,7 +94,13 @@ const ProfileCard = () => {
             </Dropdown>
           </ConfigProvider>
         </div>
-        <Avatar size={70} icon={<UserOutlined />} />
+        <Avatar
+          size={70}
+          //icon={<UserOutlined />}
+          src={userData.avatar_img === "" ? undefined : userData.avatar_img}
+        >
+          {userData.avatar_img === "" ? <span>A</span> : <></>}
+        </Avatar>
         <div
           className="profile-card-user-name-container"
           onClick={() => {
