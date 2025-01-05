@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, Button, ConfigProvider, Dropdown, Space } from "antd";
 import { BsThreeDots } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "../../../context/ThemeContext";
 import {
   SettingOutlined,
@@ -11,11 +11,13 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import EditProfileModal from "../Profile/EditProfileModal";
+import { initializeProfileState } from "../../../slice/editProfileSlice";
 
 const ProfileCard = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.userSlice.userData);
+  const dispatch = useDispatch();
 
   const theme_config_provider = {
     token: {
@@ -69,6 +71,7 @@ const ProfileCard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
+    dispatch(initializeProfileState(userData));
     setIsModalOpen(true);
   };
 

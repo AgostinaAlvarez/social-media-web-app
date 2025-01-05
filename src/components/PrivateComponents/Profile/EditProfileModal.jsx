@@ -1,37 +1,30 @@
 import React, { useState } from "react";
 import { useTheme } from "../../../context/ThemeContext";
-import { Button, ConfigProvider, Input, Modal } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import { MdModeEdit } from "react-icons/md";
-import { LuAtSign } from "react-icons/lu";
+import { ConfigProvider, Modal } from "antd";
 import { FiSettings } from "react-icons/fi";
-import { LuUserPen } from "react-icons/lu";
-import { FiUser } from "react-icons/fi";
 import { LuUserRoundPen } from "react-icons/lu";
-import { MdOutlineLockOpen } from "react-icons/md";
-import { GoLock } from "react-icons/go";
 import { LuLockKeyholeOpen } from "react-icons/lu";
-import { LuRocket } from "react-icons/lu";
-import { HiOutlineGlobeAlt } from "react-icons/hi2";
 import { BsGlobe2 } from "react-icons/bs";
 import EditProfileComponent from "./EditProfileComponent";
 import EditAcountComponent from "./EditAcountComponent";
 import EditInterestComponent from "./EditInterestComponent";
 import EditPasswordComponent from "./EditPasswordComponent";
+import { useSelector } from "react-redux";
 
 const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   const { theme } = useTheme();
 
+  const userData = useSelector((state) => state.userSlice.userData);
+
   const handleCancel = () => {
-    //setUsers(users_tester);
-    setIsModalOpen(false);
+    setIsModalOpen(false); // Cierra el modal
   };
 
   const edit_profile_aside_options = [
     {
       icon: <LuUserRoundPen />,
       label: "Profile",
-      component: <EditProfileComponent />,
+      component: <EditProfileComponent />, // Clave única
       selected: true,
       id: "1",
     },

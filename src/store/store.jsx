@@ -7,16 +7,20 @@ import conversationSlice from "../slice/conversationSlice";
 import preSignupSlice from "../slice/preSignupSlice";
 import feedSlice from "../slice/feedSlice";
 import postsSlice from "../slice/postsSlice";
+import editProfileSlice from "../slice/editProfileSlice";
+import statsSlice from "../slice/statsSlice";
 
 export const store = configureStore({
   reducer: {
     authSlice: authSlice,
     userSlice: userSlice,
+    statsSlice: statsSlice,
     drawerSlice: drawerSlice,
     messageSlice: messageSlice,
     conversationSlice: conversationSlice,
     preSignupSlice: preSignupSlice,
     feedSlice: feedSlice,
     postsSlice: postsSlice,
+    editProfileSlice: editProfileSlice,
   },
 });

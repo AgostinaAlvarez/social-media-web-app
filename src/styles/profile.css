@@ -1,0 +1,18 @@
+/*
+profile-banner
+*/
+
+.profile-banner-container {
+  width: 100%;
+  background-color: green;
+  box-sizing: border-box;
+}
+
+.profile-style-edit-front-page-btns-contailer {
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  background-color: pink;
+}

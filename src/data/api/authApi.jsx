@@ -20,11 +20,14 @@ import {
   setLoadingConversationsRequest,
 } from "../../slice/conversationSlice";
 import { setPosts } from "../../slice/postsSlice";
+import { initializeStats } from "../../slice/statsSlice";
+import { setUsernameNextModificationDate } from "../../slice/acountSettingsSlice";
 
 const authToken = new AuthToken();
 
 export const LogIn = async (dispatch, data, setLoading) => {
   try {
+    console.log("Log In");
     const response = await axios.post(
       "http://localhost:8002/auth/login",
       data,
@@ -34,9 +37,14 @@ export const LogIn = async (dispatch, data, setLoading) => {
         },
       }
     );
-    const { token, user } = response.data;
+    const { token, user, stats, profile_settings } = response.data;
 
     authToken.setToken("auth-token", token);
+
+    dispatch(initializeStats(stats));
+    dispatch(
+      setUsernameNextModificationDate(profile_settings.nextModificationDate)
+    );
 
     getDataConversations(dispatch, token);
     getMyPostsFunction(dispatch, token);
@@ -65,7 +73,12 @@ export const HandleVerifyToken = async (dispatch, token) => {
         "Content-Type": "application/json",
       },
     });
-    const { user } = response.data;
+    const { user, stats, profile_settings } = response.data;
+
+    dispatch(initializeStats(stats));
+    dispatch(
+      setUsernameNextModificationDate(profile_settings.nextModificationDate)
+    );
     //pedir datos de las conversaciones
     getDataConversations(dispatch, token);
     getMyPostsFunction(dispatch, token);
@@ -75,6 +88,53 @@ export const HandleVerifyToken = async (dispatch, token) => {
     HandleDennyAccess(dispatch);
   }
 };
+
+export const CreateNewUser = async (dispatch, data) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8002/auth/signup",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { token, user, stats, profile_settings } = response.data;
+    authToken.setToken("auth-token", token);
+
+    dispatch(initializeStats(stats));
+    dispatch(
+      setUsernameNextModificationDate(profile_settings.nextModificationDate)
+    );
+
+    dispatch(setConversationsRequest([]));
+    dispatch(setConversationsInbox([]));
+    dispatch(setLoadingConversationsRequest(false));
+    dispatch(setLoadingConversationsInbox(false));
+    dispatch(setPosts([]));
+
+    return { data: { user, token }, error: null };
+  } catch (error) {
+    return { data: null, error: error };
+  }
+};
+
+export const SignUpUser = async (dispatch, user, token, setLoading) => {
+  //esta funcion es para permitir el login
+  setTimeout(() => {
+    dispatch(setLoading(true));
+  }, 2500);
+  setTimeout(() => {
+    setLoading(false);
+    HandleAllowAcces(dispatch, user, token);
+  }, 2800);
+};
+
+/*
+OLDEST CODE
+*/
 
 export const SignupUser = async (dispatch, data, setLoading) => {
   try {
@@ -87,8 +147,11 @@ export const SignupUser = async (dispatch, data, setLoading) => {
         },
       }
     );
-    const { token, user } = response.data;
+    const { token, user, stats } = response.data;
     authToken.setToken("auth-token", token);
+
+    dispatch(initializeStats(stats));
+
     getDataConversations(dispatch, token);
     getMyPostsFunction(dispatch, token);
 
@@ -106,62 +169,3 @@ export const SignupUser = async (dispatch, data, setLoading) => {
     }, 2000);
   }
 };
-
-export const CreateNewUser = async (dispatch, data) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:8002/auth/signup",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const { token, user } = response.data;
-    authToken.setToken("auth-token", token);
-
-    /*
-    dispatch(setConversationsRequest([]));
-    dispatch(setConversationsInbox([]));
-    dispatch(setLoadingConversationsRequest(false));
-    dispatch(setLoadingConversationsInbox(false));
-    dispatch(setPosts([]));
-    */
-    return { data: { user, token }, error: null };
-  } catch (error) {
-    return { data: null, error: error };
-  }
-};
-
-export const SignUpUser = async (dispatch, user, token, setLoading) => {
-  //esta funcion es para permitir el login
-  dispatch(setConversationsRequest([]));
-  dispatch(setConversationsInbox([]));
-  dispatch(setLoadingConversationsRequest(false));
-  dispatch(setLoadingConversationsInbox(false));
-  dispatch(setPosts([]));
-
-  setTimeout(() => {
-    dispatch(setLoading(true));
-  }, 2500);
-  setTimeout(() => {
-    setLoading(false);
-    HandleAllowAcces(dispatch, user, token);
-  }, 2800);
-};
-/*
-
-{
-  headers: {
-    "Content-Type": "application/json",
-  },
-}
-{
-  headers: {
-    Authorization: `Bearer ${authToken}`,
-    "Content-Type": "application/json",
-  },
-}
-*/

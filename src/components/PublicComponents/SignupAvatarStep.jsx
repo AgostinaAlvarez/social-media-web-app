@@ -7,7 +7,6 @@ import UploadImageComponent from "../PrivateComponents/Upload/UploadImageCompone
 import { BiTrash } from "react-icons/bi";
 import axios from "axios";
 import { Button, ConfigProvider } from "antd";
-
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -56,8 +55,6 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
 
       if (response.data.success) {
         console.log("URL de la imagen:", response.data.url);
-        //setCroppedImage(null); // Limpia la vista previa después de subir
-        //setCroppedBlob(null); // Limpia el blob después de subir
         return { data: response.data.url, error: null };
       } else {
         console.log("Error al subir la imagen.");
@@ -73,7 +70,6 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
   const maxLength = 160;
 
   const handleSubmit = async () => {
-    //esto actualiza la foto de perfil y demas
     let avatar_img = "";
     let front_page_img = "";
 
@@ -111,9 +107,6 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
           },
         }
       );
-
-      console.log("respuesta del back a la actualizacion:");
-      console.log(response);
       HandleFinishSteps(response.data.user, token);
     } catch (error) {
       console.log("error al intentar editar el profile");
@@ -197,9 +190,11 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
       </div>
       <div className="presignup-form-avatar-userdata-container">
         <span className="info-name-lbl">
-          {preSignupData.name} {preSignupData.lastname}
+          {preSignupData?.name || ""} {preSignupData?.lastname || ""}
         </span>
-        <span className="info-username-lbl">@{preSignupData.username}</span>
+        <span className="info-username-lbl">
+          @{preSignupData?.username || ""}
+        </span>
       </div>
       <Box
         sx={{

@@ -47,13 +47,15 @@ const SignupPasswordStep = ({ HandleSetStep }) => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    console.log("presignup data");
+    console.log(preSignupData);
     const new_data = { password: data.password, ...preSignupData };
     //HandleFinishSteps(new_data);
     //dispatch(setPreSignupData(new_data))
     const { data: response, error } = await CreateNewUser(dispatch, new_data);
     if (response) {
       console.log("usuario creado exitosamente!");
-
+      console.log(response.user);
       dispatch(setPreSignupData({ ...response.user, token: response.token }));
 
       setTimeout(() => {
