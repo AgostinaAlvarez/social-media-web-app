@@ -26,6 +26,7 @@ import {
 } from "../slice/conversationSlice";
 import { setSelectedConversationSlice } from "../slice/messageSlice";
 import LayoutDrawer from "../components/PrivateComponents/Drawer/LayoutDrawer";
+import { badge_dark, badge_light } from "../data/utils/badgesThemes";
 
 const RenderDrawComponent = (value) => {
   switch (value) {
@@ -54,6 +55,8 @@ const RenderDrawTitle = (value) => {
 };
 
 const LayoutPrivate = ({ children }) => {
+  const { theme } = useTheme();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -89,7 +92,8 @@ const LayoutPrivate = ({ children }) => {
               <Badge>
                 <Avatar
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  size={30}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <GoHomeFill />
                 </Avatar>
@@ -105,8 +109,9 @@ const LayoutPrivate = ({ children }) => {
             >
               <Badge>
                 <Avatar
+                  size={30}
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <FaSearch />
                 </Avatar>
@@ -120,10 +125,11 @@ const LayoutPrivate = ({ children }) => {
                 navigate("/messages/inbox");
               }}
             >
-              <Badge>
+              <Badge count={7}>
                 <Avatar
+                  size={30}
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <BiSolidMessageSquareDots />
                 </Avatar>
@@ -137,10 +143,11 @@ const LayoutPrivate = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge>
+              <Badge count={12}>
                 <Avatar
+                  size={30}
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <IoNotifications />
                 </Avatar>

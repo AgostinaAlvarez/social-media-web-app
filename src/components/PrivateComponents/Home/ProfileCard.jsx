@@ -14,6 +14,8 @@ import EditProfileModal from "../Profile/EditProfileModal";
 import { initializeProfileState } from "../../../slice/editProfileSlice";
 import { useImageCrop } from "../../../context/ImageCropContext";
 import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
+import FollowingModal from "../Stats/FollowingModal";
+import { following_1 } from "../../../../tester_data";
 
 const ProfileCard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -90,6 +92,12 @@ const ProfileCard = () => {
     setIsModalOpen(false);
   };
 
+  //FOLLOWING MODAL
+  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+  const showFollowingModal = () => {
+    setIsFollowingModalOpen(true);
+  };
+
   return (
     <>
       <div className="profile-card">
@@ -127,7 +135,10 @@ const ProfileCard = () => {
           <span>@{userData.username}</span>
         </div>
         <div className="profile-card-stats-container ">
-          <div className="profile-card-stats-data-container">
+          <div
+            className="profile-card-stats-data-container"
+            onClick={showFollowingModal}
+          >
             <span className="profile-card-stats-value">20</span>
             <span>Following</span>
           </div>
@@ -136,19 +147,15 @@ const ProfileCard = () => {
             <span>Followers</span>
           </div>
         </div>
-
-        {/*
-          <AntdSecondaryBtnComponent
-            theme={theme}
-            onClick={showModal}
-            label={"Edit profile"}
-            style={{ width: "100%" }}
-          />
-          */}
       </div>
       <EditProfileModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+      />
+      <FollowingModal
+        isModalOpen={isFollowingModalOpen}
+        setIsModalOpen={setIsFollowingModalOpen}
+        users_tester={following_1}
       />
     </>
   );

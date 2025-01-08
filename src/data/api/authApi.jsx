@@ -22,6 +22,7 @@ import {
 import { setPosts } from "../../slice/postsSlice";
 import { initializeStats } from "../../slice/statsSlice";
 import { setUsernameNextModificationDate } from "../../slice/acountSettingsSlice";
+import { HandleRequestFeedForYouPosts } from "../functions/feedFunctions";
 
 const authToken = new AuthToken();
 
@@ -48,6 +49,8 @@ export const LogIn = async (dispatch, data, setLoading) => {
 
     getDataConversations(dispatch, token);
     getMyPostsFunction(dispatch, token);
+    ///Pedir data del feed
+    HandleRequestFeedForYouPosts(dispatch);
 
     setTimeout(() => {
       dispatch(setLoading(true));
@@ -79,9 +82,12 @@ export const HandleVerifyToken = async (dispatch, token) => {
     dispatch(
       setUsernameNextModificationDate(profile_settings.nextModificationDate)
     );
-    //pedir datos de las conversaciones
+
     getDataConversations(dispatch, token);
     getMyPostsFunction(dispatch, token);
+
+    ///Pedir data del feed
+    HandleRequestFeedForYouPosts(dispatch);
 
     HandleAllowAcces(dispatch, user, token);
   } catch (error) {
@@ -123,6 +129,8 @@ export const CreateNewUser = async (dispatch, data) => {
 
 export const SignUpUser = async (dispatch, user, token, setLoading) => {
   //esta funcion es para permitir el login
+  //pedir data del feed
+  HandleRequestFeedForYouPosts(dispatch);
   setTimeout(() => {
     dispatch(setLoading(true));
   }, 2500);

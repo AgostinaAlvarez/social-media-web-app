@@ -22,6 +22,7 @@ import { setSelectedConversationSlice } from "../slice/messageSlice";
 import { useImageCrop } from "../context/ImageCropContext";
 import { initializeProfileState } from "../slice/editProfileSlice";
 import EditProfileModal from "../components/PrivateComponents/Profile/EditProfileModal";
+import { badge_dark, badge_light } from "../data/utils/badgesThemes";
 
 const LayoutMessages = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
@@ -150,7 +151,8 @@ const LayoutMessages = ({ children }) => {
               <Badge>
                 <Avatar
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  size={30}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <GoHomeFill />
                 </Avatar>
@@ -166,7 +168,8 @@ const LayoutMessages = ({ children }) => {
               <Badge>
                 <Avatar
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  size={30}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <FaSearch />
                 </Avatar>
@@ -179,10 +182,11 @@ const LayoutMessages = ({ children }) => {
                 navigate("/messages/inbox");
               }}
             >
-              <Badge>
+              <Badge count={7}>
                 <Avatar
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  size={30}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <BiSolidMessageSquareDots />
                 </Avatar>
@@ -195,10 +199,11 @@ const LayoutMessages = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge>
+              <Badge count={12}>
                 <Avatar
                   shape="square"
-                  //style={{ backgroundColor: "red" }}
+                  size={30}
+                  style={theme === "dark" ? badge_dark : badge_light}
                 >
                   <IoNotifications />
                 </Avatar>

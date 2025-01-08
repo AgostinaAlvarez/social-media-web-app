@@ -4,7 +4,7 @@ import { UserOutlined } from "@ant-design/icons";
 import "../../../styles/postComponent.css";
 import { FaRegImage } from "react-icons/fa6";
 import { MdInsertEmoticon } from "react-icons/md";
-import { comments_data, replies } from "../../../../tester_data";
+import { comments_data, likes_1, replies } from "../../../../tester_data";
 import { LoadingOutlined } from "@ant-design/icons";
 import NewReplieModal from "../../../components/PrivateComponents/Post/NewReplieModal";
 import LikesOnPostModal from "../../../components/PrivateComponents/Post/LikesOnPostModal";
@@ -275,6 +275,7 @@ const PostScreen = () => {
       <LikesOnPostModal
         isModalOpen={isLikesModalOpen}
         setIsModalOpen={setIsLikesModalOpen}
+        users_data={likes_1}
       />
     </>
   );

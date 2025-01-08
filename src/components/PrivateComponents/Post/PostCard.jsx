@@ -5,6 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import { AntDesignOutlined } from "@ant-design/icons";
+import { Image } from "antd";
 
 export const PostFeedCard = ({
   index,
@@ -12,6 +13,7 @@ export const PostFeedCard = ({
   HandleSelect,
   HandleOpenCommentsModal,
   HandleOpenLikesModal,
+  stats,
 }) => {
   const StopPropagation = (e) => {
     e.stopPropagation();
@@ -40,6 +42,14 @@ export const PostFeedCard = ({
         <BsThreeDots />
       </div>
       <p className="post-content">{item.post.content}</p>
+      {item.post.url && (
+        <div
+          style={{ width: "100%", borderRadius: "15px", overflow: "hidden" }}
+          onClick={StopPropagation}
+        >
+          <Image width={"100%"} src={item.post.url} />
+        </div>
+      )}
       <div className="post-feed-card-footer" onClick={StopPropagation}>
         {/*Comments */}
         <div
@@ -49,12 +59,12 @@ export const PostFeedCard = ({
           }}
         >
           <FaRegComment />
-          <span>10</span>
+          <span>{stats.comments}</span>
         </div>
         {/*Like*/}
         <div className="post-content-footer-stats-item post-like-stat-hover post-feed-stat-item post-feed-stat-item-hover">
           <FaRegHeart />
-          <span onClick={HandleOpenLikesModal}>10</span>
+          <span onClick={HandleOpenLikesModal}>{item.stats.likes}</span>
         </div>
         {/*Save*/}
         <div
@@ -64,7 +74,7 @@ export const PostFeedCard = ({
           }}
         >
           <FaRegBookmark />
-          <span>10</span>
+          <span>{item.stats.saves}</span>
         </div>
       </div>
     </div>

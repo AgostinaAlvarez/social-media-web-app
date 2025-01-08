@@ -10,34 +10,39 @@ import { BsThreeDots } from "react-icons/bs";
 import { postDateTranform } from "../../data/utils/dates";
 import { LoadingOutlined } from "@ant-design/icons";
 import EditProfileModal from "../../components/PrivateComponents/Profile/EditProfileModal";
-import { users_recomendation_2 } from "../../../tester_data";
+import { following_1, users_recomendation_2 } from "../../../tester_data";
+import FollowingModal from "../../components/PrivateComponents/Stats/FollowingModal";
 
 const ProfileScreen = () => {
   const userData = useSelector((state) => state.userSlice.userData);
   const posts = useSelector((state) => state.postsSlice.posts);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   useEffect(() => {
-    console.log("posts");
-    console.log(posts);
+    //console.log("posts");
+    //console.log(posts);
   }, []);
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
+  //EDIT PROFILE MODAL
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-
   const showEditProfileModal = () => {
     setIsEditProfileModalOpen(true);
   };
-
   const handleOkEditProfile = () => {
     setIsEditProfileModalOpen(false);
+  };
+
+  ///NEW POST MODAL
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
+  const showNewPostModal = () => {
+    setIsNewPostModalOpen(true);
+  };
+  const handleOkNewPost = () => {
+    setIsNewPostModalOpen(false);
+  };
+
+  //FOLLOWING MODAL
+  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+  const showFollowingModal = () => {
+    setIsFollowingModalOpen(true);
   };
 
   return (
@@ -95,13 +100,16 @@ const ProfileScreen = () => {
                   >
                     <span className="user-screen-info-box-data-value">1</span>
                     <span className="user-screen-info-box-data-label">
-                      Seguidores
+                      Followers
                     </span>
                   </div>
-                  <div className="user-screen-info-box-data">
+                  <div
+                    className="user-screen-info-box-data"
+                    onClick={showFollowingModal}
+                  >
                     <span className="user-screen-info-box-data-value">20</span>
                     <span className="user-screen-info-box-data-label">
-                      Siguiendo
+                      Following
                     </span>
                   </div>
                   <div className="user-screen-info-box-data">
@@ -126,33 +134,40 @@ const ProfileScreen = () => {
             {/*Content*/}
             <div className="post-list-container">
               {/*Posts*/}
-              {posts.map((item) => (
-                <div className="post-container" key={item._id}>
-                  <div className="post-header">
-                    <div className="post-header-user-data-container">
-                      <Avatar icon={<UserOutlined />} />
-                      <div className="post-header-user-data">
-                        <div className="post-header-user-data-name">
-                          <span>User Name</span>
-                          <span>@username</span>
+              {posts.length > 0 && (
+                <>
+                  {posts.map((item) => (
+                    <div className="post-container" key={item._id}>
+                      <div className="post-header">
+                        <div className="post-header-user-data-container">
+                          <Avatar icon={<UserOutlined />} />
+                          <div className="post-header-user-data">
+                            <div className="post-header-user-data-name">
+                              <span>User Name</span>
+                              <span>@username</span>
+                            </div>
+                            <span className="post-header-date">
+                              {postDateTranform(item.createdAt)}
+                            </span>
+                          </div>
                         </div>
-                        <span className="post-header-date">
-                          {postDateTranform(item.createdAt)}
-                        </span>
+                        <BsThreeDots />
                       </div>
+                      <p className="post-content">{item.content}</p>
                     </div>
-                    <BsThreeDots />
-                  </div>
-                  <p className="post-content">{item.content}</p>
+                  ))}
+                </>
+              )}
+              {/*
+                <div className="posts-spin-container">
+                  <Spin indicator={<LoadingOutlined spin />} />
                 </div>
-              ))}
-              <div className="posts-spin-container">
-                <Spin indicator={<LoadingOutlined spin />} />
-              </div>
+                
+                */}
             </div>
           </div>
           {/*New Post Icon*/}
-          <div className="new-post-icon-container" onClick={showModal}>
+          <div className="new-post-icon-container" onClick={showNewPostModal}>
             +
           </div>
         </div>
@@ -163,13 +178,18 @@ const ProfileScreen = () => {
         </div>
       </div>
       <NewPostModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        handleOk={handleOk}
+        isModalOpen={isNewPostModalOpen}
+        setIsModalOpen={setIsNewPostModalOpen}
+        handleOk={handleOkNewPost}
       />
       <EditProfileModal
         isModalOpen={isEditProfileModalOpen}
         setIsModalOpen={setIsEditProfileModalOpen}
+      />
+      <FollowingModal
+        isModalOpen={isFollowingModalOpen}
+        setIsModalOpen={setIsFollowingModalOpen}
+        users_tester={following_1}
       />
     </>
   );

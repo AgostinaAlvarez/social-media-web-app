@@ -6,7 +6,7 @@ const AntdSecondaryBtnComponent = ({ label, theme, onClick, style }) => {
     <ConfigProvider
       theme={{
         token: {
-          colorBgContainer: theme === "dark" ? "#121212" : "#ffffff",
+          colorBgContainer: theme === "dark" ? "rgba(0, 0, 0, 0)" : "#ffffff",
           colorPrimaryHover: "#4096ff",
         },
       }}

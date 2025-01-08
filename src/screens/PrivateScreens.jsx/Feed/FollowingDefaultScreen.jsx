@@ -1,6 +1,10 @@
 import { Button } from "antd";
 import React, { useState } from "react";
 import RecommendedUsersModal from "../../../components/PrivateComponents/User/RecommendedUsersModal";
+import {
+  users_recomendation_1,
+  users_recomendation_2,
+} from "../../../../tester_data";
 
 const FollowingDefaultScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +28,7 @@ const FollowingDefaultScreen = () => {
       <RecommendedUsersModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        users_tester={users_recomendation_1}
       />
     </>
   );

@@ -89,10 +89,7 @@ const RecommendedUsersModal = ({
                 padding: "10px 0px",
               }}
             >
-              <Spin
-                //size="large"
-                indicator={<LoadingOutlined spin />}
-              />
+              <Spin indicator={<LoadingOutlined spin />} />
             </div>
           ) : (
             <span

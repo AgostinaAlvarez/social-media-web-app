@@ -3,51 +3,41 @@ import { useTheme } from "../../../context/ThemeContext";
 import { Avatar, Button, ConfigProvider, Modal, Spin } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { LoadingOutlined } from "@ant-design/icons";
+import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
+import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
 
-const LikesOnPostModal = ({ isModalOpen, setIsModalOpen, handleOk }) => {
+const LikesOnPostModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  handleOk,
+  users_data,
+}) => {
   const { theme } = useTheme();
+  const limit = 2;
 
+  const initalState = users_data.slice(0, 6);
+  const [users, setUsers] = useState(initalState);
   const [loadingMoreUsers, setLoadingMoreUsers] = useState(false);
 
   const handleCancel = () => {
-    setUsers(users_tester);
+    setUsers(initalState);
     setIsModalOpen(false);
   };
 
-  const handleLoadingMoreUsers = () => {
+  const handleLoadingMoreUsers = (limit, users) => {
     setLoadingMoreUsers(true);
+    const current_users_list_lenght = users.length;
+    const nextUsers = users_data.slice(
+      current_users_list_lenght,
+      current_users_list_lenght + limit
+    );
+    const upldateList = [...users, ...nextUsers];
+
     setTimeout(() => {
       setLoadingMoreUsers(false);
-      setUsers((prevUsers) => [...prevUsers, ...users_tester]);
-    }, 3000);
+      setUsers(upldateList);
+    }, 2000);
   };
-
-  const users_tester = [
-    {
-      username: "shirobladeX",
-      name: "Shiro",
-      lastname: "Blade",
-      avatar: "",
-      id: "1",
-    },
-    {
-      username: "JuventusKing",
-      name: "Fabio",
-      lastname: "Ricci",
-      avatar: "",
-      id: "2",
-    },
-    {
-      username: "FestivalFever_90",
-      name: "Laura",
-      lastname: "Martínez",
-      avatar: "",
-      id: "3",
-    },
-  ];
-
-  const [users, setUsers] = useState(users_tester);
-
   return (
     <ConfigProvider
       theme={{
@@ -85,7 +75,13 @@ const LikesOnPostModal = ({ isModalOpen, setIsModalOpen, handleOk }) => {
                   <span>@{item.username}</span>
                 </div>
               </div>
-              <Button type="primary">Follow</Button>
+              <>
+                {item.following ? (
+                  <AntdSecondaryBtnComponent label="Following" theme={theme} />
+                ) : (
+                  <AntdPrimaryBtnComponent label="Follow" theme={theme} />
+                )}
+              </>
             </div>
           ))}
           {loadingMoreUsers ? (
@@ -106,7 +102,9 @@ const LikesOnPostModal = ({ isModalOpen, setIsModalOpen, handleOk }) => {
             </div>
           ) : (
             <span
-              onClick={handleLoadingMoreUsers}
+              onClick={() => {
+                handleLoadingMoreUsers(limit, users);
+              }}
               className="recomendation-acounts-card-show-more"
             >
               Show more
