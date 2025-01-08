@@ -5,6 +5,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import UserItem from "./User/UserItem";
 import { useNavigate } from "react-router-dom";
+import AntdInputComponent from "../BasicComponents/AntdInputComponent";
+import { search_theme_config } from "../../data/utils/inputThemes";
 
 const SearchComponent = ({ onCloseDrawer }) => {
   const { theme, toggleTheme } = useTheme();
@@ -59,30 +61,14 @@ const SearchComponent = ({ onCloseDrawer }) => {
   return (
     <div className="search-component-container">
       <div className="search-component-input-container">
-        <ConfigProvider
-          theme={{
-            token: {
-              colorTextPlaceholder:
-                theme === "dark" ? "rgb(189, 189, 189)" : "rgb(99, 99, 99)",
-              colorBgContainer:
-                theme === "dark"
-                  ? "rgba(54,54,54,255)"
-                  : "rgba(239,239,239,255)",
-            },
-          }}
-        >
-          <Input
-            style={{
-              border: "none",
-              boxShadow: "none",
-              color: theme === "dark" ? "white" : "black",
-              padding: "7px 10px",
-            }}
-            placeholder="Search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </ConfigProvider>
+        <AntdInputComponent
+          theme={theme}
+          style={{ border: "none", boxShadow: "none", padding: "7px 10px" }}
+          placeholder={"Search"}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          theme_config={search_theme_config}
+        />
       </div>
       <div className="search-component-results-container">
         {lastSearchs.length === 0 && query.trim() === "" ? (

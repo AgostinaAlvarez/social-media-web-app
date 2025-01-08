@@ -6,8 +6,8 @@ import { getPosts } from "../../data/api/postApi";
 import { Avatar, Button, ConfigProvider, Image, Switch } from "antd";
 import { useTheme } from "../../context/ThemeContext";
 import ProfileCard from "../../components/PrivateComponents/Home/ProfileCard";
-import RecomendationAcountsCard from "../../components/PrivateComponents/Home/RecomendationAcountsCard";
 import YouMightLikeCard from "../../components/PrivateComponents/User/YouMightLikeCard";
+import { users_recomendation_3 } from "../../../tester_data";
 
 const UserScreen = () => {
   const params = useParams();
@@ -196,7 +196,7 @@ const UserScreen = () => {
 
                 <div className="layout-private-aside">
                   <ProfileCard />
-                  <YouMightLikeCard />
+                  <YouMightLikeCard users={users_recomendation_3} />
                 </div>
               </div>
             </>

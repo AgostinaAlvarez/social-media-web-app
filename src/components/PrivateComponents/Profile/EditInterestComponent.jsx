@@ -1,8 +1,12 @@
 import { Button } from "antd";
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
+import { useTheme } from "../../../context/ThemeContext";
 
 const EditInterestComponent = () => {
+  const { theme } = useTheme();
+
   return (
     <>
       <div className="edit-profile-acount-component-form">
@@ -29,7 +33,11 @@ const EditInterestComponent = () => {
           </div>
         </div>
         <div className="edit-profile-interest-btn-container">
-          <Button style={{ width: "100%" }}>Add More</Button>
+          <AntdSecondaryBtnComponent
+            theme={theme}
+            label={"+ Add More"}
+            style={{ width: "100%" }}
+          />
         </div>
       </div>
     </>

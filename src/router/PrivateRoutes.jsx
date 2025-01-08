@@ -31,6 +31,7 @@ import PostScreen from "../screens/PrivateScreens.jsx/Post/PostScreen";
 import MyCommentsScreen from "../screens/PrivateScreens.jsx/Profile/MyCommentsScreen";
 import MyLikesScreen from "../screens/PrivateScreens.jsx/Profile/MyLikesScreen";
 import MySavedScreen from "../screens/PrivateScreens.jsx/Profile/MySavedScreen";
+import TesterScreen from "../screens/TesterScreen";
 export const socket = io("http://localhost:8002");
 
 const PrivateRoutes = () => {
@@ -135,6 +136,7 @@ const PrivateRoutes = () => {
             </LayoutPrivate>
           }
         />
+        <Route path="/test" element={<TesterScreen />} />
         <Route
           path="/profile"
           element={

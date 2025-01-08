@@ -1,4 +1,4 @@
-import { Button, DatePicker, Image, Input } from "antd";
+import { Button, ConfigProvider, DatePicker, Image, Input, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
@@ -8,10 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import UploadImageComponent from "../Upload/UploadImageComponent";
 import {
   setBirthday,
-  setCroppedBlobAvatar,
-  setCroppedBlobFrontPage,
-  setCroppedImageAvatar,
-  setCroppedImageFrontPage,
   setDescription,
   setLastname,
   setName,
@@ -19,49 +15,55 @@ import {
 } from "../../../slice/editProfileSlice";
 import dayjs from "dayjs";
 import { FaRegCircleCheck } from "react-icons/fa6";
-import ErrorRoundedIcon from "@mui/icons-material/ErrorRounded";
 import { validateUsername } from "../../../data/api/signupApi";
 import { FaRegCircleXmark } from "react-icons/fa6";
-import { uploadImageToServer } from "../../../data/api/uploadApi";
-import { editProfile } from "../../../data/api/profileApi";
+import { useImageCrop } from "../../../context/ImageCropContext";
+import { BiTrash } from "react-icons/bi";
+import axios from "axios";
+import { useTheme } from "../../../context/ThemeContext";
+import { setUserData } from "../../../slice/userSlice";
+import { setUsernameNextModificationDate } from "../../../slice/acountSettingsSlice";
+import { message } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
-const EditProfileComponent = () => {
+import ErrorRoundedIcon from "@mui/icons-material/ErrorRounded";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import AntdInputComponent from "../../BasicComponents/AntdInputComponent";
+import {
+  form_theme_config,
+  search_theme_config,
+} from "../../../data/utils/inputThemes";
+import AntdTextAreaComponent from "../../BasicComponents/AntdTextAreaComponent";
+import AntdDatepickerComponent from "../../BasicComponents/AntdDatepickerComponent";
+import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
+
+const EditProfileComponent = ({ handleClose }) => {
+  const { theme } = useTheme();
+
   const userData = useSelector((state) => state.userSlice.userData);
   const token = useSelector((state) => state.authSlice.token);
+  const nexModificationDate = useSelector(
+    (state) => state.acountSettingsSlice.usernameNextModificationDate
+  );
+
   const dispatch = useDispatch();
+  const [isValid, setIsValid] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // Obtener el estado de Redux
-  const croppedImageFrontPage = useSelector(
-    (state) => state.editProfileSlice.croppedImageFrontPage
-  );
-  const croppedBlobFrontPage = useSelector(
-    (state) => state.editProfileSlice.croppedBlobFrontPage
-  );
-  const croppedImageAvatar = useSelector(
-    (state) => state.editProfileSlice.croppedImageAvatar
-  );
-  const croppedBlobAvatar = useSelector(
-    (state) => state.editProfileSlice.croppedBlobAvatar
-  );
+  const [error, setError] = useState(null);
 
-  // Cambiar el estado en Redux cuando se actualiza la imagen
-  const handleSetCroppedImageFrontPage = (image) => {
-    dispatch(setCroppedImageFrontPage(image));
-  };
-
-  const handleSetCroppedBlobFrontPage = (blob) => {
-    dispatch(setCroppedBlobFrontPage(blob));
-  };
-
-  const handleSetCroppedImageAvatar = (image) => {
-    dispatch(setCroppedImageAvatar(image));
-  };
-
-  const handleSetCroppedBlobAvatar = (blob) => {
-    dispatch(setCroppedBlobAvatar(blob));
-  };
-
-  ///Data of form
+  //////
+  //images data
+  const {
+    croppedImageFrontPage,
+    setCroppedImageFrontPage,
+    croppedBlobFrontPage,
+    setCroppedBlobFrontPage,
+    croppedImageAvatar,
+    setCroppedImageAvatar,
+    croppedBlobAvatar,
+    setCroppedBlobAvatar,
+  } = useImageCrop();
 
   const name = useSelector((state) => state.editProfileSlice.name);
   const lastname = useSelector((state) => state.editProfileSlice.lastname);
@@ -78,11 +80,13 @@ const EditProfileComponent = () => {
   };
 
   const [usernameAvailability, setUsernameAvailability] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setIsValid(false);
+
     if (!username || username.trim() === "") {
       setError(true);
+      setIsValid(false);
       return;
     }
     const timeoutId = setTimeout(() => {
@@ -90,14 +94,17 @@ const EditProfileComponent = () => {
         setError(null);
         if (username === userData.username) {
           setUsernameAvailability(null);
+          setIsValid(true);
         } else {
           const { data: response, error: response_error } =
             await validateUsername({ username: username });
           if (response) {
+            setIsValid(response.available);
             setUsernameAvailability(response.available);
           } else {
             console.log("error");
             setError(true);
+            setIsValid(false);
           }
         }
       };
@@ -108,206 +115,401 @@ const EditProfileComponent = () => {
   }, [username]);
 
   const HandleSubmit = async () => {
-    //identificar si existen fotos para subir
-    /*
-    const { front_page_img, avatar_img } =
-      await HandleUploadProfileBannerImages(
-        croppedImageAvatar,
-        croppedBlobAvatar,
-        croppedImageFrontPage,
-        croppedBlobFrontPage
-      );
+    //cambiar imagen de perfil
+    setLoading(true);
+
+    const { data: response_edit_profile, error: error_edit_profile } =
+      await HandleEditProfile();
+
+    if (response_edit_profile) {
+      let new_username = response_edit_profile.user.username;
+
+      if (username !== userData.username) {
+        const { data: response_change_username, error: error_change_username } =
+          await HandleChangeUserName(token, { username });
+        if (response_change_username) {
+          new_username = username;
+          dispatch(
+            setUsernameNextModificationDate(
+              response_change_username.nextModificationDate
+            )
+          );
+        } else {
+          new_username = userData.username;
+          console.log(
+            "ocurrio un error al intentar cambiar el nombre de usuario"
+          );
+          console.log(error_change_username);
+        }
+      }
+      const update_user = {
+        ...response_edit_profile.user,
+        username: new_username,
+      };
+
+      dispatch(setUserData(update_user));
+
+      setTimeout(() => {
+        setLoading(false);
+        message.success("Profile updated");
+      }, 2000);
+      /*
+      setTimeout(() => {
+        handleClose();
+      }, 3500);
       */
-    //manejar el cambio de username
-    //manejar la edicion de los datos
-    //await HandleEditProfile(token, name, lastname, description)
-  };
-
-  const HandleUploadProfileBannerImages = async (
-    croppedImageAvatar,
-    croppedBlobAvatar,
-    croppedImageFrontPage,
-    croppedBlobFrontPage
-  ) => {
-    let front_page_img = "";
-    let avatar_img = "";
-
-    if (croppedImageAvatar) {
-      const { data, error } = await uploadImageToServer(croppedBlobAvatar);
-      if (data) {
-        avatar_img = data;
-      }
-    }
-    if (croppedImageFrontPage) {
-      const { data, error } = await uploadImageToServer(croppedBlobFrontPage);
-      if (data) {
-        front_page_img = data;
-      }
-    }
-
-    return { front_page_img, avatar_img };
-  };
-
-  const HandleChangeUsername = async (currentUsername, username) => {
-    //let currentUsername = userData.username
-    if (username !== currentUsername) {
-      //actualizar el nombre de usuario
-    }
-  };
-
-  const HandleEditProfile = async (token, name, lastname, description) => {
-    const data = { name, lastname, description };
-    const { data: response, error } = await editProfile(token, data);
-    if (response) {
-      console.log("datos actualizados");
-      console.log(response);
     } else {
-      console.log("algo salio mal al actualizar los datos");
-      console.log(error);
+      console.log("ocurrio un error al actualizar la data");
+      console.log(error_edit_profile);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+  };
+
+  const HandleEditProfile = async () => {
+    const formData = new FormData();
+
+    let frontPageImageStatus = null;
+    let avatarImageStatus = null;
+
+    if (croppedImageAvatar !== userData.avatar_img) {
+      if (croppedBlobAvatar) {
+        avatarImageStatus = "update";
+        formData.append(
+          "avatar_img",
+          croppedBlobAvatar.blob,
+          croppedBlobAvatar.fileName
+        );
+      } else {
+        avatarImageStatus = "delete";
+      }
+    }
+
+    if (croppedImageFrontPage !== userData.front_page_img) {
+      if (croppedBlobFrontPage) {
+        frontPageImageStatus = "update";
+        formData.append(
+          "front_page_img",
+          croppedBlobFrontPage.blob,
+          croppedBlobFrontPage.fileName
+        );
+      } else {
+        frontPageImageStatus = "delete";
+      }
+    }
+
+    formData.append("frontPageImageStatus", frontPageImageStatus);
+    formData.append("avatarImageStatus", avatarImageStatus);
+    formData.append(
+      "updates",
+      JSON.stringify({
+        name,
+        lastname,
+        description,
+      })
+    );
+
+    try {
+      const response = await axios.put(
+        "http://localhost:8002/profile/edit-profile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return { data: response.data, error: null };
+    } catch (error) {
+      return { data: null, error: error };
+    }
+  };
+
+  const HandleChangeUserName = async (token, data) => {
+    ///handle change username
+    try {
+      const response = await axios.put(
+        "http://localhost:8002/user/change-username",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return { data: response.data, error: null };
+    } catch (error) {
+      return { data: null, error: error };
+    }
+  };
+
+  useEffect(() => {
+    console.log("ver proxima actualizacion");
+    console.log(nexModificationDate);
+  }, []);
+
+  const HandleUsernameAviableChange = (nexModificationDate) => {
+    if (nexModificationDate) {
+      const date = new Date();
+      const auditFitNextModificationDate = new Date(nexModificationDate);
+
+      if (date <= auditFitNextModificationDate) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
     }
   };
 
   return (
     <>
-      <div
-        className="edit-profile-acount-component-header"
-        style={
-          croppedImageFrontPage === ""
-            ? { backgroundColor: "#d7d7d7" }
-            : {
-                backgroundImage: `url(${croppedImageFrontPage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-        }
-      >
-        <UploadImageComponent
-          setCroppedImage={handleSetCroppedImageFrontPage}
-          setCroppedBlob={handleSetCroppedBlobFrontPage}
-          aspectRatio={25 / 9}
-        >
-          <div className="edit-profile-acount-component-header-edit-container">
-            <MdModeEdit />
+      <div style={{ position: "relative" }}>
+        {loading && (
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              backgroundColor: "#ffffff6b",
+              zIndex: 300,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Spin indicator={<LoadingOutlined spin />} />
           </div>
-        </UploadImageComponent>
+        )}
         <div
-          className="edit-profile-acount-component-header-avatar"
+          className="edit-profile-acount-component-header"
           style={
-            croppedImageAvatar === ""
+            croppedImageFrontPage === "" || croppedImageFrontPage === null
               ? { backgroundColor: "red" }
               : {
-                  backgroundImage: `url(${croppedImageAvatar})`,
+                  backgroundImage: `url(${croppedImageFrontPage})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }
           }
         >
-          {croppedImageAvatar === "" ? (
+          <>
             <UploadImageComponent
-              setCroppedImage={handleSetCroppedImageAvatar}
-              setCroppedBlob={handleSetCroppedBlobAvatar}
-              aspectRatio={1 / 1}
+              setCroppedImage={setCroppedImageFrontPage}
+              setCroppedBlob={setCroppedBlobFrontPage}
+              aspectRatio={25 / 9}
             >
-              <div className="edit-profile-acount-component-header-avatar-icon-container">
-                <LuImagePlus />
-              </div>
-            </UploadImageComponent>
-          ) : (
-            <UploadImageComponent
-              setCroppedImage={handleSetCroppedImageAvatar}
-              setCroppedBlob={handleSetCroppedBlobAvatar}
-              aspectRatio={1 / 1}
-            >
-              <div
-                className="edit-profile-acount-component-header-avatar-icon-container"
-                style={{ position: "absolute", top: -5, right: -5 }}
-              >
+              <div className="edit-profile-acount-component-header-edit-container">
                 <MdModeEdit />
               </div>
             </UploadImageComponent>
-          )}
-        </div>
-      </div>
-      <form className="edit-profile-acount-component-form">
-        <div className="edit-profile-acount-component-form-grid">
-          <div>
-            <span>Name</span>
-            <Input
-              value={name}
-              onChange={(e) => {
-                dispatch(setName(e.target.value));
+            <div
+              className="edit-profile-acount-component-header-edit-container"
+              onClick={() => {
+                setCroppedImageFrontPage(null);
+                setCroppedBlobFrontPage(null);
               }}
-            />
-          </div>
-          <div>
-            <span>LastName</span>
-            <Input
-              value={lastname}
-              onChange={(e) => {
-                dispatch(setLastname(e.target.value));
-              }}
-            />
+            >
+              <BiTrash />
+            </div>
+          </>
+          <div
+            className="edit-profile-acount-component-header-avatar"
+            style={
+              croppedImageAvatar === "" || croppedImageAvatar === null
+                ? { backgroundColor: "red" }
+                : {
+                    backgroundImage: `url(${croppedImageAvatar})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }
+            }
+          >
+            {croppedImageAvatar === "" ? (
+              <UploadImageComponent
+                setCroppedImage={setCroppedImageAvatar}
+                setCroppedBlob={setCroppedBlobAvatar}
+                aspectRatio={1 / 1}
+              >
+                <div className="edit-profile-acount-component-header-avatar-icon-container">
+                  <LuImagePlus />
+                </div>
+              </UploadImageComponent>
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  gap: 5,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  position: "absolute",
+                  top: -10,
+                  right: 0,
+                }}
+              >
+                <UploadImageComponent
+                  setCroppedImage={setCroppedImageAvatar}
+                  setCroppedBlob={setCroppedBlobAvatar}
+                  aspectRatio={1 / 1}
+                >
+                  <div className="edit-profile-acount-component-header-avatar-icon-container">
+                    <MdModeEdit />
+                  </div>
+                </UploadImageComponent>
+                <div
+                  className="edit-profile-acount-component-header-avatar-icon-container"
+                  onClick={() => {
+                    setCroppedImageAvatar(null);
+                    setCroppedBlobAvatar(null);
+                  }}
+                >
+                  <BiTrash />
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span>Birthday</span>
-          <DatePicker
-            value={transform_birthday_value(birthday)}
-            onChange={(date, dateString) => {
-              // Convertirlo en el formato deseado
-              const formattedDate = dayjs(dateString)
-                .startOf("day")
-                .toISOString();
+        <form className="edit-profile-acount-component-form">
+          <div className="edit-profile-acount-component-form-grid">
+            <div>
+              <span>Name</span>
+              <AntdInputComponent
+                theme={theme}
+                theme_config={form_theme_config}
+                value={name}
+                onChange={(e) => {
+                  dispatch(setName(e.target.value));
+                }}
+              />
+            </div>
+            <div>
+              <span>LastName</span>
+              <AntdInputComponent
+                theme={theme}
+                theme_config={form_theme_config}
+                value={lastname}
+                onChange={(e) => {
+                  dispatch(setLastname(e.target.value));
+                }}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>Birthday</span>
+            <AntdDatepickerComponent
+              value={transform_birthday_value(birthday)}
+              onChange={(date, dateString) => {
+                // Convertirlo en el formato deseado
+                const formattedDate = dayjs(dateString)
+                  .startOf("day")
+                  .toISOString();
 
-              dispatch(setBirthday(formattedDate));
-            }}
-          />
-        </div>
-        <div>
-          <span>Username</span>
-          <Input
-            prefix={<LuAtSign />}
-            suffix={
-              error ? (
-                <ErrorRoundedIcon />
-              ) : (
-                <>
-                  {usernameAvailability !== null ? (
+                dispatch(setBirthday(formattedDate));
+              }}
+              theme={theme}
+              theme_config={form_theme_config}
+            />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>Username</span>
+            <AntdInputComponent
+              theme={theme}
+              theme_config={form_theme_config}
+              value={username}
+              onChange={(e) => {
+                dispatch(setUsername(e.target.value));
+              }}
+              disabled={!HandleUsernameAviableChange(nexModificationDate)}
+              prefix={<LuAtSign />}
+              sufix={
+                error ? (
+                  <ErrorRoundedIcon style={{ color: "#FFC145" }} />
+                ) : (
+                  <>
+                    {usernameAvailability !== null ? (
+                      <>
+                        {usernameAvailability === true ? (
+                          <CheckCircleRoundedIcon style={{ color: "green" }} />
+                        ) : (
+                          <ErrorRoundedIcon style={{ color: "red" }} />
+                        )}
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                )
+              }
+            />
+
+            {/*
+              
+              <Input
+                disabled={!HandleUsernameAviableChange(nexModificationDate)}
+                prefix={<LuAtSign />}
+                suffix={
+                  error ? (
+                    <ErrorRoundedIcon style={{ color: "#FFC145" }} />
+                  ) : (
                     <>
-                      {usernameAvailability === true ? (
-                        <FaRegCircleCheck />
+                      {usernameAvailability !== null ? (
+                        <>
+                          {usernameAvailability === true ? (
+                            <CheckCircleRoundedIcon style={{ color: "green" }} />
+                          ) : (
+                            <ErrorRoundedIcon style={{ color: "red" }} />
+                          )}
+                        </>
                       ) : (
-                        <FaRegCircleXmark />
+                        <></>
                       )}
                     </>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )
-            }
-            value={username}
-            onChange={(e) => {
-              dispatch(setUsername(e.target.value));
-            }}
-          />
-          <span className="edit-profile-acount-component-form-lbl">
-            Aviable change in 25/02/2025
-          </span>
-        </div>
-        <div>
-          <span>About me</span>
-          <TextArea
-            value={description}
-            onChange={(e) => {
-              dispatch(setDescription(e.target.value));
-            }}
-          />
-        </div>
-        <div className="edit-profile-acount-component-form-btn-container">
-          <Button type="primary">Save Changes</Button>
-        </div>
-      </form>
+                  )
+                }
+                value={username}
+                onChange={(e) => {
+                  dispatch(setUsername(e.target.value));
+                }}
+              />
+              */}
+            {nexModificationDate ? (
+              <span className="edit-profile-acount-component-form-lbl">
+                Aviable change in {nexModificationDate}
+              </span>
+            ) : (
+              <></>
+            )}
+          </div>
+          <div>
+            <span>About me</span>
+            <AntdTextAreaComponent
+              value={description}
+              onChange={(e) => {
+                dispatch(setDescription(e.target.value));
+              }}
+              theme={theme}
+              theme_config={form_theme_config}
+            />
+          </div>
+          <div className="edit-profile-acount-component-form-btn-container">
+            <AntdPrimaryBtnComponent
+              label={"Save Changes"}
+              theme={theme}
+              onClick={HandleSubmit}
+              disabled={!isValid}
+              loading={loading}
+            />
+          </div>
+        </form>
+      </div>
     </>
   );
 };

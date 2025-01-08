@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Badge,
-  Button,
-  ConfigProvider,
-  Dropdown,
-  notification,
-} from "antd";
+import { Avatar, Badge, ConfigProvider, Dropdown } from "antd";
 import React, { useEffect, useState } from "react";
 import { GoHomeFill } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
@@ -16,30 +9,26 @@ import { useDispatch, useSelector } from "react-redux";
 import LayoutDrawer from "../components/PrivateComponents/Drawer/LayoutDrawer";
 import { setDrawerType } from "../slice/drawerSlice";
 import {
-  DownOutlined,
   SettingOutlined,
   MoonOutlined,
-  LogoutOutlined,
   UserOutlined,
   MenuOutlined,
+  SunOutlined,
 } from "@ant-design/icons";
 
-import { HiLogout } from "react-icons/hi";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useTheme } from "../context/ThemeContext";
 import { setSelectedConversationSlice } from "../slice/messageSlice";
-import { socket } from "../router/PrivateRoutes";
-import { store } from "../store/store";
-import {
-  addMessageToInbox,
-  addMessageToRequest,
-} from "../slice/conversationSlice";
+import { useImageCrop } from "../context/ImageCropContext";
+import { initializeProfileState } from "../slice/editProfileSlice";
+import EditProfileModal from "../components/PrivateComponents/Profile/EditProfileModal";
 
 const LayoutMessages = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.userSlice.userData);
 
   useEffect(() => {
     console.log("seteando conversacion a nula desde LAYOUT MESSAGE");
@@ -49,37 +38,10 @@ const LayoutMessages = ({ children }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const showDrawer = (value) => {
-    //setSearchUserComponent(value);
     dispatch(setDrawerType(value));
     setTimeout(() => {
       setOpenDrawer(true);
     }, 100);
-  };
-
-  /*
-  useEffect(() => {
-    socket.on("private_message", (data) => {
-      const selectedConversation =
-        store.getState().messageSlice.selectedConversationSlice;
-      if (!selectedConversation) {
-        messageNotification();
-      } else {
-        if (
-          selectedConversation.conversation._id !==
-          data.newMessage.conversationId
-        ) {
-          messageNotification();
-        }
-      }
-    });
-  }, []);
-  */
-  const messageNotification = () => {
-    api.open({
-      icon: <UserOutlined />,
-      message: "Sender",
-      description: "mensaje",
-    });
   };
 
   const theme_config_provider = {
@@ -96,22 +58,50 @@ const LayoutMessages = ({ children }) => {
     fontWeight: "500",
   };
 
+  const HandleChangeAspect = () => {
+    setTimeout(() => {
+      toggleTheme();
+    }, 500);
+  };
+
+  const HandleSelectConfigurations = () => {
+    console.log("configuraciones");
+    showModal();
+  };
+
+  const HandleViewProfile = () => {
+    navigate("/profile");
+  };
+
+  const onClick = ({ key }) => {
+    console.log(`Click on item ${key}`);
+    if (key === "3") {
+      HandleChangeAspect();
+    }
+    if (key === "2") {
+      HandleSelectConfigurations();
+    }
+    if (key === "1") {
+      HandleViewProfile();
+    }
+  };
+
   const items = [
     {
-      key: "2",
+      key: "1",
       label: "Profile",
       icon: <UserOutlined />,
       style: item_style,
     },
     {
-      key: "3",
+      key: "2",
       icon: <SettingOutlined />,
       label: "Configuracion",
       style: item_style,
     },
     {
-      key: "4",
-      icon: <MoonOutlined />,
+      key: "3",
+      icon: theme === "dark" ? <SunOutlined /> : <MoonOutlined />,
       label: "Cambiar aspecto",
       style: item_style,
     },
@@ -119,7 +109,7 @@ const LayoutMessages = ({ children }) => {
       type: "divider",
     },
     {
-      key: "5",
+      key: "4",
       label: "Log Out",
       extra: (
         <IoLogOutOutline
@@ -129,6 +119,21 @@ const LayoutMessages = ({ children }) => {
       style: item_style,
     },
   ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { setCroppedImageFrontPage, setCroppedImageAvatar } = useImageCrop();
+
+  const setValues = () => {
+    setCroppedImageFrontPage(userData.front_page_img);
+    setCroppedImageAvatar(userData.avatar_img);
+  };
+
+  const showModal = () => {
+    dispatch(initializeProfileState(userData));
+    setValues();
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -204,6 +209,7 @@ const LayoutMessages = ({ children }) => {
             <Dropdown
               menu={{
                 items,
+                onClick,
               }}
               placement="topLeft"
               overlayStyle={{ width: "230px" }}
@@ -220,6 +226,10 @@ const LayoutMessages = ({ children }) => {
         showDrawer={showDrawer}
         openDrawer={openDrawer}
         setOpenDrawer={setOpenDrawer}
+      />
+      <EditProfileModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
     </>
   );

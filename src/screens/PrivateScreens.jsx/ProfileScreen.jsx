@@ -10,6 +10,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { postDateTranform } from "../../data/utils/dates";
 import { LoadingOutlined } from "@ant-design/icons";
 import EditProfileModal from "../../components/PrivateComponents/Profile/EditProfileModal";
+import { users_recomendation_2 } from "../../../tester_data";
 
 const ProfileScreen = () => {
   const userData = useSelector((state) => state.userSlice.userData);
@@ -158,7 +159,7 @@ const ProfileScreen = () => {
 
         <div className="layout-private-aside">
           <ProfileStatsCard />
-          <RecomendationAcountsCard />
+          <RecomendationAcountsCard users={users_recomendation_2} />
         </div>
       </div>
       <NewPostModal

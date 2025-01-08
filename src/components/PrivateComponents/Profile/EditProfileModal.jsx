@@ -10,13 +10,33 @@ import EditAcountComponent from "./EditAcountComponent";
 import EditInterestComponent from "./EditInterestComponent";
 import EditPasswordComponent from "./EditPasswordComponent";
 import { useSelector } from "react-redux";
+import { useImageCrop } from "../../../context/ImageCropContext";
 
 const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   const { theme } = useTheme();
-
   const userData = useSelector((state) => state.userSlice.userData);
 
+  const {
+    setCroppedImageFrontPage,
+    setCroppedBlobFrontPage,
+    setCroppedImageAvatar,
+    setCroppedBlobAvatar,
+  } = useImageCrop();
+
+  const resetData = () => {
+    //setCroppedImageFrontPage(userData.front_page_img);
+    setCroppedBlobFrontPage(null);
+    //setCroppedImageAvatar(userData.avatar_img);
+    setCroppedBlobAvatar(null);
+  };
+
   const handleCancel = () => {
+    resetData();
+    setIsModalOpen(false); // Cierra el modal
+  };
+
+  const handleClose = () => {
+    console.log("cerrar");
     setIsModalOpen(false); // Cierra el modal
   };
 
@@ -24,7 +44,7 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
     {
       icon: <LuUserRoundPen />,
       label: "Profile",
-      component: <EditProfileComponent />, // Clave única
+      component: <EditProfileComponent handleClose={handleClose} />, // Clave única
       selected: true,
       id: "1",
     },
@@ -77,8 +97,8 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
         theme={{
           components: {
             Modal: {
-              contentBg: theme === "dark" ? "#262626" : "#ffffff",
-              headerBg: theme === "dark" ? "#262626" : "#ffffff",
+              contentBg: theme === "dark" ? "#151515" : "#ffffff",
+              headerBg: theme === "dark" ? "#151515" : "#ffffff",
             },
           },
           token: {

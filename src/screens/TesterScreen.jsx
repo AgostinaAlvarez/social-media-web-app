@@ -1,3 +1,4 @@
+//screen Tester Screen
 import { Button } from "antd";
 import React, { useState } from "react";
 import UploadImageComponent from "../components/PrivateComponents/Upload/UploadImageComponent";
@@ -7,10 +8,6 @@ const TesterScreen = () => {
   const aspectRatio = 1 / 1;
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedBlob, setCroppedBlob] = useState(null);
-  /*
-    setCroppedImage,
-  setCroppedBlob,
-    */
 
   const handleDelete = () => {
     setCroppedImage(null);
@@ -22,20 +19,22 @@ const TesterScreen = () => {
       message.error("No hay imagen recortada para subir.");
       return;
     }
+    const token = localStorage.getItem("auth-token");
     const formData = new FormData();
     formData.append("file", croppedBlob.blob, croppedBlob.fileName);
     try {
       const response = await axios.post(
-        "http://localhost:8002/upload/v1",
+        "http://localhost:8002/upload/avatar_img",
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log("imagen subida");
-      console.log(response.data);
+      console.log(response);
     } catch (error) {
       console.log("error");
       console.log(error);

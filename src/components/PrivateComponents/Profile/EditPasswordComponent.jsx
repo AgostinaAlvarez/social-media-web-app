@@ -1,8 +1,15 @@
 import { Button, Input, Switch } from "antd";
 import React, { useState } from "react";
+import AntdInputPasswordComponent from "../../BasicComponents/AntdInputPasswordComponent";
+import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
+import { useTheme } from "../../../context/ThemeContext";
+import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
+import AntdInputComponent from "../../BasicComponents/AntdInputComponent";
+import { form_theme_config } from "../../../data/utils/inputThemes";
 
 const EditPasswordComponent = () => {
   const [editPassword, setEditPassword] = useState(false);
+  const { theme } = useTheme();
 
   return (
     <>
@@ -14,39 +21,52 @@ const EditPasswordComponent = () => {
           {editPassword === true ? (
             <form className="edit-security-component-change-password-form">
               <div>
+                <span>Password</span>
+                <AntdInputComponent
+                  theme={theme}
+                  theme_config={form_theme_config}
+                />
+              </div>
+              <div>
                 <span>New Password</span>
-                <Input />
+                <AntdInputComponent
+                  theme={theme}
+                  theme_config={form_theme_config}
+                />
               </div>
               <div>
                 <span>Confirm Password</span>
-                <Input />
+                <AntdInputComponent
+                  theme={theme}
+                  theme_config={form_theme_config}
+                />
               </div>
               <div className="edit-security-component-box-btn-container">
-                <Button>Save Changes</Button>
-                <Button
+                <AntdPrimaryBtnComponent theme={theme} label={"Save Changes"} />
+                <AntdSecondaryBtnComponent
+                  theme={theme}
+                  label={"Cancel"}
                   onClick={() => {
                     setEditPassword(false);
                   }}
-                >
-                  Cancel
-                </Button>
+                />
               </div>
             </form>
           ) : (
             <>
-              <Input.Password
-                disabled
-                placeholder="************"
+              <AntdInputPasswordComponent
+                placeholder={"************"}
+                disabled={true}
                 style={{ width: "fit-content" }}
               />
-              <Button
+              <AntdPrimaryBtnComponent
+                theme={theme}
+                label={"Change Password"}
+                style={{ width: "fit-content" }}
                 onClick={() => {
                   setEditPassword(true);
                 }}
-                style={{ width: "fit-content" }}
-              >
-                Change Password
-              </Button>
+              />
             </>
           )}
         </div>
@@ -68,8 +88,8 @@ const EditPasswordComponent = () => {
             the app.
           </p>
           <div className="edit-security-component-box-btn-container">
-            <Button>Save Changes</Button>
-            <Button>Reset</Button>
+            <AntdPrimaryBtnComponent theme={theme} label={"Save Changes"} />
+            <AntdSecondaryBtnComponent theme={theme} label={"Reset"} />
           </div>
         </div>
       </div>

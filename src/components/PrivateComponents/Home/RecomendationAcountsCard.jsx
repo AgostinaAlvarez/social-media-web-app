@@ -4,7 +4,7 @@ import { UserOutlined } from "@ant-design/icons";
 import SkeletonRecommendedUser from "../Skeletons/SkeletonRecommendedUser";
 import RecommendedUsersModal from "../User/RecommendedUsersModal";
 
-const RecomendationAcountsCard = () => {
+const RecomendationAcountsCard = ({ users }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,29 +13,7 @@ const RecomendationAcountsCard = () => {
     }, 4000);
   }, []);
 
-  const users_tester = [
-    {
-      username: "shirobladeX",
-      name: "Shiro",
-      lastname: "Blade",
-      avatar: "",
-      id: "1",
-    },
-    {
-      username: "JuventusKing",
-      name: "Fabio",
-      lastname: "Ricci",
-      avatar: "",
-      id: "2",
-    },
-    {
-      username: "FestivalFever_90",
-      name: "Laura",
-      lastname: "Martínez",
-      avatar: "",
-      id: "3",
-    },
-  ];
+  const users_tester = users.slice(0, 3);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -85,6 +63,7 @@ const RecomendationAcountsCard = () => {
       <RecommendedUsersModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        users_tester={users}
       />
     </>
   );

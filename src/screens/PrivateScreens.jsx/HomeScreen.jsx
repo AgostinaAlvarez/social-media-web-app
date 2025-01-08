@@ -14,6 +14,9 @@ import ProfileCard from "../../components/PrivateComponents/Home/ProfileCard";
 import NewPostModal from "../../components/PrivateComponents/Post/NewPostModal";
 import ScrollDetector from "../../components/PrivateComponents/Feed/ScrollDetector";
 import EditProfileModal from "../../components/PrivateComponents/Profile/EditProfileModal";
+import AntdSecondaryBtnComponent from "../../components/BasicComponents/AntdSecondaryBtnComponent";
+import AntdPrimaryBtnComponent from "../../components/BasicComponents/AntdPrimaryBtnComponent";
+import { users_recomendation_1 } from "../../../tester_data";
 
 const HomeScreen = () => {
   const { theme, toggleTheme } = useTheme();
@@ -105,8 +108,7 @@ const HomeScreen = () => {
         </div>
         <div className="layout-private-aside">
           <ProfileCard />
-          <RecomendationAcountsCard />
-          <Button onClick={onChange}>Cambiar</Button>
+          <RecomendationAcountsCard users={users_recomendation_1} />
         </div>
       </div>
       <NewPostModal

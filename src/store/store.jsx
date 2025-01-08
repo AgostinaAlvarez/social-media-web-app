@@ -9,6 +9,7 @@ import feedSlice from "../slice/feedSlice";
 import postsSlice from "../slice/postsSlice";
 import editProfileSlice from "../slice/editProfileSlice";
 import statsSlice from "../slice/statsSlice";
+import acountSettingsSlice from "../slice/acountSettingsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     preSignupSlice: preSignupSlice,
     feedSlice: feedSlice,
     postsSlice: postsSlice,
+    acountSettingsSlice: acountSettingsSlice,
     editProfileSlice: editProfileSlice,
   },
 });

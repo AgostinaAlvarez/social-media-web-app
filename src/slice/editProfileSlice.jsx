@@ -47,9 +47,8 @@ export const editProfileSlice = createSlice({
     ///
     initializeProfileState: (state, action) => {
       const userData = action.payload;
-
-      state.croppedImageFrontPage = userData.front_page_img || "";
-      state.croppedImageAvatar = userData.avatar_img || "";
+      //state.croppedImageFrontPage = userData.front_page_img || "";
+      //state.croppedImageAvatar = userData.avatar_img || "";
       state.name = userData.name || "";
       state.lastname = userData.lastname || "";
       state.username = userData.username || "";

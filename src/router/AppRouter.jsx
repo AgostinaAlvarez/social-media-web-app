@@ -4,14 +4,11 @@ import LoadingScreen from "../screens/LoadingScreen";
 import PublicRoutes from "./PublicRoutes";
 import PrivateRoutes from "./PrivateRoutes";
 import { ThemeProvider } from "../context/ThemeContext";
+import { ImageCropProvider } from "../context/ImageCropContext";
 
 const AppRouter = () => {
   const logged = useSelector((state) => state.authSlice.logged);
   const loading = useSelector((state) => state.authSlice.loading);
-
-  useEffect(() => {
-    console.log(logged);
-  }, []);
 
   return (
     <>
@@ -21,7 +18,9 @@ const AppRouter = () => {
         <>
           {logged === true ? (
             <ThemeProvider>
-              <PrivateRoutes />
+              <ImageCropProvider>
+                <PrivateRoutes />
+              </ImageCropProvider>
             </ThemeProvider>
           ) : (
             <PublicRoutes />

@@ -11,6 +11,10 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
+import {
+  uploadAvatarImage,
+  uploadFrontPageImage,
+} from "../../data/api/uploadApi";
 
 const SignupAvatarStep = ({ HandleFinishSteps }) => {
   const theme = "light";
@@ -33,66 +37,27 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
     setCroppedBlobAvatar(null);
   };
 
-  const handleUploadToServer = async (croppedBlob) => {
-    if (!croppedBlob) {
-      message.error("No hay imagen recortada para subir.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", croppedBlob.blob, croppedBlob.fileName);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8002/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        console.log("URL de la imagen:", response.data.url);
-        return { data: response.data.url, error: null };
-      } else {
-        console.log("Error al subir la imagen.");
-        return { data: null, error: "error" };
-      }
-    } catch (error) {
-      console.log(error);
-      return { data: null, error: error };
-    }
-  };
-
   const [bio, setBio] = useState("");
   const maxLength = 160;
 
   const handleSubmit = async () => {
-    let avatar_img = "";
-    let front_page_img = "";
-
+    const token = preSignupData.token;
+    //imagen de portada
     if (croppedImageFrontPage) {
-      const { data, error } = await handleUploadToServer(croppedBlobFrontPage);
-      if (data) {
-        front_page_img = data;
+      const { error } = await uploadFrontPageImage(croppedBlobFrontPage, token);
+      if (error) {
+        console.log("ocurrio un error al actualizar la foto de perfil");
       }
     }
+    //imagen de perfil
     if (croppedImageAvatar) {
-      const { data, error } = await handleUploadToServer(croppedBlobAvatar);
-      if (data) {
-        avatar_img = data;
+      const { error } = await uploadAvatarImage(croppedBlobAvatar, token);
+      if (error) {
+        console.log("ocurrio un error al actualizar la foto de portada");
       }
     }
 
-    const data = {
-      avatar_img: avatar_img,
-      front_page_img: front_page_img,
-      description: bio,
-    };
-
-    handleUpdateData(data, preSignupData.token);
+    handleUpdateData({ description: bio }, token);
   };
 
   const handleUpdateData = async (data, token) => {
@@ -110,6 +75,7 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
       HandleFinishSteps(response.data.user, token);
     } catch (error) {
       console.log("error al intentar editar el profile");
+      //mandar un mensaje que ocurrio un error
     }
   };
 

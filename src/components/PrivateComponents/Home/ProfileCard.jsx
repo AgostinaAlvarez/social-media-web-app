@@ -12,6 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import EditProfileModal from "../Profile/EditProfileModal";
 import { initializeProfileState } from "../../../slice/editProfileSlice";
+import { useImageCrop } from "../../../context/ImageCropContext";
+import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
 
 const ProfileCard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -41,6 +43,7 @@ const ProfileCard = () => {
 
   const HandleSelectConfigurations = () => {
     console.log("configuraciones");
+    showModal();
   };
 
   const onClick = ({ key }) => {
@@ -70,8 +73,16 @@ const ProfileCard = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { setCroppedImageFrontPage, setCroppedImageAvatar } = useImageCrop();
+
+  const setValues = () => {
+    setCroppedImageFrontPage(userData.front_page_img);
+    setCroppedImageAvatar(userData.avatar_img);
+  };
+
   const showModal = () => {
     dispatch(initializeProfileState(userData));
+    setValues();
     setIsModalOpen(true);
   };
 
@@ -126,9 +137,14 @@ const ProfileCard = () => {
           </div>
         </div>
 
-        <Button onClick={showModal} style={{ width: "100%" }}>
-          Edit profile
-        </Button>
+        {/*
+          <AntdSecondaryBtnComponent
+            theme={theme}
+            onClick={showModal}
+            label={"Edit profile"}
+            style={{ width: "100%" }}
+          />
+          */}
       </div>
       <EditProfileModal
         isModalOpen={isModalOpen}
