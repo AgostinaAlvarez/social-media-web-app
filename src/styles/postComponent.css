@@ -127,8 +127,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13.5px;
+  font-size: 15px;
   cursor: default;
+  color: grey;
 }
 
 .post-content-footer-stats-item:nth-child(1) {
@@ -303,5 +304,15 @@
 }
 
 .post-feed-stat-item-hover:hover:nth-child(3) {
+  background-color: #00ba7c37;
+}
+
+.post-like-stat-cta {
+  color: #f91980;
+  background-color: #f9198134;
+}
+
+.post-save-stat-cta {
+  color: #00ba7c;
   background-color: #00ba7c37;
 }

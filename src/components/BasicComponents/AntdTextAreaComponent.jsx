@@ -9,6 +9,8 @@ const AntdTextAreaComponent = ({
   value,
   onChange,
   theme_config,
+  count,
+  variant,
 }) => {
   const styles = {
     color: theme === "dark" ? "white" : "black",
@@ -26,6 +28,7 @@ const AntdTextAreaComponent = ({
             theme === "dark"
               ? theme_config?.colorBgDark
               : theme_config?.colorBgLight,
+          colorTextTertiary: theme === "dark" ? "#e6e6e640" : "#00000040",
         },
       }}
     >
@@ -34,6 +37,8 @@ const AntdTextAreaComponent = ({
         onChange={onChange}
         placeholder={placeholder}
         style={styles}
+        count={count}
+        variant={variant}
       />
     </ConfigProvider>
   );

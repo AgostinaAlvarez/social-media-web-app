@@ -3,7 +3,7 @@ import ProfileCard from "../../../components/PrivateComponents/Home/ProfileCard"
 import { HiHeart } from "react-icons/hi";
 import { LuArrowUpDown } from "react-icons/lu";
 import { IoIosArrowDown } from "react-icons/io";
-import { Avatar } from "antd";
+import { Avatar, Image } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ProfileStatsCard from "../../../components/PrivateComponents/Profile/ProfileStatsCard";
 import {
@@ -12,17 +12,23 @@ import {
   FaRegComment,
   FaRegHeart,
 } from "react-icons/fa";
+import { liked_posts } from "../../../../tester_data";
 
 const MyLikesScreen = () => {
-  const likes = [1, 1, 1, 1, 1, 1, 1];
+  const likes = liked_posts;
   return (
     <div className="home-screen-private-container">
       <div className="home-screen-feed">
         <div className="stats-screen">
           <div className="stats-screen-header">
             <div className="stats-screen-header-box">
-              <span>Likes</span>
-              <span className="stats-screen-header-value-lbl">20</span>
+              <span style={{ color: "grey", fontSize: 14 }}>Likes</span>
+              <span
+                className="stats-screen-header-value-lbl"
+                style={{ color: "#f91980", backgroundColor: "#f9198134" }}
+              >
+                123
+              </span>
             </div>
             <div className="stats-screen-header-box stats-screen-header-filter-container">
               <LuArrowUpDown />
@@ -45,19 +51,31 @@ const MyLikesScreen = () => {
                   </div>
 
                   <div className="stats-screen-comment-box">
-                    <Avatar
-                      size={40}
-                      style={{
-                        backgroundColor: "#87d068",
-                      }}
-                      icon={<UserOutlined />}
-                      className="stats-screen-comment-box-avatar"
-                    />
+                    {item.user.avatar ? (
+                      <Avatar
+                        className="stats-screen-comment-box-avatar"
+                        src={item.user.avatar}
+                        size={40}
+                      />
+                    ) : (
+                      <Avatar
+                        className="stats-screen-comment-box-avatar"
+                        icon={<UserOutlined />}
+                        size={40}
+                        style={{
+                          backgroundColor: "#87d068",
+                        }}
+                      />
+                    )}
                     <div
                       style={{ display: "flex", alignItems: "center", gap: 3 }}
                     >
-                      <span className="info-name-lbl">User Name</span>
-                      <span className="info-username-lbl">@username</span>
+                      <span className="info-name-lbl">
+                        {item.user.name} {item.user.lastname}
+                      </span>
+                      <span className="info-username-lbl">
+                        @{item.user.username}
+                      </span>
                       <span
                         className="info-username-lbl"
                         style={{ marginLeft: 10 }}
@@ -66,15 +84,25 @@ const MyLikesScreen = () => {
                       </span>
                     </div>
 
-                    <p style={{ margin: "0" }}>
-                      📚 What book changed the way you see life? Recommend it
-                      and tell us why. Maybe someone will find their next great
-                      read thanks to you. 🌟
-                    </p>
+                    <p style={{ margin: "0" }}>{item.post.content}</p>
+                    {item.post.url && (
+                      <div
+                        style={{
+                          width: "100%",
+                          borderRadius: "15px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <Image width={"100%"} src={item.post.url} />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
+            <div>
+              <span>View {123 - likes.length} more</span>
+            </div>
           </div>
         </div>
       </div>

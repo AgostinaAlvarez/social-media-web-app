@@ -95,7 +95,7 @@ const FollowingModal = ({ isModalOpen, setIsModalOpen, users_tester }) => {
                   }}
                   className="recomendation-acounts-card-show-more"
                 >
-                  Show more
+                  Show {276 - users.length} more
                 </span>
               ) : (
                 <></>

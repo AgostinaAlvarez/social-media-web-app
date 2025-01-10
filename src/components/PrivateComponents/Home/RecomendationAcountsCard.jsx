@@ -36,7 +36,11 @@ const RecomendationAcountsCard = ({ users }) => {
               {users_tester.map((item) => (
                 <div className="recomendation-acounts-card-acount-container">
                   <div className="recomendation-acounts-card-acount-info">
-                    <Avatar icon={<UserOutlined />} />
+                    {item.avatar ? (
+                      <Avatar src={item.avatar} size={40} />
+                    ) : (
+                      <Avatar icon={<UserOutlined />} size={40} />
+                    )}
                     <div className="recomendation-acounts-card-acount-name-container">
                       <span className="recomendation-acounts-card-acount-username info-name-lbl">
                         {item.name} {item.lastname}

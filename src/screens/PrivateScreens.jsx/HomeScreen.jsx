@@ -78,7 +78,7 @@ const HomeScreen = () => {
                       : ""
                   }`}
                 >
-                  Siguiendo
+                  Following
                 </div>
               </div>
               <div
@@ -94,7 +94,7 @@ const HomeScreen = () => {
                       : ""
                   }`}
                 >
-                  Para ti
+                  For You
                 </div>
               </div>
             </div>

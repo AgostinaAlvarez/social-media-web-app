@@ -7,10 +7,19 @@ import {
 export const HandleRequestFeedForYouPosts = (dispatch) => {
   //emulate the request
   const posts = tester_feed_for_you.slice(0, 10);
-  dispatch(setFeedForYouPosts(posts));
+  const restructured_posts = posts.map((item) => {
+    return {
+      ...item,
+      actions: {
+        liked: false,
+        saved: false,
+      },
+    };
+  });
+  dispatch(setFeedForYouPosts(restructured_posts));
   setTimeout(() => {
     dispatch(setLoadingFeedForYou(false));
-  }, 4000);
+  }, 6000);
 };
 
 const HandleRequestFeedFollowingPosts = (dispatch) => {

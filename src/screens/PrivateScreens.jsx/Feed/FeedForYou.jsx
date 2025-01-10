@@ -11,6 +11,7 @@ import { PostFeedCard } from "../../../components/PrivateComponents/Post/PostCar
 import { HandleRequestMoreComments } from "../../../data/functions/postsFunctions";
 import {
   comments_data,
+  comments_data_modal,
   likes_1,
   tester_feed_for_you,
 } from "../../../../tester_data";
@@ -49,10 +50,15 @@ const FeedForYou = () => {
     console.log("pedir la data de los comentarios");
     setCommentsInitialState([]);
     const stats = {
-      totalComments: 8,
+      totalComments: 6,
     };
 
-    const comments = HandleRequestMoreComments([], stats, comments_data, 2);
+    const comments = HandleRequestMoreComments(
+      [],
+      stats,
+      comments_data_modal,
+      2
+    );
     console.log("comentarios");
     setCommentsInitialState(comments);
     setTimeout(() => {

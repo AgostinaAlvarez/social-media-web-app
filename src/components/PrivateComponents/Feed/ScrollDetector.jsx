@@ -77,7 +77,17 @@ const ScrollDetector = ({ children }) => {
         current_posts_lenght + limit
       );
 
-      const update_posts = [...feedForYouPosts, ...nextPosts];
+      const restrucuredNextPosts = nextPosts.map((item) => {
+        return {
+          ...item,
+          actions: {
+            liked: false,
+            saved: false,
+          },
+        };
+      });
+
+      const update_posts = [...feedForYouPosts, ...restrucuredNextPosts];
 
       setTimeout(() => {
         dispatch(setFeedForYouPosts(update_posts));

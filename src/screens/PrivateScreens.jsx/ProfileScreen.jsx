@@ -10,8 +10,13 @@ import { BsThreeDots } from "react-icons/bs";
 import { postDateTranform } from "../../data/utils/dates";
 import { LoadingOutlined } from "@ant-design/icons";
 import EditProfileModal from "../../components/PrivateComponents/Profile/EditProfileModal";
-import { following_1, users_recomendation_2 } from "../../../tester_data";
+import {
+  followers_1,
+  following_1,
+  users_recomendation_2,
+} from "../../../tester_data";
 import FollowingModal from "../../components/PrivateComponents/Stats/FollowingModal";
+import FollowersModal from "../../components/PrivateComponents/Stats/FollowersModal";
 
 const ProfileScreen = () => {
   const userData = useSelector((state) => state.userSlice.userData);
@@ -43,6 +48,12 @@ const ProfileScreen = () => {
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
   const showFollowingModal = () => {
     setIsFollowingModalOpen(true);
+  };
+
+  //FOLLOWERS MODAL
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+  const showFollowersModal = () => {
+    setIsFollowersModalOpen(true);
   };
 
   return (
@@ -96,9 +107,9 @@ const ProfileScreen = () => {
                 <div className="user-screen-info-box-data-container">
                   <div
                     className="user-screen-info-box-data"
-                    //onClick={HandleOpenFriendModal}
+                    onClick={showFollowersModal}
                   >
-                    <span className="user-screen-info-box-data-value">1</span>
+                    <span className="user-screen-info-box-data-value">294</span>
                     <span className="user-screen-info-box-data-label">
                       Followers
                     </span>
@@ -107,7 +118,7 @@ const ProfileScreen = () => {
                     className="user-screen-info-box-data"
                     onClick={showFollowingModal}
                   >
-                    <span className="user-screen-info-box-data-value">20</span>
+                    <span className="user-screen-info-box-data-value">276</span>
                     <span className="user-screen-info-box-data-label">
                       Following
                     </span>
@@ -190,6 +201,11 @@ const ProfileScreen = () => {
         isModalOpen={isFollowingModalOpen}
         setIsModalOpen={setIsFollowingModalOpen}
         users_tester={following_1}
+      />
+      <FollowersModal
+        isModalOpen={isFollowersModalOpen}
+        setIsModalOpen={setIsFollowersModalOpen}
+        users_tester={followers_1}
       />
     </>
   );

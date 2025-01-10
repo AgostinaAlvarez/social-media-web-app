@@ -1,71 +1,17 @@
-//screen Tester Screen
-import { Button } from "antd";
-import React, { useState } from "react";
-import UploadImageComponent from "../components/PrivateComponents/Upload/UploadImageComponent";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { AiFillHeart } from "react-icons/ai";
+import { BsBookmarkFill } from "react-icons/bs";
 
 const TesterScreen = () => {
-  const aspectRatio = 1 / 1;
-  const [croppedImage, setCroppedImage] = useState(null);
-  const [croppedBlob, setCroppedBlob] = useState(null);
+  const [saved, setSaved] = useState(false);
 
-  const handleDelete = () => {
-    setCroppedImage(null);
-    setCroppedBlob(null);
-  };
-
-  const handleUploadToServer = async () => {
-    if (!croppedBlob) {
-      message.error("No hay imagen recortada para subir.");
-      return;
-    }
-    const token = localStorage.getItem("auth-token");
-    const formData = new FormData();
-    formData.append("file", croppedBlob.blob, croppedBlob.fileName);
-    try {
-      const response = await axios.post(
-        "http://localhost:8002/upload/avatar_img",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("imagen subida");
-      console.log(response);
-    } catch (error) {
-      console.log("error");
-      console.log(error);
-    }
+  const handleSave = () => {
+    setSaved(true);
   };
 
   return (
-    <div>
-      <div>Tester screen for test the backend</div>
-      <UploadImageComponent
-        setCroppedBlob={setCroppedBlob}
-        setCroppedImage={setCroppedImage}
-        aspectRatio={aspectRatio}
-      >
-        <Button type="primary">Subir imagen</Button>
-      </UploadImageComponent>
-      {croppedImage && (
-        <>
-          <div
-            style={{
-              height: "200px",
-              width: "200px",
-              backgroundImage: `url(${croppedImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          ></div>
-          <Button onClick={handleUploadToServer}>Subir imagen</Button>
-          <Button onClick={handleDelete}>Quitar</Button>
-        </>
-      )}
+    <div className="save-container" onClick={handleSave}>
+      <BsBookmarkFill className={`save-icon ${saved ? "saved" : ""}`} />
     </div>
   );
 };

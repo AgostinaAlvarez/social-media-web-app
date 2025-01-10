@@ -329,6 +329,7 @@ Layout Private
   background-color: var(--transparent-bg);
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background-color: var(--feed-header-bg);
 }
 
 .home-screen-feed-type-item {
@@ -1516,4 +1517,137 @@ Layout Private
 
 .input-container button:hover {
   background-color: #0056b3;
+}
+
+/* Contenedor principal */
+.heart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Corazón principal */
+.heart-icon {
+  font-size: 15px;
+  color: #ccc;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.heart-icon:hover {
+  font-size: 16px;
+  color: #ccc;
+  transition: transform 0.3s ease, color 0.3s ease;
+  color: #e63946;
+}
+
+.heart-icon.liked {
+  font-size: 16px;
+  color: #e63946;
+  transform: scale(1.2); /* Breve aumento en tamaño al hacer clic */
+}
+
+/* Efecto de partículas */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  font-size: 20px;
+  color: #e63946;
+  opacity: 0;
+  animation: explode 0.6s ease forwards;
+}
+
+.particle-0 {
+  top: 0;
+  left: 50%;
+  animation-delay: 0s;
+  transform: translate(-50%, -20px);
+}
+
+.particle-1 {
+  top: 20%;
+  left: 80%;
+  animation-delay: 0.1s;
+  transform: translate(20px, -20px);
+}
+
+.particle-2 {
+  top: 50%;
+  left: 100%;
+  animation-delay: 0.2s;
+  transform: translate(30px, 0);
+}
+
+.particle-3 {
+  top: 80%;
+  left: 80%;
+  animation-delay: 0.3s;
+  transform: translate(20px, 20px);
+}
+
+.particle-4 {
+  top: 100%;
+  left: 50%;
+  animation-delay: 0.4s;
+  transform: translate(0, 30px);
+}
+
+.particle-5 {
+  top: 80%;
+  left: 20%;
+  animation-delay: 0.5s;
+  transform: translate(-20px, 20px);
+}
+
+/* Explosión de partículas */
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: scale(0.5) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translate(40px, -40px);
+  }
+}
+
+/* Contenedor principal */
+
+/* Ícono de guardar */
+.save-icon {
+  font-size: 15px;
+  color: #ccc; /* Color inicial */
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.save-icon.saved {
+  color: #00ba7c; /* Color final (amarillo) */
+  animation: heartbeat 0.5s ease;
+}
+
+/* Animación de latido */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

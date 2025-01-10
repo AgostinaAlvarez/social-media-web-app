@@ -3,9 +3,12 @@ import { postDateTranform } from "../../../data/utils/dates";
 import { Avatar, Tooltip } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
+import { BsBookmarkFill, BsThreeDots } from "react-icons/bs";
 import { AntDesignOutlined } from "@ant-design/icons";
 import { Image } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { setFeedForYouPosts } from "../../../slice/feedSlice";
+import { AiFillHeart } from "react-icons/ai";
 
 export const PostFeedCard = ({
   index,
@@ -18,6 +21,11 @@ export const PostFeedCard = ({
   const StopPropagation = (e) => {
     e.stopPropagation();
   };
+  const feedForYouPosts = useSelector(
+    (state) => state.feedSlice.feedForYouPosts
+  );
+  const dispatch = useDispatch();
+
   return (
     <div
       className="post-container post-feed-card"
@@ -26,7 +34,11 @@ export const PostFeedCard = ({
     >
       <div className="post-header" onClick={StopPropagation}>
         <div className="post-header-user-data-container">
-          <Avatar icon={<UserOutlined />} />
+          {item.user.avatar ? (
+            <Avatar src={item.user.avatar} size={40} />
+          ) : (
+            <Avatar icon={<UserOutlined />} size={40} />
+          )}
           <div className="post-header-user-data">
             <div className="post-header-user-data-name">
               <span className="info-name-lbl">
@@ -62,18 +74,76 @@ export const PostFeedCard = ({
           <span>{stats.comments}</span>
         </div>
         {/*Like*/}
-        <div className="post-content-footer-stats-item post-like-stat-hover post-feed-stat-item post-feed-stat-item-hover">
-          <FaRegHeart />
+        <div
+          className={`post-content-footer-stats-item post-like-stat-hover post-feed-stat-item post-feed-stat-item-hover ${
+            item.actions.liked === true ? "post-like-stat-cta" : ""
+          }`}
+        >
+          <div
+            className="heart-container"
+            onClick={() => {
+              const updateData = feedForYouPosts.map((post) => {
+                if (post.post.id === item.post.id) {
+                  return {
+                    ...post,
+                    stats: {
+                      ...stats,
+                      likes: post.stats.likes + 1,
+                    },
+                    actions: {
+                      ...post.actions,
+                      liked: true,
+                    },
+                  };
+                }
+                return post;
+              });
+              dispatch(setFeedForYouPosts(updateData));
+            }}
+          >
+            <AiFillHeart
+              className={`heart-icon ${item.actions.liked ? "liked" : ""}`}
+            />
+            {item.actions.liked && (
+              <div className="particles">
+                {[...Array(6)].map((_, i) => (
+                  <AiFillHeart key={i} className={`particle particle-${i}`} />
+                ))}
+              </div>
+            )}
+          </div>
           <span onClick={HandleOpenLikesModal}>{item.stats.likes}</span>
         </div>
         {/*Save*/}
         <div
-          className="post-content-footer-stats-item post-save-stat-hover post-feed-stat-item post-feed-stat-item-hover"
+          className={`post-content-footer-stats-item post-save-stat-hover post-feed-stat-item post-feed-stat-item-hover ${
+            item.actions.saved === true ? "post-save-stat-cta" : ""
+          }`}
           onClick={() => {
-            console.log("guardar");
+            const updateData = feedForYouPosts.map((post) => {
+              if (post.post.id === item.post.id) {
+                return {
+                  ...post,
+                  stats: {
+                    ...stats,
+                    saves: post.stats.saves + 1,
+                  },
+                  actions: {
+                    ...post.actions,
+                    saved: true,
+                  },
+                };
+              }
+              return post;
+            });
+            dispatch(setFeedForYouPosts(updateData));
           }}
         >
-          <FaRegBookmark />
+          <BsBookmarkFill
+            className={`save-icon ${
+              item.actions.saved === true ? "saved" : ""
+            }`}
+          />
           <span>{item.stats.saves}</span>
         </div>
       </div>

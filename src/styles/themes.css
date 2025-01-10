@@ -13,6 +13,7 @@
 
   --text-primary-color: #000000;
   --text-secondary-color: #828282;
+  --feed-header-bg: #ffffffef;
 }
 
 [data-theme="dark"] {
@@ -29,4 +30,5 @@
 
   --text-primary-color: #ffffff;
   --text-secondary-color: #71767a;
+  --feed-header-bg: #0000009c;
 }

@@ -14,17 +14,23 @@ import {
   FaRegComment,
   FaRegHeart,
 } from "react-icons/fa";
+import { saved_posts } from "../../../../tester_data";
 
 const MySavedScreen = () => {
-  const likes = [1, 1, 1, 1];
+  const saves = saved_posts;
   return (
     <div className="home-screen-private-container">
       <div className="home-screen-feed">
         <div className="stats-screen">
           <div className="stats-screen-header">
             <div className="stats-screen-header-box">
-              <span>Saved</span>
-              <span className="stats-screen-header-value-lbl">20</span>
+              <span style={{ color: "grey", fontSize: 14 }}>Saves</span>
+              <span
+                className="stats-screen-header-value-lbl"
+                style={{ color: "#00ba7c", backgroundColor: "#00ba7c37" }}
+              >
+                32
+              </span>
             </div>
             <div className="stats-screen-header-box stats-screen-header-filter-container">
               <LuArrowUpDown />
@@ -34,7 +40,7 @@ const MySavedScreen = () => {
           </div>
           <div className="stats-screen-content">
             {/*Item */}
-            {likes.map((item) => (
+            {saves.map((item) => (
               <div className="stats-screen-like-container">
                 <div className="stats-screen-saved-icon-container">
                   <HiBookmark className="stats-screen-saved-icon" />
@@ -47,19 +53,31 @@ const MySavedScreen = () => {
                   </div>
 
                   <div className="stats-screen-comment-box">
-                    <Avatar
-                      size={40}
-                      style={{
-                        backgroundColor: "#87d068",
-                      }}
-                      icon={<UserOutlined />}
-                      className="stats-screen-comment-box-avatar"
-                    />
+                    {item.user.avatar ? (
+                      <Avatar
+                        className="stats-screen-comment-box-avatar"
+                        src={item.user.avatar}
+                        size={40}
+                      />
+                    ) : (
+                      <Avatar
+                        className="stats-screen-comment-box-avatar"
+                        icon={<UserOutlined />}
+                        size={40}
+                        style={{
+                          backgroundColor: "#87d068",
+                        }}
+                      />
+                    )}
                     <div
                       style={{ display: "flex", alignItems: "center", gap: 3 }}
                     >
-                      <span className="info-name-lbl">User Name</span>
-                      <span className="info-username-lbl">@username</span>
+                      <span className="info-name-lbl">
+                        {item.user.name} {item.user.lastname}
+                      </span>
+                      <span className="info-username-lbl">
+                        @{item.user.username}
+                      </span>
                       <span
                         className="info-username-lbl"
                         style={{ marginLeft: 10 }}
@@ -68,15 +86,14 @@ const MySavedScreen = () => {
                       </span>
                     </div>
 
-                    <p style={{ margin: "0" }}>
-                      📚 What book changed the way you see life? Recommend it
-                      and tell us why. Maybe someone will find their next great
-                      read thanks to you. 🌟
-                    </p>
+                    <p style={{ margin: "0" }}>{item.post.content}</p>
                   </div>
                 </div>
               </div>
             ))}
+            <div>
+              <span>View {32 - saves.length} more</span>
+            </div>
           </div>
         </div>
       </div>

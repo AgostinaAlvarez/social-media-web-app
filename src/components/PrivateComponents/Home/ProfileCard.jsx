@@ -15,7 +15,8 @@ import { initializeProfileState } from "../../../slice/editProfileSlice";
 import { useImageCrop } from "../../../context/ImageCropContext";
 import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
 import FollowingModal from "../Stats/FollowingModal";
-import { following_1 } from "../../../../tester_data";
+import { followers_1, following_1 } from "../../../../tester_data";
+import FollowersModal from "../Stats/FollowersModal";
 
 const ProfileCard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -62,13 +63,13 @@ const ProfileCard = () => {
     {
       key: "1",
       icon: <SettingOutlined />,
-      label: "Configuracion",
+      label: "Settings",
       style: item_style,
     },
     {
       key: "2",
       icon: theme === "dark" ? <SunOutlined /> : <MoonOutlined />,
-      label: "Cambiar aspecto",
+      label: "Change appearance",
       style: item_style,
     },
   ];
@@ -96,6 +97,12 @@ const ProfileCard = () => {
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
   const showFollowingModal = () => {
     setIsFollowingModalOpen(true);
+  };
+
+  //FOLLOWERS MODAL
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+  const showFollowersModal = () => {
+    setIsFollowersModalOpen(true);
   };
 
   return (
@@ -139,11 +146,14 @@ const ProfileCard = () => {
             className="profile-card-stats-data-container"
             onClick={showFollowingModal}
           >
-            <span className="profile-card-stats-value">20</span>
+            <span className="profile-card-stats-value">276</span>
             <span>Following</span>
           </div>
-          <div className="profile-card-stats-data-container">
-            <span className="profile-card-stats-value">25</span>
+          <div
+            className="profile-card-stats-data-container"
+            onClick={showFollowersModal}
+          >
+            <span className="profile-card-stats-value">294</span>
             <span>Followers</span>
           </div>
         </div>
@@ -156,6 +166,11 @@ const ProfileCard = () => {
         isModalOpen={isFollowingModalOpen}
         setIsModalOpen={setIsFollowingModalOpen}
         users_tester={following_1}
+      />
+      <FollowersModal
+        isModalOpen={isFollowersModalOpen}
+        setIsModalOpen={setIsFollowersModalOpen}
+        users_tester={followers_1}
       />
     </>
   );

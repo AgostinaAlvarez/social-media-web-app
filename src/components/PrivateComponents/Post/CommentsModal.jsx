@@ -3,6 +3,7 @@ import {
   Button,
   ConfigProvider,
   Divider,
+  Image,
   Input,
   Modal,
   Spin,
@@ -20,7 +21,13 @@ import {
   HandleRequestMoreComments,
   HandleRequestMoreReplies,
 } from "../../../data/functions/postsFunctions";
-import { comments_data, replies } from "../../../../tester_data";
+import {
+  comments_data,
+  comments_data_modal,
+  replies,
+  replies_modal,
+} from "../../../../tester_data";
+import AntdTextAreaComponent from "../../BasicComponents/AntdTextAreaComponent";
 
 const CommentsModal = ({
   isModalOpen,
@@ -30,7 +37,7 @@ const CommentsModal = ({
 }) => {
   const { theme } = useTheme();
   const stats = {
-    totalComments: 8,
+    totalComments: 6,
   };
   const limit = 2;
 
@@ -66,7 +73,7 @@ const CommentsModal = ({
         total_replies,
         [],
         limit,
-        replies
+        replies_modal
       );
 
       const updateComments = comments.map((item) => {
@@ -123,7 +130,7 @@ const CommentsModal = ({
       total_replies,
       current_replies,
       limit,
-      replies
+      replies_modal
     );
 
     const updateComments = comments.map((item) => {
@@ -180,23 +187,42 @@ const CommentsModal = ({
         >
           {/*post*/}
           <div className="comment-container replie-container">
-            <Avatar icon={<UserOutlined />} size={40} />
+            <Avatar
+              src="https://pbs.twimg.com/profile_images/1786906643092930561/lLsSgbF7_400x400.jpg"
+              //icon={<UserOutlined />}
+              size={40}
+            />
             <div className="comment-container-info-box">
               <div
                 className="post-header-user-data-name"
                 style={{ fontSize: 14 }}
               >
-                <span className="info-name-lbl">User Name</span>
-                <span className="info-username-lbl">@username</span>
+                <span className="info-name-lbl">Mia Garcia</span>
+                <span className="info-username-lbl">@history_tech</span>
                 <span className="info-date-lbl" style={{ fontSize: 12 }}>
-                  | Wednesday, Oct 16, 6:02 PM
+                  | Monday, Nov 25, 2:45 PM
                 </span>
               </div>
 
               <p className="comment-container-info-box-p">
-                The Alchemist by Paulo Coelho. It taught me to trust my journey
-                and never give up.
+                The history of technology is a fascinating journey. Did you know
+                that the first computer, ENIAC, weighed over 27 tons and filled
+                an entire room?
               </p>
+              <div
+                style={{
+                  width: "80%",
+                  borderRadius: "15px",
+                  overflow: "hidden",
+                }}
+              >
+                <Image
+                  width={"100%"}
+                  src={
+                    "https://pbs.twimg.com/media/GOBsoufbsAAr59m?format=png&name=large"
+                  }
+                />
+              </div>
             </div>
           </div>
           {/*Comment section*/}
@@ -229,9 +255,24 @@ const CommentsModal = ({
                 }}
               >
                 <Avatar icon={<UserOutlined />} />
-                <TextArea
-                  placeholder="add a comment"
-                  variant="borderless"
+                {/*
+                  
+                  <TextArea
+                    placeholder="add a comment"
+                    variant="borderless"
+                    style={{
+                      height: 80,
+                      resize: "none",
+                    }}
+                    count={{
+                      show: true,
+                      max: 130,
+                    }}
+                    />
+                  */}
+                <AntdTextAreaComponent
+                  placeholder={"add a coment"}
+                  variant={"borderless"}
                   style={{
                     height: 80,
                     resize: "none",
@@ -240,6 +281,7 @@ const CommentsModal = ({
                     show: true,
                     max: 130,
                   }}
+                  theme={theme}
                 />
               </div>
               <div
@@ -287,14 +329,22 @@ const CommentsModal = ({
                         className="comment-container"
                         style={{ border: "none" }}
                       >
-                        <Avatar icon={<UserOutlined />} />
+                        {item.user.avatar ? (
+                          <Avatar src={item.user.avatar} />
+                        ) : (
+                          <Avatar icon={<UserOutlined />} />
+                        )}
                         <div className="comment-container-info-box">
                           <div
                             className="post-header-user-data-name"
                             style={{ alignItems: "flex-end" }}
                           >
-                            <span className="info-name-lbl">User name</span>
-                            <span className="info-username-lbl">@username</span>
+                            <span className="info-name-lbl">
+                              {item.user.name} {item.user.lastname}
+                            </span>
+                            <span className="info-username-lbl">
+                              @{item.user.username}
+                            </span>
                             <span
                               className="info-date-lbl"
                               style={{ fontSize: "11px" }}
@@ -306,7 +356,7 @@ const CommentsModal = ({
                             className="comment-container-info-box-p"
                             style={{ margin: "0px" }}
                           >
-                            contenido del comentario
+                            {item.comment.content}
                           </p>
 
                           <div
@@ -340,7 +390,6 @@ const CommentsModal = ({
                                   alignItems: "flex-end",
                                   gap: 30,
                                   marginBottom: 10,
-                                  backgroundColor: "pink",
                                 }}
                               >
                                 <div
@@ -383,17 +432,27 @@ const CommentsModal = ({
                                       className="comment-container"
                                       style={{ border: "none" }}
                                     >
-                                      <Avatar icon={<UserOutlined />} />
+                                      {replie.user.avatar ? (
+                                        <Avatar src={replie.user.avatar} />
+                                      ) : (
+                                        <Avatar
+                                          icon={<UserOutlined />}
+                                          style={{
+                                            backgroundColor: replie.user.bg,
+                                          }}
+                                        />
+                                      )}
                                       <div className="comment-container-info-box">
                                         <div
                                           className="post-header-user-data-name"
                                           style={{ alignItems: "flex-end" }}
                                         >
                                           <span className="info-name-lbl">
-                                            User nameee
+                                            {replie.user.name}{" "}
+                                            {replie.user.lastname}
                                           </span>
                                           <span className="info-username-lbl">
-                                            @username
+                                            @{replie.user.username}
                                           </span>
                                           <span
                                             className="info-date-lbl"
@@ -406,7 +465,7 @@ const CommentsModal = ({
                                           className="comment-container-info-box-p"
                                           style={{ margin: "0px" }}
                                         >
-                                          contenido del comentario
+                                          {replie.reply.content}
                                         </p>
                                         {/*
                                           <div>index+1 {index + 1}</div>
@@ -500,7 +559,7 @@ const CommentsModal = ({
                                     const response = HandleRequestMoreComments(
                                       comments,
                                       stats,
-                                      comments_data,
+                                      comments_data_modal,
                                       limit
                                     );
                                     setTimeout(() => {

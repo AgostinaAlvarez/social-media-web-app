@@ -116,7 +116,7 @@ const LayoutPrivate = ({ children }) => {
                   <FaSearch />
                 </Avatar>
               </Badge>
-              <span>Busqueda</span>
+              <span>Search</span>
             </div>
             {/*MESSAGE*/}
             <div
@@ -134,7 +134,7 @@ const LayoutPrivate = ({ children }) => {
                   <BiSolidMessageSquareDots />
                 </Avatar>
               </Badge>
-              <span>Mensajes</span>
+              <span>Messages</span>
             </div>
             {/*NOTIFICATIONS*/}
             <div
@@ -152,7 +152,7 @@ const LayoutPrivate = ({ children }) => {
                   <IoNotifications />
                 </Avatar>
               </Badge>
-              <span>Notificaciones</span>
+              <span>Notifications</span>
             </div>
           </div>
         </aside>
