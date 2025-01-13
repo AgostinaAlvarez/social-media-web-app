@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   ConfigProvider,
   Divider,
   Image,
@@ -8,26 +7,22 @@ import {
   Modal,
   Spin,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../../context/ThemeContext";
 import "../../../styles/postComponent.css";
 import { UserOutlined } from "@ant-design/icons";
 import { FaRegImage } from "react-icons/fa";
 import { MdInsertEmoticon } from "react-icons/md";
 import { PiArrowBendDownRightBold } from "react-icons/pi";
-import TextArea from "antd/es/input/TextArea";
 import { LoadingOutlined } from "@ant-design/icons";
 import {
   HandleRequestMoreComments,
   HandleRequestMoreReplies,
 } from "../../../data/functions/postsFunctions";
-import {
-  comments_data,
-  comments_data_modal,
-  replies,
-  replies_modal,
-} from "../../../../tester_data";
+import { comments_data_modal, replies_modal } from "../../../../tester_data";
 import AntdTextAreaComponent from "../../BasicComponents/AntdTextAreaComponent";
+import { useSelector } from "react-redux";
+import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
 
 const CommentsModal = ({
   isModalOpen,
@@ -35,10 +30,15 @@ const CommentsModal = ({
   loadingCommentData,
   commentsInitialState,
 }) => {
+  const inputRefs = useRef({}); // Creamos un objeto para almacenar las referencias
+  const [inputValues, setInputValues] = useState({});
+
   const { theme } = useTheme();
-  const stats = {
+  const userData = useSelector((state) => state.userSlice.userData);
+
+  const [stats, setStats] = useState({
     totalComments: 6,
-  };
+  });
   const limit = 2;
 
   const [comments, setComments] = useState([]);
@@ -51,6 +51,10 @@ const CommentsModal = ({
   });
 
   const handleCancel = () => {
+    setStats({
+      totalComments: 6,
+    });
+    setComments([]);
     setIsModalOpen(false);
   };
 
@@ -65,7 +69,6 @@ const CommentsModal = ({
         comment_id: comment_id,
         loading: true,
       });
-      console.log("pedir replies");
 
       const updateReplies = HandleRequestMoreReplies(
         comment_id,
@@ -93,7 +96,6 @@ const CommentsModal = ({
         });
         setComments(updateComments);
       }, 2000);
-      //HandleRequestMoreReplies(comment_id);
     }
   };
 
@@ -150,6 +152,100 @@ const CommentsModal = ({
       });
       setComments(updateComments);
     }, 2000);
+  };
+
+  const [loadingAddNewComment, setLoadingAddNewComment] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const HandleAddComment = () => {
+    setLoadingAddNewComment(true);
+    const newComment = {
+      user: {
+        name: userData.name,
+        lastname: userData.lastname,
+        username: userData.username,
+        avatar: userData.avatar_img,
+      },
+      comment: {
+        id: "a",
+        content: query,
+      },
+      stats: {
+        replies: 0,
+        likes: 0,
+      },
+      replies: [],
+    };
+    const updateComments = [newComment, ...comments];
+    setQuery("");
+    setTimeout(() => {
+      setLoadingAddNewComment(false);
+      setStats({
+        totalComments: stats.totalComments + 1,
+      });
+      setComments(updateComments);
+    }, 2000);
+  };
+
+  const [loadingAddNewReply, setLoadingAddNewReply] = useState({
+    comment_id: null,
+    loading: false,
+  });
+
+  const HandleAddNewReply = (commentId, value) => {
+    setLoadingAddNewReply({
+      comment_id: commentId,
+      loading: true,
+    });
+    const newReply = {
+      user: {
+        name: userData.name,
+        lastname: userData.lastname,
+        username: userData.username,
+        avatar: userData.avatar_img,
+      },
+      reply: {
+        id: "0",
+        content: value,
+      },
+    };
+    const updateComments = comments.map((item) => {
+      if (item.comment.id === commentId) {
+        return {
+          ...item,
+          stats: {
+            replies: item.stats.replies + 1,
+          },
+          replies: [newReply, ...item.replies],
+        };
+      }
+      return item;
+    });
+
+    setTimeout(() => {
+      setLoadingAddNewReply({
+        comment_id: null,
+        loading: false,
+      });
+      setComments(updateComments);
+    }, 2000);
+  };
+
+  const handleInputChange = (id, value) => {
+    setInputValues((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleEnterPress = (id, value) => {
+    if (value.trim() !== "") {
+      HandleAddNewReply(id, value);
+    }
+    setInputValues((prev) => ({
+      ...prev,
+      [id]: "",
+    }));
   };
 
   return (
@@ -254,12 +350,27 @@ const CommentsModal = ({
                   gap: 10,
                 }}
               >
-                <Avatar icon={<UserOutlined />} />
-                {/*
-                  
-                  <TextArea
-                    placeholder="add a comment"
-                    variant="borderless"
+                {userData.avatar_img === "" ? (
+                  <Avatar size={40} icon={<UserOutlined />} />
+                ) : (
+                  <Avatar size={40} src={userData.avatar_img} />
+                )}
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                >
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 5 }}
+                  >
+                    <span className="info-name-lbl">
+                      {userData.name} {userData.lastname}
+                    </span>
+                    <span className="info-username-lbl">
+                      @{userData.username}
+                    </span>
+                  </div>
+                  <AntdTextAreaComponent
+                    placeholder={`Add a new coment`}
+                    variant={"borderless"}
                     style={{
                       height: 80,
                       resize: "none",
@@ -268,21 +379,13 @@ const CommentsModal = ({
                       show: true,
                       max: 130,
                     }}
-                    />
-                  */}
-                <AntdTextAreaComponent
-                  placeholder={"add a coment"}
-                  variant={"borderless"}
-                  style={{
-                    height: 80,
-                    resize: "none",
-                  }}
-                  count={{
-                    show: true,
-                    max: 130,
-                  }}
-                  theme={theme}
-                />
+                    theme={theme}
+                    value={query}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
               <div
                 style={{
@@ -300,7 +403,15 @@ const CommentsModal = ({
                   <FaRegImage />
                   <MdInsertEmoticon />
                 </div>
-                <Button type="primary">Add Comment</Button>
+                <AntdPrimaryBtnComponent
+                  label={"Add Comment"}
+                  disabled={
+                    query.trim() === "" || loadingCommentData === true
+                      ? true
+                      : false
+                  }
+                  onClick={HandleAddComment}
+                />
               </div>
             </div>
             {/*coments list*/}
@@ -324,6 +435,11 @@ const CommentsModal = ({
                   </div>
                 ) : (
                   <>
+                    {loadingAddNewComment && (
+                      <div className="comment-footer-container">
+                        <Spin indicator={<LoadingOutlined spin />} />
+                      </div>
+                    )}
                     {comments.map((item) => (
                       <div
                         className="comment-container"
@@ -367,11 +483,28 @@ const CommentsModal = ({
                             }}
                           >
                             <div className="post-content-input-container">
-                              <Avatar icon={<UserOutlined />} />
+                              {userData.avatar_img === "" ? (
+                                <Avatar size={36} icon={<UserOutlined />} />
+                              ) : (
+                                <Avatar size={36} src={userData.avatar_img} />
+                              )}
                               <div className="post-content-input-box">
                                 <Input
                                   variant="borderless"
-                                  placeholder="reply to @username..."
+                                  placeholder={`reply to @${item.user.username}...`}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      item.comment.id,
+                                      e.target.value
+                                    )
+                                  }
+                                  onPressEnter={(e) =>
+                                    handleEnterPress(
+                                      item.comment.id,
+                                      e.target.value
+                                    )
+                                  }
+                                  value={inputValues[item.comment.id] || ""} // Establecemos el valor controlado
                                 />
                                 <div className="post-content-input-box-icons-container">
                                   <FaRegImage />
@@ -410,23 +543,43 @@ const CommentsModal = ({
                                   </span>
                                 </div>
                               </div>
+
                               {item.replies.length === 0 ? (
                                 <>
                                   {/*Prevee la situacion de pedir comentarios por primera vez*/}
                                   {loadingReplies.comment_id ===
                                     item.comment.id &&
                                   loadingReplies.loading === true ? (
-                                    <div>
+                                    <div className="comment-footer-container">
                                       <Spin
                                         indicator={<LoadingOutlined spin />}
                                       />
                                     </div>
                                   ) : (
-                                    <></>
+                                    <>
+                                      {loadingAddNewReply.comment_id ===
+                                      item.comment.id ? (
+                                        <div className="comment-footer-container">
+                                          <Spin
+                                            indicator={<LoadingOutlined spin />}
+                                          />
+                                        </div>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </>
                                   )}
                                 </>
                               ) : (
                                 <>
+                                  {loadingAddNewReply.comment_id ===
+                                    item.comment.id && (
+                                    <div className="comment-footer-container">
+                                      <Spin
+                                        indicator={<LoadingOutlined spin />}
+                                      />
+                                    </div>
+                                  )}
                                   {item.replies.map((replie, index) => (
                                     <div
                                       className="comment-container"
@@ -487,7 +640,7 @@ const CommentsModal = ({
                                             {loadingReplies.comment_id ===
                                               item.comment.id &&
                                             loadingReplies.loading === true ? (
-                                              <div>
+                                              <div className="comment-footer-container">
                                                 <Spin
                                                   indicator={
                                                     <LoadingOutlined spin />
@@ -521,16 +674,6 @@ const CommentsModal = ({
                                         ) : (
                                           <></>
                                         )}
-                                        {/*
-                                          <div
-                                            className="comment-container-replies-span"
-                                            style={{ alignItems: "center" }}
-                                          >
-                                            <PiArrowBendDownRightBold />
-                                            <span>View 3 more replies</span>
-                                          </div>
-                                          
-                                          */}
                                       </div>
                                     </div>
                                   ))}
@@ -538,8 +681,6 @@ const CommentsModal = ({
                               )}
                             </>
                           )}
-
-                          <></>
                         </div>
                       </div>
                     ))}
@@ -547,12 +688,10 @@ const CommentsModal = ({
                       <>
                         {stats.totalComments !== comments.length && (
                           <>
-                            {loadingMoreComments === true ? (
-                              <div>
+                            <div className="comment-footer-container">
+                              {loadingMoreComments === true ? (
                                 <Spin indicator={<LoadingOutlined spin />} />
-                              </div>
-                            ) : (
-                              <div>
+                              ) : (
                                 <span
                                   onClick={() => {
                                     setLoadingMoreComments(true);
@@ -568,11 +707,11 @@ const CommentsModal = ({
                                     }, 2000);
                                   }}
                                 >
-                                  Ver {stats.totalComments - comments.length}{" "}
-                                  comentarios mas
+                                  View {stats.totalComments - comments.length}{" "}
+                                  more comments
                                 </span>
-                              </div>
-                            )}
+                              )}
+                            </div>
                           </>
                         )}
                       </>

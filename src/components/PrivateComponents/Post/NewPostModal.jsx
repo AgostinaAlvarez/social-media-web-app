@@ -16,6 +16,8 @@ import { clasificateNewPost, createNewPost } from "../../../data/api/postApi";
 const NewPostModal = ({ isModalOpen, setIsModalOpen, handleOk }) => {
   const { theme } = useTheme();
   const token = useSelector((state) => state.authSlice.token);
+  const userData = useSelector((state) => state.userSlice.userData);
+
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -153,7 +155,11 @@ const NewPostModal = ({ isModalOpen, setIsModalOpen, handleOk }) => {
         ]}
       >
         <div className="new-post-container">
-          <Avatar size={40} icon={<UserOutlined />} />
+          {userData.avatar_img === "" ? (
+            <Avatar size={40} icon={<UserOutlined />} />
+          ) : (
+            <Avatar size={40} src={userData.avatar_img} />
+          )}
           <div>
             <ConfigProvider
               theme={{
