@@ -1,9 +1,9 @@
 import { Avatar } from "antd";
 import React from "react";
 import { GoDotFill } from "react-icons/go";
-import { HiMiniChatBubbleLeft } from "react-icons/hi2";
+import { HiBookmark } from "react-icons/hi";
 
-const NotificationDrawerItemComment = () => {
+const NotificationDrawerItemSave = () => {
   return (
     <>
       <div className="notification-drawer-item-container">
@@ -13,18 +13,18 @@ const NotificationDrawerItemComment = () => {
           </Avatar>
 
           <div>
-            <span className="info-name-lbl">joshuaHoward</span> has commented on
-            your post <span className="info-date-lbl">1 h.</span>
+            <span className="info-name-lbl">joshuaHoward</span> saved your post{" "}
+            <span className="info-date-lbl">1 h.</span>
           </div>
           <GoDotFill style={{ fontSize: 20, color: "#4096ff" }} />
         </div>
         <div className="notification-content-container notification-content-comment-container">
-          <div className="notification-content-icon notification-content-icon-comment">
-            <HiMiniChatBubbleLeft />
+          <div className="notification-content-icon notification-content-icon-save">
+            <HiBookmark />
           </div>
           <div>
-            <span style={{ color: "#4096ff" }}>@userTester</span> Discover the
-            future of artificial intelligence!
+            GPT models are reshaping industries like healthcare, education, and
+            software development
           </div>
         </div>
       </div>
@@ -32,4 +32,4 @@ const NotificationDrawerItemComment = () => {
   );
 };
 
-export default NotificationDrawerItemComment;
+export default NotificationDrawerItemSave;

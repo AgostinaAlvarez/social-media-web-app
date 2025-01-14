@@ -1,6 +1,7 @@
 import { Avatar } from "antd";
 import React, { useEffect } from "react";
 import { GoDotFill } from "react-icons/go";
+import { HiHeart } from "react-icons/hi";
 
 const NotificationDrawerItemLikes = () => {
   return (
@@ -8,23 +9,37 @@ const NotificationDrawerItemLikes = () => {
       <div className="notification-drawer-item-container">
         <div className="notification-drawer-item-header notification-drawer-item-header-multiple-users">
           <Avatar.Group>
-            <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
+            <Avatar
+              size={25}
+              style={{ backgroundColor: "#f56a00", fontSize: 13 }}
+            >
               K
             </Avatar>
-            <Avatar size={30} style={{ backgroundColor: "#87d068" }}>
+            <Avatar
+              size={25}
+              style={{ backgroundColor: "#87d068", fontSize: 13 }}
+            >
               A
             </Avatar>
           </Avatar.Group>
           <div>
-            A @joshuaHoward, @natalieWard y @samanthaRivera les ha gustado tu
-            Post
+            <span className="info-name-lbl">joshuaHoward</span>,{" "}
+            <span className="info-name-lbl">natalieWard</span> and{" "}
+            <span className="info-name-lbl">samanthaRivera</span> liked your
+            post <span className="info-date-lbl">1 h.</span>
           </div>
-          <GoDotFill style={{ fontSize: 20 }} />
+          <GoDotFill style={{ fontSize: 20, color: "#4096ff" }} />
         </div>
         <div className="notification-content-container">
-          Discover the future of artificial intelligence! GPT models are
-          reshaping industries like healthcare, education, and software
-          development. What role do you see AI playing in the next decade?
+          <div className="notification-content-icon notification-content-icon-like">
+            <HiHeart />
+          </div>
+
+          <div>
+            Discover the future of artificial intelligence! GPT models are
+            reshaping industries like healthcare, education, and software
+            development. What role do you see AI playing in the next decade?
+          </div>
         </div>
       </div>
     </>

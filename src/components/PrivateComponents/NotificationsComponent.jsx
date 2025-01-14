@@ -8,41 +8,47 @@ import UserItem from "./User/UserItem";
 import NotificationDrawerItem from "./Notifications/NotificationDrawerItem";
 import NotificationDrawerItemLikes from "./Notifications/NotificationDrawerItemLikes";
 import NotificationDrawerItemComment from "./Notifications/NotificationDrawerItemComment";
+import NotificationDrawerItemReply from "./Notifications/NotificationDrawerItemReply";
+import NotificationDrawerItemFollow from "./Notifications/NotificationDrawerItemFollow";
+import NotificationDrawerItemSave from "./Notifications/NotificationDrawerItemSave";
+import NotificationDrawerItemFollowRequestAccepted from "./Notifications/NotificationDrawerItemFollowRequestAccepted";
+import NotificationDrawerItemLike from "./Notifications/NotificationDrawerItemLike";
 
 const NotificationsComponent = () => {
   const dispatch = useDispatch();
-  const [notifications, setNotifications] = useState([
-    {
-      type: "likes",
-      users: ["joshuaHoward", "natalieWard", "samanthaRivera"],
-      isOpen: false,
-    },
-    {
-      type: "likes",
-      users: ["joshuaHoward", "natalieWard", "samanthaRivera"],
-      isOpen: false,
-    },
-    {
-      type: "likes",
-      users: ["joshuaHoward", "natalieWard", "samanthaRivera"],
-      isOpen: false,
-    },
-  ]);
-
-  {
-    /*
-    Switch type of notification:
-    liked
-    commented
-    reply
-    
-    */
-  }
+  const [notifications, setNotifications] = useState([1]);
 
   return (
     <>
       <div className="notifications-component-container">
-        <div className="notifications-header-container"></div>
+        <div
+          className="notifications-header-container"
+          onClick={() => {
+            dispatch(setDrawerType("follow_request"));
+          }}
+        >
+          <div className="notifications-header-users-container">
+            <Avatar.Group>
+              <Avatar
+                size={30}
+                style={{ backgroundColor: "#f56a00", fontSize: 13 }}
+              >
+                K
+              </Avatar>
+              <Avatar
+                size={30}
+                style={{ backgroundColor: "#87d068", fontSize: 13 }}
+              >
+                A
+              </Avatar>
+            </Avatar.Group>
+            <div className="notifications-header-users-info">
+              <span className="info-name-lbl">Solicitudes de seguimiento</span>
+              <span>@username and 20 others</span>
+            </div>
+          </div>
+          <MdOutlineArrowForwardIos />
+        </div>
         <div className="notifications-component-results-container">
           {notifications.length === 0 ? (
             <>
@@ -53,8 +59,34 @@ const NotificationsComponent = () => {
             </>
           ) : (
             <>
-              <NotificationDrawerItemLikes />
+              {/*REAL*/}
+              <NotificationDrawerItemFollow
+                item={{ username: "ashleySimmons", followed: false }}
+              />
+              <NotificationDrawerItemFollow
+                item={{ username: "joshuaHoward", followed: true }}
+              />
+
+              <NotificationDrawerItemFollow
+                item={{ username: "natalieWard", followed: true }}
+              />
+              <NotificationDrawerItemFollowRequestAccepted
+                item={{ username: "oliverBennett" }}
+              />
+              {/*TEST*/}
               <NotificationDrawerItemComment />
+              <NotificationDrawerItemLike />
+              <NotificationDrawerItemSave />
+              <NotificationDrawerItemFollow
+                item={{ username: "someuser1", followed: true }}
+              />
+              <NotificationDrawerItemLikes />
+              <NotificationDrawerItemReply />
+
+              <NotificationDrawerItemLikes />
+              <NotificationDrawerItemFollow
+                item={{ username: "someuser", followed: true }}
+              />
             </>
           )}
         </div>

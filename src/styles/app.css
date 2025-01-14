@@ -282,7 +282,7 @@ Layout Private
   width: 100%;
   overflow-y: scroll;
   position: relative;
-  scrollbar-width: none; /* Firefox: Oculta el scrollbar */
+  scrollbar-width: none;
 }
 
 .feed-loader-container {
@@ -598,7 +598,24 @@ Layout Private
   display: flex;
   align-items: center;
   padding: 0px 20px;
-  background-color: pink;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.notifications-header-users-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.notifications-header-users-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .notifications-component-results-container {
@@ -608,6 +625,8 @@ Layout Private
   display: flex;
   flex-direction: column;
   gap: 10px;
+  scrollbar-width: none;
+  padding-bottom: 20px;
 }
 
 .notification-drawer-item-container {
@@ -638,12 +657,55 @@ Layout Private
   align-items: flex-start;
 }
 
+.notification-drawer-item-header-follow {
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+}
+
 .notification-content-container {
   width: 100%;
   box-sizing: border-box;
   padding: 15px;
   border-radius: 6px;
   border: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.notification-content-icon {
+  height: 30px;
+  width: 30px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.notification-content-icon-comment {
+  background-color: #1d9cf041;
+  color: #1d9bf0;
+}
+
+.notification-content-icon-like {
+  background-color: #f9198134;
+  color: #f91980;
+}
+
+.notification-content-icon-save {
+  background-color: #00ba7c37;
+  color: #00ba7c;
+}
+
+.notification-drawer-secondary-btn {
+  border: 1px solid var(--border-color);
+}
+
+.notification-drawer-secondary-btn:hover {
+  border: 1px solid var(--primary-color);
 }
 
 /*LAYOUT MESSAGES*/
