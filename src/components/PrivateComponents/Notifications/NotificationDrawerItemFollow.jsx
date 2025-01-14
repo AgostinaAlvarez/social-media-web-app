@@ -17,10 +17,10 @@ const NotificationDrawerItemFollow = ({ item }) => {
             K
           </Avatar>
           <div>
-            <span className="info-name-lbl">{item.username}</span> has started
-            following you <span className="info-date-lbl">1 h.</span>
+            <span className="info-name-lbl">{item.user.username}</span> has
+            started following you <span className="info-date-lbl">1 h.</span>
           </div>
-          {item.followed === false ? (
+          {item.follow === false ? (
             <AntdPrimaryBtnComponent
               label={"Follow"}
               style={{ border: "none", width: "75px", fontSize: 12 }}
@@ -40,7 +40,12 @@ const NotificationDrawerItemFollow = ({ item }) => {
               theme={theme}
             />
           )}
-          <GoDotFill style={{ fontSize: 20, color: "#4096ff" }} />
+          <GoDotFill
+            style={{
+              fontSize: 20,
+              color: `${item.opened ? "transparent" : "#4096ff"}`,
+            }}
+          />
         </div>
       </div>
     </>

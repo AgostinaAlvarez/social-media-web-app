@@ -15,10 +15,16 @@ const NotificationDrawerItemFollowRequestAccepted = ({ item }) => {
           </Avatar>
 
           <div>
-            <span className="info-name-lbl">{item.username}</span> has accepted
-            your follow request <span className="info-date-lbl">1 h.</span>
+            <span className="info-name-lbl">{item.user.username}</span> has
+            accepted your follow request{" "}
+            <span className="info-date-lbl">1 h.</span>
           </div>
-          <GoDotFill style={{ fontSize: 20, color: "#4096ff" }} />
+          <GoDotFill
+            style={{
+              fontSize: 20,
+              color: `${item.opened ? "transparent" : "#4096ff"}`,
+            }}
+          />
         </div>
       </div>
     </>

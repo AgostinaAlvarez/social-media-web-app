@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { GoDotFill } from "react-icons/go";
 import { HiHeart } from "react-icons/hi";
 
-const NotificationDrawerItemLike = () => {
+const NotificationDrawerItemLike = ({ item }) => {
   return (
     <>
       <div className="notification-drawer-item-container">
@@ -12,10 +12,15 @@ const NotificationDrawerItemLike = () => {
             K
           </Avatar>
           <div>
-            <span className="info-name-lbl">joshuaHoward</span> liked your post{" "}
-            <span className="info-date-lbl">1 h.</span>
+            <span className="info-name-lbl">{item.users[0]}</span> liked your
+            post <span className="info-date-lbl">1 h.</span>
           </div>
-          <GoDotFill style={{ fontSize: 20, color: "#4096ff" }} />
+          <GoDotFill
+            style={{
+              fontSize: 20,
+              color: `${item.opened ? "transparent" : "#4096ff"}`,
+            }}
+          />
         </div>
         <div className="notification-content-container">
           <div className="notification-content-icon notification-content-icon-like">
