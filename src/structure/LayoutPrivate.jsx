@@ -143,7 +143,7 @@ const LayoutPrivate = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge count={12}>
+              <Badge count={4}>
                 <Avatar
                   size={30}
                   shape="square"

@@ -23,6 +23,7 @@ import { comments_data_modal, replies_modal } from "../../../../tester_data";
 import AntdTextAreaComponent from "../../BasicComponents/AntdTextAreaComponent";
 import { useSelector } from "react-redux";
 import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
+import { postDateTranform } from "../../../data/utils/dates";
 
 const CommentsModal = ({
   isModalOpen,
@@ -465,7 +466,7 @@ const CommentsModal = ({
                               className="info-date-lbl"
                               style={{ fontSize: "11px" }}
                             >
-                              - Wednesday, Oct 16, 6:02 PM
+                              {postDateTranform(item.comment.createdAt)}
                             </span>
                           </div>
                           <p
@@ -611,7 +612,9 @@ const CommentsModal = ({
                                             className="info-date-lbl"
                                             style={{ fontSize: "11px" }}
                                           >
-                                            - Wednesday, Oct 16, 6:02 PM
+                                            {postDateTranform(
+                                              replie.reply.createdAt
+                                            )}
                                           </span>
                                         </div>
                                         <p

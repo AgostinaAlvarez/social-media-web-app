@@ -56,7 +56,7 @@ const LoginScreen = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="auth-fom">
               <div className="auth-form-field-container">
-                <span>Nombre de usuario</span>
+                <span>Username</span>
                 <Controller
                   name="username"
                   control={control}
@@ -73,7 +73,7 @@ const LoginScreen = () => {
                 )}
               </div>
               <div className="auth-form-field-container">
-                <span>Contrasena</span>
+                <span>Password</span>
                 <Controller
                   name="password"
                   control={control}
@@ -105,12 +105,12 @@ const LoginScreen = () => {
                 className="auth-signup-btn auth-signup-btn-cta"
                 style={{ marginTop: 15, borderStyle: "none" }}
               >
-                <span>Iniciar sesionn</span>
+                <span>Sign In</span>
               </button>
             </form>
 
             <span>
-              ¿No tienes una cuenta?{" "}
+              Don't have an account?{" "}
               <span
                 onClick={() => {
                   navigate("/signup");
@@ -120,7 +120,7 @@ const LoginScreen = () => {
                   cursor: "pointer",
                 }}
               >
-                Registrate
+                Sign Up
               </span>
             </span>
           </div>
