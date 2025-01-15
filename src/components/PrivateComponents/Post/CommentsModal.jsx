@@ -21,9 +21,10 @@ import {
 } from "../../../data/functions/postsFunctions";
 import { comments_data_modal, replies_modal } from "../../../../tester_data";
 import AntdTextAreaComponent from "../../BasicComponents/AntdTextAreaComponent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
 import { postDateTranform } from "../../../data/utils/dates";
+import { setFeedForYouPosts } from "../../../slice/feedSlice";
 
 const CommentsModal = ({
   isModalOpen,
@@ -36,6 +37,11 @@ const CommentsModal = ({
 
   const { theme } = useTheme();
   const userData = useSelector((state) => state.userSlice.userData);
+  const dispatch = useDispatch();
+
+  const feedForYouPosts = useSelector(
+    (state) => state.feedSlice.feedForYouPosts
+  );
 
   const [stats, setStats] = useState({
     totalComments: 6,
@@ -160,6 +166,7 @@ const CommentsModal = ({
 
   const HandleAddComment = () => {
     setLoadingAddNewComment(true);
+    const date = new Date();
     const newComment = {
       user: {
         name: userData.name,
@@ -169,6 +176,7 @@ const CommentsModal = ({
       },
       comment: {
         id: "a",
+        createdAt: date.toISOString(),
         content: query,
       },
       stats: {
@@ -178,6 +186,19 @@ const CommentsModal = ({
       replies: [],
     };
     const updateComments = [newComment, ...comments];
+    const updateFeedForYou = feedForYouPosts.map((item) => {
+      if (item.post.id === "abcdefg123456hijkl7890") {
+        return {
+          ...item,
+          stats: {
+            ...item.stats,
+            comments: item.stats.comments + 1,
+          },
+        };
+      }
+      return item;
+    });
+    dispatch(setFeedForYouPosts(updateFeedForYou));
     setQuery("");
     setTimeout(() => {
       setLoadingAddNewComment(false);
@@ -198,6 +219,8 @@ const CommentsModal = ({
       comment_id: commentId,
       loading: true,
     });
+    const date = new Date();
+
     const newReply = {
       user: {
         name: userData.name,
@@ -207,6 +230,7 @@ const CommentsModal = ({
       },
       reply: {
         id: "0",
+        createdAt: date.toISOString(),
         content: value,
       },
     };

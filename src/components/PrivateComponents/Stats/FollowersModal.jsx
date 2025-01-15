@@ -32,7 +32,7 @@ const FollowersModal = ({ isModalOpen, setIsModalOpen, users_tester }) => {
     setTimeout(() => {
       setLoadingMoreUsers(false);
       setUsers(upldateList);
-    }, 2000);
+    }, 1000);
   };
 
   return (
@@ -64,7 +64,13 @@ const FollowersModal = ({ isModalOpen, setIsModalOpen, users_tester }) => {
           {users.map((item) => (
             <div className="recomendation-acounts-card-acount-container">
               <div className="recomendation-acounts-card-acount-info">
-                <Avatar size={45} icon={<UserOutlined />} />
+                {item.avatar ? (
+                  <Avatar size={45} src={item.avatar} />
+                ) : (
+                  <Avatar size={45} style={{ backgroundColor: "#f56a00" }}>
+                    {item.name[0]}
+                  </Avatar>
+                )}
                 <div className="recomendation-acounts-card-acount-name-container">
                   <span className="recomendation-acounts-card-acount-username info-name-lbl">
                     {item.name} {item.lastname}

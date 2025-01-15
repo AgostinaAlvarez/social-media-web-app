@@ -17,6 +17,7 @@ import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnCom
 import FollowingModal from "../Stats/FollowingModal";
 import { followers_1, following_1 } from "../../../../tester_data";
 import FollowersModal from "../Stats/FollowersModal";
+import { IoIosLogOut } from "react-icons/io";
 
 const ProfileCard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -70,6 +71,15 @@ const ProfileCard = () => {
       key: "2",
       icon: theme === "dark" ? <SunOutlined /> : <MoonOutlined />,
       label: "Change appearance",
+      style: item_style,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "3",
+      icon: <IoIosLogOut />,
+      label: "Log Out",
       style: item_style,
     },
   ];
