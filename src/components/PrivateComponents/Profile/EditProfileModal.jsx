@@ -11,10 +11,34 @@ import EditInterestComponent from "./EditInterestComponent";
 import EditPasswordComponent from "./EditPasswordComponent";
 import { useSelector } from "react-redux";
 import { useImageCrop } from "../../../context/ImageCropContext";
+import { FormProvider, useForm } from "react-hook-form";
+import dayjs from "dayjs";
 
 const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   const { theme } = useTheme();
   const userData = useSelector((state) => state.userSlice.userData);
+
+  const transform_birthday_value = (birthday) => {
+    const birthdayValue = dayjs(birthday);
+    return birthdayValue;
+  };
+
+  const methods = useForm({
+    defaultValues: {
+      nombre: "eduardo",
+      email: "",
+      name: userData.name,
+      lastname: userData.lastname,
+      description: userData.description,
+      birthday: transform_birthday_value(userData.birthday),
+      username: userData.username,
+    },
+    mode: "onSubmit",
+  });
+
+  const onSubmit = (data) => {
+    console.log("Formulario enviado con los datos:", data);
+  };
 
   const {
     setCroppedImageFrontPage,
@@ -31,6 +55,10 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   const handleCancel = () => {
+    //oficial method for reducing code
+    methods.reset();
+    //
+
     resetData();
     setIsModalOpen(false); // Cierra el modal
   };
@@ -44,7 +72,7 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
     {
       icon: <LuUserRoundPen />,
       label: "Profile",
-      component: <EditProfileComponent handleClose={handleClose} />, // Clave única
+      component: <EditProfileComponent />, // Clave única
       selected: true,
       id: "1",
     },
@@ -97,8 +125,8 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
         theme={{
           components: {
             Modal: {
-              contentBg: theme === "dark" ? "#151515" : "#ffffff",
-              headerBg: theme === "dark" ? "#151515" : "#ffffff",
+              contentBg: theme === "dark" ? "#1b1b1b" : "#ffffff",
+              headerBg: theme === "dark" ? "#1b1b1b" : "#ffffff",
             },
           },
           token: {
@@ -138,9 +166,15 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
               ))}
             </div>
             {/*CONTENT*/}
-            <div className="edit-profile-screen-content">
-              {HandleRenderComponent()}
-            </div>
+
+            <FormProvider {...methods}>
+              <form
+                onSubmit={methods.handleSubmit(onSubmit)}
+                className="edit-profile-screen-content"
+              >
+                {HandleRenderComponent()}
+              </form>
+            </FormProvider>
           </div>
         </Modal>
       </ConfigProvider>

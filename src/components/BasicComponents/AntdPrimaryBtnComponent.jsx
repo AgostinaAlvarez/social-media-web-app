@@ -9,6 +9,7 @@ const AntdPrimaryBtnComponent = ({
   key,
   style,
   onClick,
+  htmlType,
 }) => {
   return (
     <ConfigProvider
@@ -31,6 +32,7 @@ const AntdPrimaryBtnComponent = ({
         type="primary"
         style={style}
         onClick={onClick}
+        htmlType={htmlType}
       >
         {label}
       </Button>

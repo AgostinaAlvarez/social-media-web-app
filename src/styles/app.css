@@ -1045,7 +1045,7 @@ Layout Private
 /*EDIT PROFILE SCREEN*/
 .edit-profile-screen {
   width: 100%;
-  height: 80vh;
+  height: 85vh;
   display: grid;
   grid-template-columns: auto 1fr;
   box-sizing: border-box;
@@ -1084,7 +1084,7 @@ Layout Private
 
 .edit-profile-screen-content {
   width: 100%;
-  height: 80vh;
+  height: 85vh;
   overflow-y: scroll;
   box-sizing: border-box;
   padding: 0px 20px;
@@ -1092,9 +1092,107 @@ Layout Private
 
 /*EDIT PROFILE ACOUNT COMPONENT*/
 
+.edit-profile-component-images-container {
+  height: 120px;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 60px;
+}
+
+.edit-profile-component-front-page {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  background-color: var(--front-page-bg);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: end;
+  gap: 5px;
+}
+
+.edit-profile-component-avatar-image-container {
+  height: 90px;
+  width: 90px;
+  position: absolute;
+  top: 75px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-profile-component-avatar-image-btns-container {
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-profile-component-avatar-image-icon {
+  height: 30px;
+  width: 30px;
+  background-color: rgba(0, 0, 0, 0.458);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.edit-profile-component-front-page-image-icon {
+  height: 30px;
+  width: 30px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.085);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.edit-profile-component-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.edit-profile-component-form-lbl {
+  font-weight: 500;
+}
+
+.settings-overlay {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--settings-overlay);
+}
+
+/***/
+
 .edit-profile-acount-component-header {
   width: 100%;
   /*
+
   background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
   */
   height: 120px;

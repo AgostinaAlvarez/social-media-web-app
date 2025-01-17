@@ -8,6 +8,7 @@ const AntdDatepickerComponent = ({
   theme_config,
   value,
   onChange,
+  disabled,
 }) => {
   const customCalendarIcon = (
     <CalendarOutlined style={{ color: theme === "dark" ? "white" : "black" }} />
@@ -28,6 +29,7 @@ const AntdDatepickerComponent = ({
       }}
     >
       <DatePicker
+        disabled={disabled}
         value={value}
         onChange={onChange}
         suffixIcon={customCalendarIcon}
