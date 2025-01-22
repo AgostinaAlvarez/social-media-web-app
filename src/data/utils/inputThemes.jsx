@@ -9,5 +9,5 @@ export const form_theme_config = {
   colorTextPlaceholderLight: "rgb(99, 99, 99)",
   colorTextPlaceholderDark: "rgb(189, 189, 189)",
   colorBgLight: "#ffffff",
-  colorBgDark: "#151515",
+  colorBgDark: "#1b1b1b",
 };

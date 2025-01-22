@@ -73,7 +73,7 @@ const EditPasswordComponent = () => {
         <div className="edit-security-component-box">
           <span>Profile Visibility</span>
           <div className="edit-security-component-box-switch-container">
-            <span>Public Acount</span>
+            <span>Private Acount</span>
             <Switch defaultChecked />
           </div>
           <p className="edit-security-component-box-p-info">

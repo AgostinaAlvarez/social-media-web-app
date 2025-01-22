@@ -3,7 +3,7 @@ import ProfileCard from "../../../components/PrivateComponents/Home/ProfileCard"
 import { HiHeart } from "react-icons/hi";
 import { LuArrowUpDown } from "react-icons/lu";
 import { IoIosArrowDown } from "react-icons/io";
-import { Avatar } from "antd";
+import { Avatar, Image } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ProfileStatsCard from "../../../components/PrivateComponents/Profile/ProfileStatsCard";
 import { HiBookmark } from "react-icons/hi";
@@ -15,6 +15,7 @@ import {
   FaRegHeart,
 } from "react-icons/fa";
 import { saved_posts } from "../../../../tester_data";
+import { postDateTranform } from "../../../data/utils/dates";
 
 const MySavedScreen = () => {
   const saves = saved_posts;
@@ -29,7 +30,7 @@ const MySavedScreen = () => {
                 className="stats-screen-header-value-lbl"
                 style={{ color: "#00ba7c", backgroundColor: "#00ba7c37" }}
               >
-                32
+                49
               </span>
             </div>
             <div className="stats-screen-header-box stats-screen-header-filter-container">
@@ -48,7 +49,7 @@ const MySavedScreen = () => {
                 <div className="stats-screen-like-col-right">
                   <div className="stats-screen-like-header">
                     <span className="info-date-lbl ">
-                      saved on Wednesday, Oct 16, 6:02 PM
+                      saved on {postDateTranform(item.save.createdAt)}
                     </span>
                   </div>
 
@@ -62,12 +63,13 @@ const MySavedScreen = () => {
                     ) : (
                       <Avatar
                         className="stats-screen-comment-box-avatar"
-                        icon={<UserOutlined />}
                         size={40}
                         style={{
-                          backgroundColor: "#87d068",
+                          backgroundColor: "#A294F9",
                         }}
-                      />
+                      >
+                        {item.user.name[0]}
+                      </Avatar>
                     )}
                     <div
                       style={{ display: "flex", alignItems: "center", gap: 3 }}
@@ -82,17 +84,29 @@ const MySavedScreen = () => {
                         className="info-username-lbl"
                         style={{ marginLeft: 10 }}
                       >
-                        3 d.
+                        {postDateTranform(item.post.createdAt)}
                       </span>
                     </div>
 
                     <p style={{ margin: "0" }}>{item.post.content}</p>
+
+                    {item.post.url && (
+                      <div
+                        style={{
+                          width: "100%",
+                          borderRadius: "15px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <Image width={"100%"} src={item.post.url} />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
-            <div>
-              <span>View {32 - saves.length} more</span>
+            <div className="comment-footer-container">
+              <span>View {49 - saves.length} more</span>
             </div>
           </div>
         </div>

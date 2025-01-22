@@ -20,26 +20,36 @@ const NotificationsComponent = () => {
       opened: false,
       user: {
         username: "ashleySimmons",
+        avatar:
+          "https://pbs.twimg.com/profile_images/1527031974061256704/B9nbakqc_400x400.jpg",
       },
       follow: false,
     },
     {
       type: "like",
       opened: false,
-      users: ["loganChapman", "jackson.jenkins", "connor_warren"],
+      users: ["natalieWard", "andrewCook", "connor_warren"],
+      avatars: [
+        "https://pbs.twimg.com/profile_images/1589471094276296704/ScD4jIkE_400x400.jpg",
+        "https://pbs.twimg.com/profile_images/1530649060943794178/6QE0SnyC_400x400.jpg",
+      ],
     },
     {
       type: "comment",
       opened: false,
       user: {
         username: "nathanBryant",
+        avatar:
+          "https://pbs.twimg.com/profile_images/1790831627402158080/hVFqbFwG_400x400.jpg",
       },
     },
     {
       type: "save",
       opened: false,
       user: {
-        username: "jamesHughes",
+        username: "ariaAlexander",
+        avatar:
+          "https://pbs.twimg.com/profile_images/619430896328818690/kU-tALRM_400x400.jpg",
       },
     },
     {
@@ -47,6 +57,8 @@ const NotificationsComponent = () => {
       opened: true,
       user: {
         username: "oliverBennett",
+        avatar:
+          "https://pbs.twimg.com/profile_images/1601416285702586368/V08c7STc_400x400.jpg",
       },
     },
     {

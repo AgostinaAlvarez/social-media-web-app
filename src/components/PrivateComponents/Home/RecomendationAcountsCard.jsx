@@ -39,7 +39,9 @@ const RecomendationAcountsCard = ({ users }) => {
                     {item.avatar ? (
                       <Avatar src={item.avatar} size={40} />
                     ) : (
-                      <Avatar icon={<UserOutlined />} size={40} />
+                      <Avatar size={40} style={{ backgroundColor: "#4635B1" }}>
+                        {item.name[0]}
+                      </Avatar>
                     )}
                     <div className="recomendation-acounts-card-acount-name-container">
                       <span className="recomendation-acounts-card-acount-username info-name-lbl">

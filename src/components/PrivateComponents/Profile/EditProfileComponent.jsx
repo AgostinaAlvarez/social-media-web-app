@@ -24,11 +24,10 @@ import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnCompone
 import { ISOStringToHierarchicalDate } from "../../../data/utils/dates";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 
-const EditProfileComponent = () => {
+const EditProfileComponent = ({ loading, setLoading }) => {
   const { theme } = useTheme();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userSlice.userData);
-  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors },
@@ -44,9 +43,9 @@ const EditProfileComponent = () => {
     useState(false);
 
   useEffect(() => {
+    clearErrors("username");
     setSearchingUsernameAviability(true);
     if (username === userData.username) {
-      clearErrors("username");
       return;
     }
 
@@ -71,7 +70,7 @@ const EditProfileComponent = () => {
           if (!response.available) {
             setError("username", {
               type: "manual",
-              message: "El nombre de usuario no está disponible",
+              message: "Username is not available",
             });
             setSearchingUsernameAviability(false);
           }
@@ -270,239 +269,231 @@ const EditProfileComponent = () => {
 
   return (
     <>
-      <div style={{ position: "relative" }}>
-        {loading && (
-          <div className="settings-overlay">
-            <Spin indicator={<LoadingOutlined spin />} />
-          </div>
-        )}
-        <div className="edit-profile-component-images-container">
-          <div
-            className="edit-profile-component-front-page"
-            style={
-              croppedImageFrontPage === "" || croppedImageFrontPage === null
-                ? {}
-                : {
-                    backgroundImage: `url(${croppedImageFrontPage})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }
-            }
-          >
-            {croppedImageFrontPage === "" || croppedImageFrontPage === null ? (
+      <div className="edit-profile-component-images-container">
+        <div
+          className="edit-profile-component-front-page"
+          style={
+            croppedImageFrontPage === "" || croppedImageFrontPage === null
+              ? {}
+              : {
+                  backgroundImage: `url(${croppedImageFrontPage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }
+          }
+        >
+          {croppedImageFrontPage === "" || croppedImageFrontPage === null ? (
+            <UploadImageComponent
+              setCroppedImage={setCroppedImageFrontPage}
+              setCroppedBlob={setCroppedBlobFrontPage}
+              aspectRatio={25 / 9}
+            >
+              <div className="edit-profile-component-front-page-image-icon">
+                <LuImagePlus />
+              </div>
+            </UploadImageComponent>
+          ) : (
+            <>
+              <div
+                className="edit-profile-component-front-page-image-icon"
+                onClick={() => {
+                  setCroppedImageFrontPage(null);
+                  setCroppedBlobFrontPage(null);
+                }}
+              >
+                <BiTrash />
+              </div>
               <UploadImageComponent
                 setCroppedImage={setCroppedImageFrontPage}
                 setCroppedBlob={setCroppedBlobFrontPage}
                 aspectRatio={25 / 9}
               >
                 <div className="edit-profile-component-front-page-image-icon">
+                  <MdModeEdit />
+                </div>
+              </UploadImageComponent>
+            </>
+          )}
+        </div>
+        {/*Avatar container*/}
+        <div className="edit-profile-component-avatar-image-container">
+          <div className="edit-profile-component-avatar-image-btns-container">
+            {croppedImageAvatar === "" || croppedImageAvatar === null ? (
+              <UploadImageComponent
+                setCroppedImage={setCroppedImageAvatar}
+                setCroppedBlob={setCroppedBlobAvatar}
+                aspectRatio={1 / 1}
+              >
+                <div className="edit-profile-component-avatar-image-icon">
                   <LuImagePlus />
                 </div>
               </UploadImageComponent>
             ) : (
               <>
                 <div
-                  className="edit-profile-component-front-page-image-icon"
+                  className="edit-profile-component-avatar-image-icon"
                   onClick={() => {
-                    setCroppedImageFrontPage(null);
-                    setCroppedBlobFrontPage(null);
+                    setCroppedImageAvatar(null);
+                    setCroppedBlobAvatar(null);
                   }}
                 >
                   <BiTrash />
                 </div>
-                <UploadImageComponent
-                  setCroppedImage={setCroppedImageFrontPage}
-                  setCroppedBlob={setCroppedBlobFrontPage}
-                  aspectRatio={25 / 9}
-                >
-                  <div className="edit-profile-component-front-page-image-icon">
-                    <MdModeEdit />
-                  </div>
-                </UploadImageComponent>
-              </>
-            )}
-          </div>
-          {/*Avatar container*/}
-          <div className="edit-profile-component-avatar-image-container">
-            <div className="edit-profile-component-avatar-image-btns-container">
-              {croppedImageAvatar === "" || croppedImageAvatar === null ? (
                 <UploadImageComponent
                   setCroppedImage={setCroppedImageAvatar}
                   setCroppedBlob={setCroppedBlobAvatar}
                   aspectRatio={1 / 1}
                 >
                   <div className="edit-profile-component-avatar-image-icon">
-                    <LuImagePlus />
+                    <MdModeEdit />
                   </div>
                 </UploadImageComponent>
-              ) : (
-                <>
-                  <div
-                    className="edit-profile-component-avatar-image-icon"
-                    onClick={() => {
-                      setCroppedImageAvatar(null);
-                      setCroppedBlobAvatar(null);
-                    }}
-                  >
-                    <BiTrash />
-                  </div>
-                  <UploadImageComponent
-                    setCroppedImage={setCroppedImageAvatar}
-                    setCroppedBlob={setCroppedBlobAvatar}
-                    aspectRatio={1 / 1}
-                  >
-                    <div className="edit-profile-component-avatar-image-icon">
-                      <MdModeEdit />
-                    </div>
-                  </UploadImageComponent>
-                </>
-              )}
-            </div>
-            {croppedImageAvatar === "" || croppedImageAvatar === null ? (
-              <Avatar
-                size={90}
-                style={{ backgroundColor: "#4635B1", fontSize: 50 }}
-              >
-                A
-              </Avatar>
-            ) : (
-              <Avatar size={90} src={croppedImageAvatar} />
+              </>
             )}
           </div>
+          {croppedImageAvatar === "" || croppedImageAvatar === null ? (
+            <Avatar
+              size={90}
+              style={{ backgroundColor: "#4635B1", fontSize: 50 }}
+            >
+              T
+            </Avatar>
+          ) : (
+            <Avatar size={90} src={croppedImageAvatar} />
+          )}
         </div>
-        <div className="edit-profile-acount-component-form">
-          <div className="edit-profile-acount-component-form-grid">
-            <div className="edit-profile-component-form-field">
-              <span className="edit-profile-component-form-lbl">Name</span>
-              <Controller
-                name="name"
-                control={control}
-                rules={{ required: "El name es obligatorio" }}
-                render={({ field }) => (
-                  <AntdInputComponent
-                    {...field}
-                    theme_config={form_theme_config}
-                    theme={theme}
-                    style={form_configs_input_style}
-                  />
-                )}
-              />
-              {errors.name && (
-                <span style={{ color: "red" }}>{errors.name.message}</span>
-              )}
-            </div>
-            <div className="edit-profile-component-form-field">
-              <span className="edit-profile-component-form-lbl">LastName</span>
-              <Controller
-                name="lastname"
-                control={control}
-                rules={{ required: "El lastname es obligatorio" }}
-                render={({ field }) => (
-                  <AntdInputComponent
-                    {...field}
-                    theme_config={form_theme_config}
-                    theme={theme}
-                    style={form_configs_input_style}
-                  />
-                )}
-              />
-              {errors.lastname && (
-                <span style={{ color: "red" }}>{errors.lastname.message}</span>
-              )}
-            </div>
-          </div>
+      </div>
+      <div className="edit-profile-acount-component-form">
+        <div className="edit-profile-acount-component-form-grid">
           <div className="edit-profile-component-form-field">
-            <span className="edit-profile-component-form-lbl">Birthday</span>
+            <span className="edit-profile-component-form-lbl">Name</span>
             <Controller
-              name="birthday"
+              name="name"
               control={control}
-              rules={{ required: "La birthday es obligatoria" }}
-              render={({ field }) => (
-                <AntdDatepickerComponent
-                  {...field}
-                  style={form_configs_input_style}
-                  theme={theme}
-                  theme_config={form_theme_config}
-                  onChange={(date) => field.onChange(date)} // Ajuste para manejar la fecha seleccionada
-                />
-              )}
-            />
-            {errors.birthday && (
-              <p style={{ color: "red" }}>{errors.birthday.message}</p>
-            )}
-          </div>
-          {/*USERNAME*/}
-          <div className="edit-profile-component-form-field">
-            <span className="edit-profile-component-form-lbl">Username</span>
-            <Controller
-              name="username"
-              control={control}
-              rules={{ required: "El nombre de usuario es obligatorio" }}
+              rules={{ required: "Name is required" }}
               render={({ field }) => (
                 <AntdInputComponent
                   {...field}
-                  style={form_configs_input_style}
-                  theme={theme}
-                  disabled={!HandleUsernameAviableChange(nexModificationDate)}
                   theme_config={form_theme_config}
-                  prefix={<LuAtSign />}
-                  sufix={
-                    <>
-                      {username === userData.username ||
-                      searchingUsernameAviability === true ? null : (
-                        <>
-                          {errors.username ? (
-                            <ErrorRoundedIcon style={{ color: "red" }} />
-                          ) : (
-                            <CheckCircleRoundedIcon
-                              style={{ color: "green" }}
-                            />
-                          )}
-                        </>
-                      )}
-                    </>
-                  }
+                  theme={theme}
+                  style={form_configs_input_style}
                 />
               )}
             />
-            {errors.username && (
-              <span style={{ color: "red" }}>{errors.username.message}</span>
-            )}
-
-            {nexModificationDate ? (
-              <span className="edit-profile-acount-component-form-lbl">
-                Aviable change in{" "}
-                {ISOStringToHierarchicalDate(nexModificationDate)}
-              </span>
-            ) : (
-              <></>
+            {errors.name && (
+              <span className="error-label">{errors.name.message}</span>
             )}
           </div>
-          {/*DESCRIPTION*/}
           <div className="edit-profile-component-form-field">
-            <span className="edit-profile-component-form-lbl">About me</span>
+            <span className="edit-profile-component-form-lbl">LastName</span>
             <Controller
-              name="description"
+              name="lastname"
               control={control}
+              rules={{ required: "Lastname is required" }}
               render={({ field }) => (
-                <AntdTextAreaComponent
+                <AntdInputComponent
                   {...field}
-                  style={form_configs_input_style}
-                  theme={theme}
                   theme_config={form_theme_config}
+                  theme={theme}
+                  style={form_configs_input_style}
                 />
               )}
             />
+            {errors.lastname && (
+              <span className="error-label">{errors.lastname.message}</span>
+            )}
           </div>
+        </div>
+        <div className="edit-profile-component-form-field">
+          <span className="edit-profile-component-form-lbl">Birthday</span>
+          <Controller
+            name="birthday"
+            control={control}
+            rules={{ required: "Birthday is required" }}
+            render={({ field }) => (
+              <AntdDatepickerComponent
+                {...field}
+                style={form_configs_input_style}
+                theme={theme}
+                theme_config={form_theme_config}
+                onChange={(date) => field.onChange(date)} // Ajuste para manejar la fecha seleccionada
+              />
+            )}
+          />
+          {errors.birthday && (
+            <span className="error-label">{errors.birthday.message}</span>
+          )}
+        </div>
+        {/*USERNAME*/}
+        <div className="edit-profile-component-form-field">
+          <span className="edit-profile-component-form-lbl">Username</span>
+          <Controller
+            name="username"
+            control={control}
+            rules={{ required: "Username is required" }}
+            render={({ field }) => (
+              <AntdInputComponent
+                {...field}
+                style={form_configs_input_style}
+                theme={theme}
+                disabled={!HandleUsernameAviableChange(nexModificationDate)}
+                theme_config={form_theme_config}
+                prefix={<LuAtSign />}
+                sufix={
+                  <>
+                    {username === userData.username ||
+                    searchingUsernameAviability === true ||
+                    nexModificationDate !== null ? null : (
+                      <>
+                        {errors.username ? (
+                          <ErrorRoundedIcon style={{ color: "red" }} />
+                        ) : (
+                          <CheckCircleRoundedIcon style={{ color: "green" }} />
+                        )}
+                      </>
+                    )}
+                  </>
+                }
+              />
+            )}
+          />
+          {errors.username && (
+            <span className="error-label">{errors.username.message}</span>
+          )}
 
-          <div className="edit-profile-acount-component-form-btn-container">
-            <AntdPrimaryBtnComponent
-              label={"Save Changes"}
-              theme={theme}
-              loading={loading}
-              htmlType="submit"
-            />
-          </div>
+          {nexModificationDate ? (
+            <span className="edit-profile-acount-component-form-lbl">
+              Aviable change in{" "}
+              {ISOStringToHierarchicalDate(nexModificationDate)}
+            </span>
+          ) : (
+            <></>
+          )}
+        </div>
+        {/*DESCRIPTION*/}
+        <div className="edit-profile-component-form-field">
+          <span className="edit-profile-component-form-lbl">About me</span>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <AntdTextAreaComponent
+                {...field}
+                style={form_configs_input_style}
+                theme={theme}
+                theme_config={form_theme_config}
+              />
+            )}
+          />
+        </div>
+
+        <div className="edit-profile-acount-component-form-btn-container">
+          <AntdPrimaryBtnComponent
+            label={"Save Changes"}
+            theme={theme}
+            loading={loading}
+            htmlType="submit"
+          />
         </div>
       </div>
     </>

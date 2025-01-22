@@ -8,9 +8,13 @@ const NotificationDrawerItemSave = ({ item }) => {
     <>
       <div className="notification-drawer-item-container">
         <div className="notification-drawer-item-header">
-          <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
-            K
-          </Avatar>
+          {item.user.avatar ? (
+            <Avatar size={30} src={item.user.avatar} />
+          ) : (
+            <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
+              K
+            </Avatar>
+          )}
 
           <div>
             <span className="info-name-lbl">{item.user.username}</span> saved

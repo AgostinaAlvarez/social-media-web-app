@@ -3,6 +3,7 @@ import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
 import { useTheme } from "../../../context/ThemeContext";
+import { MdCancel } from "react-icons/md";
 
 const EditInterestComponent = () => {
   const { theme } = useTheme();
@@ -20,16 +21,28 @@ const EditInterestComponent = () => {
         </p>
         <div className="edit-profile-interest-list-container">
           <div className="edit-profile-interest-item">
-            <span>Un item</span>
+            <span>Technology</span>
+            <MdCancel />
           </div>
           <div className="edit-profile-interest-item">
-            <span>Another item large</span>
+            <span>Science</span>
+            <MdCancel />
           </div>
           <div className="edit-profile-interest-item">
-            <span>Item medium</span>
+            <span>Literature</span>
+            <MdCancel />
           </div>
           <div className="edit-profile-interest-item">
-            <span>Another item large</span>
+            <span>AI and Machine Learning</span>
+            <MdCancel />
+          </div>
+          <div className="edit-profile-interest-item">
+            <span>Philosophy</span>
+            <MdCancel />
+          </div>
+          <div className="edit-profile-interest-item">
+            <span>Politics</span>
+            <MdCancel />
           </div>
         </div>
         <div className="edit-profile-interest-btn-container">

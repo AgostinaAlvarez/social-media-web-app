@@ -27,7 +27,7 @@ const ProfileStatsCard = () => {
         className="profile-stats-card-item-container profile-stats-card-item-container-hover"
       >
         <ChatBubbleOutlineIcon />
-        <span>Coments {`(20)`}</span>
+        <span>Coments {`(36)`}</span>
       </div>
       <div
         className="profile-stats-card-item-container profile-stats-card-item-container-hover"
@@ -36,7 +36,7 @@ const ProfileStatsCard = () => {
         }}
       >
         <BookmarkBorderIcon />
-        <span>Saved {`(20)`}</span>
+        <span>Saved {`(49)`}</span>
       </div>
     </div>
   );

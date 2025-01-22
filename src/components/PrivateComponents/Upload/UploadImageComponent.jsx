@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import { Modal, Upload } from "antd";
+import AntdPrimaryBtnComponent from "../../BasicComponents/AntdPrimaryBtnComponent";
+import { useTheme } from "../../../context/ThemeContext";
+import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
 
 const UploadImageComponent = ({
   children,
@@ -8,6 +11,8 @@ const UploadImageComponent = ({
   setCroppedBlob,
   aspectRatio,
 }) => {
+  const { theme } = useTheme();
+
   const [imageUrl, setImageUrl] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -112,7 +117,30 @@ const UploadImageComponent = ({
         open={isModalOpen}
         onCancel={HandleCancelModal}
         onOk={handleCrop}
-        okText="Recortar"
+        //okText="Recortar"
+
+        footer={
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              boxSizing: "border-box",
+              gap: 10,
+            }}
+          >
+            <AntdSecondaryBtnComponent
+              label={"Cancel"}
+              theme={theme}
+              onClick={HandleCancelModal}
+            />
+            <AntdPrimaryBtnComponent
+              label={"Cut"}
+              theme={theme}
+              onClick={handleCrop}
+            />
+          </div>
+        }
       >
         {imageUrl && (
           <div style={{ position: "relative", width: "100%", height: 400 }}>

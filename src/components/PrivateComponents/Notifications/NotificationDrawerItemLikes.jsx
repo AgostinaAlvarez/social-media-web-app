@@ -9,18 +9,9 @@ const NotificationDrawerItemLikes = ({ item }) => {
       <div className="notification-drawer-item-container">
         <div className="notification-drawer-item-header notification-drawer-item-header-multiple-users">
           <Avatar.Group>
-            <Avatar
-              size={25}
-              style={{ backgroundColor: "#f56a00", fontSize: 13 }}
-            >
-              K
-            </Avatar>
-            <Avatar
-              size={25}
-              style={{ backgroundColor: "#87d068", fontSize: 13 }}
-            >
-              A
-            </Avatar>
+            <Avatar size={26} src={item.avatars[0]} />
+
+            <Avatar size={26} src={item.avatars[1]} />
           </Avatar.Group>
           <div>
             <span className="info-name-lbl">{item.users[0]}</span>,{" "}

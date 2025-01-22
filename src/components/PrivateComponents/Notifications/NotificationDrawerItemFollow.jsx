@@ -13,9 +13,14 @@ const NotificationDrawerItemFollow = ({ item }) => {
     <>
       <div className="notification-drawer-item-container">
         <div className="notification-drawer-item-header notification-drawer-item-header-follow">
-          <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
-            K
-          </Avatar>
+          {item.user.avatar ? (
+            <Avatar size={30} src={item.user.avatar} />
+          ) : (
+            <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
+              {item.user.username[0]}
+            </Avatar>
+          )}
+
           <div>
             <span className="info-name-lbl">{item.user.username}</span> has
             started following you <span className="info-date-lbl">1 h.</span>

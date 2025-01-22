@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTheme } from "../../../context/ThemeContext";
-import { ConfigProvider, Modal } from "antd";
+import { ConfigProvider, Modal, Spin } from "antd";
 import { FiSettings } from "react-icons/fi";
 import { LuUserRoundPen } from "react-icons/lu";
 import { LuLockKeyholeOpen } from "react-icons/lu";
@@ -9,14 +9,34 @@ import EditProfileComponent from "./EditProfileComponent";
 import EditAcountComponent from "./EditAcountComponent";
 import EditInterestComponent from "./EditInterestComponent";
 import EditPasswordComponent from "./EditPasswordComponent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImageCrop } from "../../../context/ImageCropContext";
 import { FormProvider, useForm } from "react-hook-form";
 import dayjs from "dayjs";
+import {
+  HandleEditProfileSettings,
+  HandleSubmitByScreenSettings,
+} from "../../../data/functions/profileFunctions";
+import { LoadingOutlined } from "@ant-design/icons";
+import { setUserData } from "../../../slice/userSlice";
+import { setUsernameNextModificationDate } from "../../../slice/acountSettingsSlice";
+import { message } from "antd";
 
 const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
   const { theme } = useTheme();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const token = useSelector((state) => state.authSlice.token);
   const userData = useSelector((state) => state.userSlice.userData);
+  const {
+    setCroppedBlobFrontPage,
+    setCroppedBlobAvatar,
+
+    croppedImageFrontPage,
+    croppedBlobFrontPage,
+    croppedImageAvatar,
+    croppedBlobAvatar,
+  } = useImageCrop();
 
   const transform_birthday_value = (birthday) => {
     const birthdayValue = dayjs(birthday);
@@ -25,27 +45,51 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
 
   const methods = useForm({
     defaultValues: {
-      nombre: "eduardo",
-      email: "",
       name: userData.name,
       lastname: userData.lastname,
       description: userData.description,
       birthday: transform_birthday_value(userData.birthday),
       username: userData.username,
+      avatar_img: userData.avatar_img,
+      front_page_img: userData.front_page_img,
     },
     mode: "onSubmit",
   });
 
-  const onSubmit = (data) => {
-    console.log("Formulario enviado con los datos:", data);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const find_selected_option = asideOptions.find(
+      (item) => item.selected === true
+    );
+    const screen = find_selected_option.label;
+    if (screen === "Profile") {
+      const { response, error } = await HandleEditProfileSettings(
+        data,
+        userData.username,
+        croppedImageFrontPage,
+        croppedBlobFrontPage,
+        croppedImageAvatar,
+        croppedBlobAvatar,
+        token
+      );
+      if (response) {
+        const nextModificationDateModify = response.nextModificationDateModify;
+        if (nextModificationDateModify === true) {
+          dispatch(
+            setUsernameNextModificationDate(response.nextModificationDate)
+          );
+        }
+        dispatch(setUserData(response.user));
+        setTimeout(() => {
+          setLoading(false);
+          message.success("Profile updated");
+        }, 2000);
+      } else {
+        console.log("error");
+        console.log(error);
+      }
+    }
   };
-
-  const {
-    setCroppedImageFrontPage,
-    setCroppedBlobFrontPage,
-    setCroppedImageAvatar,
-    setCroppedBlobAvatar,
-  } = useImageCrop();
 
   const resetData = () => {
     //setCroppedImageFrontPage(userData.front_page_img);
@@ -72,7 +116,9 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
     {
       icon: <LuUserRoundPen />,
       label: "Profile",
-      component: <EditProfileComponent />, // Clave única
+      component: (
+        <EditProfileComponent loading={loading} setLoading={setLoading} />
+      ), // Clave única
       selected: true,
       id: "1",
     },
@@ -169,10 +215,16 @@ const EditProfileModal = ({ isModalOpen, setIsModalOpen }) => {
 
             <FormProvider {...methods}>
               <form
+                style={{ position: "relative" }}
                 onSubmit={methods.handleSubmit(onSubmit)}
                 className="edit-profile-screen-content"
               >
                 {HandleRenderComponent()}
+                {loading && (
+                  <div className="settings-overlay">
+                    <Spin indicator={<LoadingOutlined spin />} />
+                  </div>
+                )}
               </form>
             </FormProvider>
           </div>

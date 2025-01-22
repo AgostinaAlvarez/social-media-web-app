@@ -13,6 +13,7 @@ import {
   FaRegHeart,
 } from "react-icons/fa";
 import { liked_posts } from "../../../../tester_data";
+import { postDateTranform } from "../../../data/utils/dates";
 
 const MyLikesScreen = () => {
   const likes = liked_posts;
@@ -46,7 +47,7 @@ const MyLikesScreen = () => {
                 <div className="stats-screen-like-col-right">
                   <div className="stats-screen-like-header">
                     <span className="info-date-lbl ">
-                      liked on Wednesday, Oct 16, 6:02 PM
+                      liked on {postDateTranform(item.like.createdAt)}
                     </span>
                   </div>
 
@@ -60,12 +61,13 @@ const MyLikesScreen = () => {
                     ) : (
                       <Avatar
                         className="stats-screen-comment-box-avatar"
-                        icon={<UserOutlined />}
                         size={40}
                         style={{
-                          backgroundColor: "#87d068",
+                          backgroundColor: "#A294F9",
                         }}
-                      />
+                      >
+                        {item.user.name[0]}
+                      </Avatar>
                     )}
                     <div
                       style={{ display: "flex", alignItems: "center", gap: 3 }}
@@ -80,7 +82,7 @@ const MyLikesScreen = () => {
                         className="info-username-lbl"
                         style={{ marginLeft: 10 }}
                       >
-                        3 d.
+                        {postDateTranform(item.post.createdAt)}
                       </span>
                     </div>
 
@@ -100,7 +102,7 @@ const MyLikesScreen = () => {
                 </div>
               </div>
             ))}
-            <div>
+            <div className="comment-footer-container">
               <span>View {123 - likes.length} more</span>
             </div>
           </div>

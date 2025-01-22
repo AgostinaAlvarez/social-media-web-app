@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import RecomendationAcountsCard from "../../components/PrivateComponents/Home/RecomendationAcountsCard";
 import { Avatar, Button, Image, Spin } from "antd";
 import ProfileStatsCard from "../../components/PrivateComponents/Profile/ProfileStatsCard";
@@ -17,19 +17,35 @@ import {
 } from "../../../tester_data";
 import FollowingModal from "../../components/PrivateComponents/Stats/FollowingModal";
 import FollowersModal from "../../components/PrivateComponents/Stats/FollowersModal";
+import { PostFeedCard } from "../../components/PrivateComponents/Post/PostCard";
+import { useImageCrop } from "../../context/ImageCropContext";
+import { initializeProfileState } from "../../slice/editProfileSlice";
 
 const ProfileScreen = () => {
   const userData = useSelector((state) => state.userSlice.userData);
   const posts = useSelector((state) => state.postsSlice.posts);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     //console.log("posts");
     //console.log(posts);
   }, []);
 
+  const { setCroppedImageFrontPage, setCroppedImageAvatar } = useImageCrop();
+  const setValues = () => {
+    setCroppedImageFrontPage(userData.front_page_img);
+    setCroppedImageAvatar(userData.avatar_img);
+  };
+
   //EDIT PROFILE MODAL
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const showEditProfileModal = () => {
+    dispatch(initializeProfileState(userData));
+    setValues();
     setIsEditProfileModalOpen(true);
+
+    /*
+     */
   };
   const handleOkEditProfile = () => {
     setIsEditProfileModalOpen(false);
@@ -55,6 +71,69 @@ const ProfileScreen = () => {
   const showFollowersModal = () => {
     setIsFollowersModalOpen(true);
   };
+
+  const data_posts = [
+    {
+      post: {
+        id: "6772c6c075bc0944b24f2245",
+        content:
+          "Finally got my hands on a mechanical keyboard, and wow, typing feels like a whole new experience. Anyone else obsessed with these?",
+        createdAt: "2024-12-28T22:05:30.511000",
+      },
+      stats: {
+        likes: 59,
+        comments: 12,
+        saves: 24,
+      },
+      actions: {
+        liked: false,
+        saved: false,
+      },
+    },
+    {
+      post: {
+        id: "6772c6c075bc0944b24f2246",
+        content:
+          "Spent the afternoon debugging a single line of code, only to realize I forgot a semicolon. Programmers, you feel me?",
+        createdAt: "2024-12-27T19:19:21.511000",
+      },
+      stats: {
+        likes: 57,
+        comments: 39,
+        saves: 40,
+      },
+      actions: {
+        liked: false,
+        saved: false,
+      },
+    },
+    {
+      post: {
+        id: "6772c6c075bc0944b24f2246",
+        content:
+          "Imagine if someone made a movie about programmers but showed the actual work—just endless coffee, Stack Overflow, and staring at screens.",
+        createdAt: "2024-10-16T18:02:30.511000",
+      },
+      stats: {
+        likes: 57,
+        comments: 39,
+        saves: 40,
+      },
+      actions: {
+        liked: false,
+        saved: false,
+      },
+    },
+  ];
+
+  const transform_data_posts = data_posts.map((item) => {
+    return {
+      ...item,
+      user: { ...userData, avatar: userData.avatar_img },
+    };
+  });
+
+  const [testerPosts, setTesterPosts] = useState(transform_data_posts);
 
   return (
     <>
@@ -98,11 +177,9 @@ const ProfileScreen = () => {
                 <span className="user-screen-info-box-name">
                   {userData.name} {userData.lastname}
                 </span>
-                <span className="user-screen-info-box-username">
-                  @{userData.username}
-                </span>
+                <span className="info-username-lbl">@{userData.username}</span>
                 <p className="user-screen-info-box-description">
-                  Hola! Esta es una descripcion estandar del usuario
+                  {userData.description}
                 </p>
                 <div className="user-screen-info-box-data-container">
                   <div
@@ -138,14 +215,30 @@ const ProfileScreen = () => {
                 }}
               >
                 <Button type="primary" onClick={showEditProfileModal}>
-                  Editar perfil
+                  Edit Profile
                 </Button>
               </div>
             </div>
             {/*Content*/}
             <div className="post-list-container">
               {/*Posts*/}
-              {posts.length > 0 && (
+              {testerPosts.map((item, index) => (
+                <PostFeedCard
+                  item={item}
+                  index={index}
+                  HandleSelect={() => {
+                    console.log("select");
+                  }}
+                  HandleOpenCommentsModal={() => {
+                    console.log("handle open comments");
+                  }}
+                  HandleOpenLikesModal={() => {
+                    console.log("handle open likes");
+                  }}
+                  stats={item.stats}
+                />
+              ))}
+              {/*posts.length > 0 && (
                 <>
                   {posts.map((item) => (
                     <div className="post-container" key={item._id}>
@@ -168,7 +261,7 @@ const ProfileScreen = () => {
                     </div>
                   ))}
                 </>
-              )}
+                  )*/}
               {/*
                 <div className="posts-spin-container">
                   <Spin indicator={<LoadingOutlined spin />} />
