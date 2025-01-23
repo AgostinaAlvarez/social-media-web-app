@@ -32,8 +32,9 @@ const NotificationDrawerItemComment = ({ item }) => {
             <HiMiniChatBubbleLeft />
           </div>
           <div>
-            <span style={{ color: "#4096ff" }}>@userTester</span> Discover the
-            future of artificial intelligence!
+            <span style={{ color: "#4096ff" }}>@userTester3</span> Welcome to
+            the club! Which switches did you go for? Mechanical keyboards really
+            do change the typing game, don’t they?
           </div>
         </div>
       </div>

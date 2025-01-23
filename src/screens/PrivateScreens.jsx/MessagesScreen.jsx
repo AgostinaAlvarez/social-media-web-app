@@ -64,7 +64,12 @@ const MessagesScreen = () => {
         <div className="messages-aside">
           <div className="messages-aside-header">
             <div className="messages-aside-header-name">
-              <Avatar size={30} icon={<UserOutlined />} />
+              {userData.avatar_img === "" ||
+              userData.avatar_img === undefined ? (
+                <Avatar size={35} icon={<UserOutlined />} />
+              ) : (
+                <Avatar size={35} src={userData.avatar_img} />
+              )}
               <span>{userData.username} </span>
             </div>
             <div className="messages-aside-header-nav">

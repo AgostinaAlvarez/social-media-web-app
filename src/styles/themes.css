@@ -16,6 +16,7 @@
   --feed-header-bg: #ffffffef;
   --front-page-bg: #eaeaea;
   --settings-overlay: #ffffff6b;
+  --notification-hover-bg: #f5f5f5;
 }
 
 [data-theme="dark"] {
@@ -35,4 +36,5 @@
   --feed-header-bg: #000000c3;
   --front-page-bg: #3a3a3a;
   --settings-overlay: #1b1b1b89;
+  --notification-hover-bg: #1c1c1c82;
 }

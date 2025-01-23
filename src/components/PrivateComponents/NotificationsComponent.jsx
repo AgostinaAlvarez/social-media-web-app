@@ -65,7 +65,9 @@ const NotificationsComponent = () => {
       type: "reply",
       opened: true,
       user: {
-        username: "braydenOwens",
+        username: "lucasFisher",
+        avatar:
+          "https://pbs.twimg.com/profile_images/1389007704367276037/EYcXQaO2_400x400.jpg",
       },
       comment: {
         user: {
@@ -78,6 +80,8 @@ const NotificationsComponent = () => {
       opened: true,
       user: {
         username: "joshuaHoward",
+        avatar:
+          "https://pbs.twimg.com/profile_images/1450576617261215754/X_PXogRc_400x400.jpg",
       },
       follow: true,
     },
@@ -88,6 +92,7 @@ const NotificationsComponent = () => {
     },
   ]);
 
+  //helo
   const RenderNotificationItem = (item) => {
     const type = item.type;
     switch (type) {
@@ -122,20 +127,22 @@ const NotificationsComponent = () => {
             <Avatar.Group>
               <Avatar
                 size={30}
-                style={{ backgroundColor: "#f56a00", fontSize: 13 }}
-              >
-                K
-              </Avatar>
+                src={
+                  "https://pbs.twimg.com/profile_images/1720391010016989184/iXw5ZC5a_400x400.jpg"
+                }
+              />
               <Avatar
                 size={30}
-                style={{ backgroundColor: "#87d068", fontSize: 13 }}
-              >
-                A
-              </Avatar>
+                src={
+                  "https://pbs.twimg.com/profile_images/1870287696859463680/PVw_v6f9_400x400.jpg"
+                }
+              />
             </Avatar.Group>
             <div className="notifications-header-users-info">
-              <span className="info-name-lbl">Solicitudes de seguimiento</span>
-              <span>@username and 20 others</span>
+              <span className="info-name-lbl">Follow requests</span>
+              <span className="info-username-lbl">
+                @elijah_scott98 and 20 others
+              </span>
             </div>
           </div>
           <MdOutlineArrowForwardIos />

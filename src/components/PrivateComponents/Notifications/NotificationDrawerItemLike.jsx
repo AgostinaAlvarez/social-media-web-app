@@ -8,9 +8,16 @@ const NotificationDrawerItemLike = ({ item }) => {
     <>
       <div className="notification-drawer-item-container">
         <div className="notification-drawer-item-header ">
-          <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
-            K
-          </Avatar>
+          {item.avatars ? (
+            <Avatar size={30} src={item.avatars[0]} />
+          ) : (
+            <Avatar
+              size={30}
+              style={{ backgroundColor: "#4635B1", fontSize: 15 }}
+            >
+              {item.users[0][0].toUpperCase()}
+            </Avatar>
+          )}
           <div>
             <span className="info-name-lbl">{item.users[0]}</span> liked your
             post <span className="info-date-lbl">1 h.</span>
@@ -28,8 +35,9 @@ const NotificationDrawerItemLike = ({ item }) => {
           </div>
 
           <div>
-            Education, and software development. What role do you see AI playing
-            in the next decade?
+            Imagine if someone made a movie about programmers but showed the
+            actual work—just endless coffee, Stack Overflow, and staring at
+            screens.
           </div>
         </div>
       </div>

@@ -32,9 +32,8 @@ const NotificationDrawerItemLikes = ({ item }) => {
           </div>
 
           <div>
-            Discover the future of artificial intelligence! GPT models are
-            reshaping industries like healthcare, education, and software
-            development. What role do you see AI playing in the next decade?
+            Finally got my hands on a mechanical keyboard, and wow, typing feels
+            like a whole new experience. Anyone else obsessed with these?
           </div>
         </div>
       </div>

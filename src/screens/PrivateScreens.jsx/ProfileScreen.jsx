@@ -24,6 +24,10 @@ import { initializeProfileState } from "../../slice/editProfileSlice";
 const ProfileScreen = () => {
   const userData = useSelector((state) => state.userSlice.userData);
   const posts = useSelector((state) => state.postsSlice.posts);
+
+  const followers = useSelector((state) => state.statsSlice.followers);
+  const following = useSelector((state) => state.statsSlice.following);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -186,7 +190,9 @@ const ProfileScreen = () => {
                     className="user-screen-info-box-data"
                     onClick={showFollowersModal}
                   >
-                    <span className="user-screen-info-box-data-value">294</span>
+                    <span className="user-screen-info-box-data-value">
+                      {followers}
+                    </span>
                     <span className="user-screen-info-box-data-label">
                       Followers
                     </span>
@@ -195,7 +201,9 @@ const ProfileScreen = () => {
                     className="user-screen-info-box-data"
                     onClick={showFollowingModal}
                   >
-                    <span className="user-screen-info-box-data-value">276</span>
+                    <span className="user-screen-info-box-data-value">
+                      {following}
+                    </span>
                     <span className="user-screen-info-box-data-label">
                       Following
                     </span>

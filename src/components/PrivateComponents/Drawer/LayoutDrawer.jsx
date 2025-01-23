@@ -24,9 +24,9 @@ const RenderDrawTitle = (value) => {
     case "search":
       return "Busqueda";
     case "notifications":
-      return "Notificaciones";
+      return "Notifications";
     case "follow_request":
-      return "Solicitudes";
+      return null;
     case null:
       return "";
   }

@@ -8,9 +8,13 @@ const NotificationDrawerItemReply = ({ item }) => {
     <>
       <div className="notification-drawer-item-container">
         <div className="notification-drawer-item-header">
-          <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
-            K
-          </Avatar>
+          {item.user.avatar ? (
+            <Avatar size={30} src={item.user.avatar} />
+          ) : (
+            <Avatar size={30} style={{ backgroundColor: "#f56a00" }}>
+              K
+            </Avatar>
+          )}
 
           <div>
             <span className="info-name-lbl">{item.user.username}</span> has
@@ -29,7 +33,7 @@ const NotificationDrawerItemReply = ({ item }) => {
             <HiMiniChatBubbleLeftRight />
           </div>
           <div>
-            <span style={{ color: "#4096ff" }}>@userTester</span> and{" "}
+            <span style={{ color: "#4096ff" }}>@userTester3</span> and{" "}
             <span style={{ color: "#4096ff" }}>
               @{item.comment.user.username}
             </span>{" "}

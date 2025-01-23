@@ -23,6 +23,10 @@ const ProfileCard = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.userSlice.userData);
+
+  const followers = useSelector((state) => state.statsSlice.followers);
+  const following = useSelector((state) => state.statsSlice.following);
+
   const dispatch = useDispatch();
 
   const theme_config_provider = {
@@ -156,14 +160,14 @@ const ProfileCard = () => {
             className="profile-card-stats-data-container"
             onClick={showFollowingModal}
           >
-            <span className="profile-card-stats-value">276</span>
+            <span className="profile-card-stats-value">{following}</span>
             <span>Following</span>
           </div>
           <div
             className="profile-card-stats-data-container"
             onClick={showFollowersModal}
           >
-            <span className="profile-card-stats-value">294</span>
+            <span className="profile-card-stats-value">{followers}</span>
             <span>Followers</span>
           </div>
         </div>

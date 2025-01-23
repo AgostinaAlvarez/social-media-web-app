@@ -42,7 +42,7 @@ export const LogIn = async (dispatch, data, setLoading) => {
 
     authToken.setToken("auth-token", token);
 
-    dispatch(initializeStats(stats));
+    //dispatch(initializeStats(stats));
     dispatch(
       setUsernameNextModificationDate(profile_settings.nextModificationDate)
     );
@@ -78,7 +78,7 @@ export const HandleVerifyToken = async (dispatch, token) => {
     });
     const { user, stats, profile_settings } = response.data;
 
-    dispatch(initializeStats(stats));
+    //dispatch(initializeStats(stats));
     dispatch(
       setUsernameNextModificationDate(profile_settings.nextModificationDate)
     );
@@ -110,7 +110,7 @@ export const CreateNewUser = async (dispatch, data) => {
     const { token, user, stats, profile_settings } = response.data;
     authToken.setToken("auth-token", token);
 
-    dispatch(initializeStats(stats));
+    //dispatch(initializeStats(stats));
     dispatch(
       setUsernameNextModificationDate(profile_settings.nextModificationDate)
     );
@@ -158,7 +158,7 @@ export const SignupUser = async (dispatch, data, setLoading) => {
     const { token, user, stats } = response.data;
     authToken.setToken("auth-token", token);
 
-    dispatch(initializeStats(stats));
+    //dispatch(initializeStats(stats));
 
     getDataConversations(dispatch, token);
     getMyPostsFunction(dispatch, token);

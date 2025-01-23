@@ -548,6 +548,86 @@ Layout Private
   width: 60%;
 }
 
+.follow-requests-component-container {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.follow-requests-component-header {
+  height: 100px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 20px;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.follow-requests-component-header-ttl {
+  font-size: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.follow-requests-go-back-container {
+  width: fit-content;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  background-color: #1b1b1b;
+  border-radius: 10px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.follow-requests-component-list-container {
+  height: calc(100% - 100px);
+  box-sizing: border-box;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none;
+  padding-bottom: 30px;
+}
+
+.follow-requests-component-item-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.follow-requests-component-item-container:hover {
+  background-color: var(--notification-hover-bg);
+}
+
+.follow-requests-component-item-userdata {
+  width: 100%;
+  display: flex;
+  gap: 7px;
+  box-sizing: border-box;
+}
+
+.follow-requests-component-item-userdata-username {
+  display: flex;
+  flex-direction: column;
+}
+
+.follow-requests-component-item-btn-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /*-------*/
 /*SEARCH COMPONENT*/
 
@@ -620,6 +700,7 @@ Layout Private
 .notifications-header-users-info {
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
 .notifications-component-results-container {
@@ -645,7 +726,7 @@ Layout Private
 }
 
 .notification-drawer-item-container:hover {
-  background-color: var(--hover-color);
+  background-color: var(--notification-hover-bg);
 }
 
 .notification-drawer-item-header {
@@ -950,6 +1031,7 @@ Layout Private
   height: 100vh;
   box-sizing: border-box;
   overflow-y: scroll;
+  scrollbar-width: none;
   /*change*/
   background-color: var(--feed-bg);
 }

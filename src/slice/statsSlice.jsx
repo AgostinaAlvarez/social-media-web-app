@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  followers: 0,
-  following: 0,
+  followers: 294,
+  following: 276,
   posts: 0,
 };
 
@@ -27,10 +27,19 @@ export const statsSlice = createSlice({
       state.following = stats.following;
       state.posts = stats.posts;
     },
+
+    incrementFollowers: (state, action) => {
+      state.followers += 1;
+    },
   },
 });
 
-export const { setFollowers, setFollowing, setPosts, initializeStats } =
-  statsSlice.actions;
+export const {
+  setFollowers,
+  setFollowing,
+  setPosts,
+  initializeStats,
+  incrementFollowers,
+} = statsSlice.actions;
 
 export default statsSlice.reducer;
