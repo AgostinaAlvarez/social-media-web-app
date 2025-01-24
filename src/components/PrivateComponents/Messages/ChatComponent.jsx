@@ -13,6 +13,9 @@ import {
   addMessageToRequest,
 } from "../../../slice/conversationSlice";
 
+import { FaRegImage } from "react-icons/fa6";
+import { MdInsertEmoticon } from "react-icons/md";
+
 const ChatComponent = ({ conversation }) => {
   const token = useSelector((state) => state.authSlice.token);
   const dispatch = useDispatch();
@@ -27,15 +30,6 @@ const ChatComponent = ({ conversation }) => {
   const messagesData = conversation?.messages.messages;
 
   const [messages, setMessages] = useState(messagesData);
-
-  /*
-  useEffect(() => {
-    console.log("my user data");
-    console.log(myUserData);
-    console.log("conversation Data");
-    console.log(conversation?.conversation);
-  }, []);
-  */
 
   useEffect(() => {
     socket.on("private_message", (data) => {
@@ -88,13 +82,12 @@ const ChatComponent = ({ conversation }) => {
   return (
     <div className="chat-component-container">
       <div className="chat-component-header">
-        <Avatar
-          icon={<UserOutlined />}
-          size={47}
-          style={{
-            backgroundColor: "#87d068",
-          }}
-        />
+        {userData.avatar_img === "" || userData.avatar_img === undefined ? (
+          <Avatar size={47} icon={<UserOutlined />} />
+        ) : (
+          <Avatar size={47} src={userData.avatar_img} />
+        )}
+
         <div className="chat-component-header-user-info">
           <span>
             {userData.name} {userData.lastname}
@@ -128,9 +121,7 @@ const ChatComponent = ({ conversation }) => {
               colorTextPlaceholder:
                 theme === "dark" ? "rgb(189, 189, 189)" : "rgb(99, 99, 99)",
               colorBgContainer:
-                theme === "dark"
-                  ? "rgba(54,54,54,255)"
-                  : "rgba(239,239,239,255)",
+                theme === "dark" ? "#282828" : "rgba(239,239,239,255)",
             },
           }}
         >
@@ -147,36 +138,51 @@ const ChatComponent = ({ conversation }) => {
             onChange={(e) => setQuery(e.target.value)}
           />
         </ConfigProvider>
-
-        <ConfigProvider
-          theme={{
-            components: {
-              Button: {
-                borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
-              },
-            },
-            token: {
-              colorBgContainerDisabled:
-                theme === "dark" ? "#244a6d" : "#bfe0fc",
-              colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
-            },
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            boxSizing: "border-box",
+            gap: 8,
+            fontSize: 20,
+            color: "#4096ff",
           }}
         >
-          <Button
-            loading={loading ? true : false}
-            onClick={() => {
-              HandleSendMessage();
-            }}
-            type="primary"
-            disabled={query.trim() === "" ? true : false}
-            style={{
-              height: 40,
-              width: 100,
-            }}
-          >
-            Enviar
-          </Button>
-        </ConfigProvider>
+          <MdInsertEmoticon />
+          <FaRegImage />
+          {/*
+            <ConfigProvider
+              theme={{
+                components: {
+                  Button: {
+                    borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
+                  },
+                },
+                token: {
+                  colorBgContainerDisabled:
+                    theme === "dark" ? "#244a6d" : "#bfe0fc",
+                  colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
+                },
+              }}
+            >
+              <Button
+                loading={loading ? true : false}
+                onClick={() => {
+                  HandleSendMessage();
+                }}
+                type="primary"
+                disabled={query.trim() === "" ? true : false}
+                style={{
+                  height: 40,
+                  width: 100,
+                }}
+              >
+                Send
+              </Button>
+            </ConfigProvider>
+            
+            */}
+        </div>
       </div>
     </div>
   );

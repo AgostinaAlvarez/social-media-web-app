@@ -41,9 +41,7 @@ const RenderChatScreen = () => {
   };
 
   const HandleLoading = () => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    setLoading(false);
   };
 
   return (

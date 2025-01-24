@@ -10,9 +10,8 @@ const UploadImageComponent = ({
   setCroppedImage,
   setCroppedBlob,
   aspectRatio,
+  theme,
 }) => {
-  const { theme } = useTheme();
-
   const [imageUrl, setImageUrl] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });

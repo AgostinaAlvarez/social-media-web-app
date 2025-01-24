@@ -9,15 +9,21 @@ import { UserOutlined } from "@ant-design/icons";
 import { Route, Router, Routes, useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getConversations } from "../../data/api/conversationApi";
-import { setSelectedConversationSlice } from "../../slice/messageSlice";
+import {
+  decrementNonRead,
+  setSelectedConversationSlice,
+} from "../../slice/messageSlice";
 import { store } from "../../store/store";
 import RenderChatScreen from "../../components/PrivateComponents/Messages/RenderChatScreen";
+import { setConversationsInbox } from "../../slice/conversationSlice";
 
 const MessagesScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [switchConversation, setSwitchConversation] = useState(false);
   //slices data
+  //message screen is the right screen
   const loadingConversationsInbox = useSelector(
     (state) => state.conversationSlice.loadingConversationsInbox
   );
@@ -41,7 +47,6 @@ const MessagesScreen = () => {
   };
   const handleOk = (userData, resetData) => {
     setLoadingSelectConversationModal(true);
-    console.log("usuario con el que voy a renderizar la conversacion");
     console.log(userData);
     setTimeout(() => {
       resetData();
@@ -52,11 +57,61 @@ const MessagesScreen = () => {
     setIsModalOpen(false);
   };
 
-  const HandleSelectConversation = (conversation) => {
-    //navigate to conversation._id
+  function markMessageAsRead(conversations, conversationId, lastMessageId) {
+    const updateConversationsArray = conversations.map((item) => {
+      if (item.conversation._id === conversationId) {
+        const updateMessagesArray = item.messages.messages.map((message) => {
+          if (message._id === lastMessageId) {
+            return {
+              ...message,
+              isRead: true,
+            };
+          }
+          return message;
+        });
 
-    navigate(`/messages/inbox/${conversation.conversation.user._id}`);
+        return {
+          ...item,
+          messages: {
+            ...item.messages,
+            messages: updateMessagesArray,
+          },
+        };
+      }
+      return item;
+    });
+    return updateConversationsArray;
+  }
+
+  const HandleSelectConversation = (conversation) => {
+    const userId = userData._id;
+    const conversationId = conversation.conversation._id;
+    const lastMessageId = conversation.messages.messages[0]._id;
+    const reciverId = conversation.messages.messages[0].receiver;
+    const isRead = conversation.messages.messages[0].isRead;
+
+    if (userId === reciverId && isRead === false) {
+      const updateConversationsArray = markMessageAsRead(
+        conversationsInbox,
+        conversationId,
+        lastMessageId
+      );
+
+      dispatch(setConversationsInbox(updateConversationsArray));
+      dispatch(decrementNonRead());
+    }
+    setSwitchConversation(true);
+    navigate("/messages/inbox");
+    setTimeout(() => {
+      navigate(`/messages/inbox/${conversation.conversation.user._id}`);
+      setSwitchConversation(false);
+    }, 10);
   };
+
+  useEffect(() => {
+    console.log("user data from message screen");
+    console.log(userData);
+  }, []);
 
   return (
     <>
@@ -66,9 +121,9 @@ const MessagesScreen = () => {
             <div className="messages-aside-header-name">
               {userData.avatar_img === "" ||
               userData.avatar_img === undefined ? (
-                <Avatar size={35} icon={<UserOutlined />} />
+                <Avatar size={42} icon={<UserOutlined />} />
               ) : (
-                <Avatar size={35} src={userData.avatar_img} />
+                <Avatar size={42} src={userData.avatar_img} />
               )}
               <span>{userData.username} </span>
             </div>
@@ -77,7 +132,7 @@ const MessagesScreen = () => {
                 style={{ cursor: "pointer" }}
                 className="messages-aside-header-nav-item-cta"
               >
-                Principal
+                Inbox
               </span>
               <span
                 style={{ cursor: "pointer" }}
@@ -89,7 +144,7 @@ const MessagesScreen = () => {
                   navigate("/messages/requests");
                 }}
               >
-                Solicitudes
+                Requests
               </span>
             </div>
           </div>
@@ -130,48 +185,32 @@ const MessagesScreen = () => {
               path="/"
               element={
                 <>
-                  <div className="conversation-default-screen">
-                    <Avatar size={110} icon={<LuMessageCirclePlus />} />
-                    <span className="conversation-default-screen-ttl">
-                      Tus mensajes
-                    </span>
-                    <span className="conversation-default-screen-subttl">
-                      Envía fotos y mensajes privados a un amigo o grupo
-                    </span>
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        showModal();
-                      }}
-                    >
-                      Enviar mensaje
-                    </Button>
-                  </div>
+                  {switchConversation ? (
+                    <></>
+                  ) : (
+                    <div className="conversation-default-screen">
+                      <Avatar size={110} icon={<LuMessageCirclePlus />} />
+                      <span className="conversation-default-screen-ttl">
+                        Tus mensajes
+                      </span>
+                      <span className="conversation-default-screen-subttl">
+                        Envía fotos y mensajes privados a un amigo o grupo
+                      </span>
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          showModal();
+                        }}
+                      >
+                        Enviar mensaje
+                      </Button>
+                    </div>
+                  )}
                 </>
               }
             />
             <Route path="/:userId" element={<RenderChatScreen />} />
           </Routes>
-
-          {/*
-            <div className="conversation-default-screen">
-              <Avatar size={110} icon={<LuMessageCirclePlus />} />
-              <span className="conversation-default-screen-ttl">
-                Tus mensajes
-              </span>
-              <span className="conversation-default-screen-subttl">
-                Envía fotos y mensajes privados a un amigo o grupo
-              </span>
-              <Button
-                type="primary"
-                onClick={() => {
-                  showModal();
-                }}
-              >
-                Enviar mensaje
-              </Button>
-            </div>
-            */}
         </div>
       </div>
 

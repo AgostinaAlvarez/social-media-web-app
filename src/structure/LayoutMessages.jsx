@@ -30,6 +30,9 @@ const LayoutMessages = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userSlice.userData);
+  const nonReadMessages = useSelector(
+    (state) => state.messageSlice.nonReadMessages
+  );
 
   useEffect(() => {
     console.log("seteando conversacion a nula desde LAYOUT MESSAGE");
@@ -199,7 +202,7 @@ const LayoutMessages = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge count={12}>
+              <Badge count={nonReadMessages}>
                 <Avatar
                   shape="square"
                   size={30}

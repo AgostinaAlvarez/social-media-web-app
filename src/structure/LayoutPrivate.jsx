@@ -57,6 +57,10 @@ const RenderDrawTitle = (value) => {
 const LayoutPrivate = ({ children }) => {
   const { theme } = useTheme();
 
+  const nonReadMessages = useSelector(
+    (state) => state.messageSlice.nonReadMessages
+  );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -143,7 +147,7 @@ const LayoutPrivate = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge count={4}>
+              <Badge count={nonReadMessages}>
                 <Avatar
                   size={30}
                   shape="square"

@@ -287,6 +287,7 @@ const EditProfileComponent = ({ loading, setLoading }) => {
               setCroppedImage={setCroppedImageFrontPage}
               setCroppedBlob={setCroppedBlobFrontPage}
               aspectRatio={25 / 9}
+              theme={theme}
             >
               <div className="edit-profile-component-front-page-image-icon">
                 <LuImagePlus />
@@ -307,6 +308,7 @@ const EditProfileComponent = ({ loading, setLoading }) => {
                 setCroppedImage={setCroppedImageFrontPage}
                 setCroppedBlob={setCroppedBlobFrontPage}
                 aspectRatio={25 / 9}
+                theme={theme}
               >
                 <div className="edit-profile-component-front-page-image-icon">
                   <MdModeEdit />
@@ -323,6 +325,7 @@ const EditProfileComponent = ({ loading, setLoading }) => {
                 setCroppedImage={setCroppedImageAvatar}
                 setCroppedBlob={setCroppedBlobAvatar}
                 aspectRatio={1 / 1}
+                theme={theme}
               >
                 <div className="edit-profile-component-avatar-image-icon">
                   <LuImagePlus />
@@ -343,6 +346,7 @@ const EditProfileComponent = ({ loading, setLoading }) => {
                   setCroppedImage={setCroppedImageAvatar}
                   setCroppedBlob={setCroppedBlobAvatar}
                   aspectRatio={1 / 1}
+                  theme={theme}
                 >
                   <div className="edit-profile-component-avatar-image-icon">
                     <MdModeEdit />

@@ -98,6 +98,7 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
             setCroppedImage={setCroppedImageFrontPage}
             setCroppedBlob={setCroppedBlobFrontPage}
             aspectRatio={25 / 9}
+            theme={"light"}
           >
             <div className="presignup-form-avatar-overlay-icon ">
               <MdModeEdit />
@@ -143,6 +144,7 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
                 setCroppedImage={setCroppedImageAvatar}
                 setCroppedBlob={setCroppedBlobAvatar}
                 aspectRatio={1 / 1}
+                theme={"light"}
               >
                 <div className="presignup-form-avatar-overlay">
                   <div className="presignup-form-avatar-overlay-icon">
@@ -213,19 +215,6 @@ const SignupAvatarStep = ({ HandleFinishSteps }) => {
         }}
       >
         <Button onClick={handleSubmit}>View Data</Button>
-        {/*
-          <Button
-            //loading={loading ? true : false}
-            //disabled={!isValid ? true : false}
-            
-            htmlType="submit"
-            type="primary"
-            style={{ width: "100%", height: 50, marginTop: 10 }}
-          >
-            Save changes
-          </Button>
-          
-          */}
       </ConfigProvider>
     </form>
   );

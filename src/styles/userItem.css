@@ -36,6 +36,11 @@
   color: var(--light-text-color);
 }
 
+.user-item-conversation-info-message-cta {
+  font-weight: 450;
+  color: var(--text-color);
+}
+
 .user-item-conversation-container {
   padding: 13px 16px;
 }

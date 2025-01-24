@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedConversationSlice: null,
+  nonReadMessages: 4,
 };
 
 export const messageSlice = createSlice({
@@ -11,9 +12,14 @@ export const messageSlice = createSlice({
     setSelectedConversationSlice: (state, action) => {
       state.selectedConversationSlice = action.payload;
     },
+
+    decrementNonRead: (state, action) => {
+      state.nonReadMessages -= 1;
+    },
   },
 });
 
-export const { setSelectedConversationSlice } = messageSlice.actions;
+export const { setSelectedConversationSlice, decrementNonRead } =
+  messageSlice.actions;
 
 export default messageSlice.reducer;
