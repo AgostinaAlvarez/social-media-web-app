@@ -5,6 +5,17 @@ export const postDateTranform = (dateISOString) => {
   return formattedDate;
 };
 
+export const tranformDateToHour = (isoString) => {
+  // Usar Intl.DateTimeFormat para formatear la hora en 12 horas con AM/PM
+  const formattedTime = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  }).format(new Date(isoString));
+
+  return formattedTime;
+};
+
 export const ISOStringToHierarchicalDate = (isoDate) => {
   //const isoDate = "2025-02-08T00:14:57.977Z";
   const date = new Date(isoDate);

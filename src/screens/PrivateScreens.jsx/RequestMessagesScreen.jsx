@@ -12,6 +12,7 @@ import { getConversations } from "../../data/api/conversationApi";
 import { setLoading } from "../../slice/authSlice";
 import ChatComponent from "../../components/PrivateComponents/Messages/ChatComponent";
 import { setSelectedConversationSlice } from "../../slice/messageSlice";
+import { FaRegEdit } from "react-icons/fa";
 
 const RequestMessagesScreen = () => {
   const dispatch = useDispatch();
@@ -44,8 +45,28 @@ const RequestMessagesScreen = () => {
         <div className="messages-aside">
           <div className="messages-aside-header">
             <div className="messages-aside-header-name">
-              <Avatar size={30} icon={<UserOutlined />} />
-              <span>{userData.username} </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 7,
+                  boxSizing: "border-box",
+                }}
+              >
+                {userData.avatar_img === "" ||
+                userData.avatar_img === undefined ? (
+                  <Avatar size={42} icon={<UserOutlined />} />
+                ) : (
+                  <Avatar size={42} src={userData.avatar_img} />
+                )}
+                <span>{userData.username} </span>
+              </div>
+              <FaRegEdit
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  //showModal();
+                }}
+              />
             </div>
             <div className="messages-aside-header-nav">
               <span
@@ -58,13 +79,13 @@ const RequestMessagesScreen = () => {
                   navigate("/messages/inbox");
                 }}
               >
-                Principal
+                Inbox
               </span>
               <span
                 className="messages-aside-header-nav-item-cta"
                 style={{ cursor: "pointer" }}
               >
-                Solicitudes
+                Requests
               </span>
             </div>
           </div>
@@ -78,10 +99,10 @@ const RequestMessagesScreen = () => {
                 {conversationsRequest.length === 0 ? (
                   <>
                     <span className="messages-aside-empty-ttl ">
-                      Solicitudes de mensajes
+                      Message requests
                     </span>
                     <div className="search-component-empty-container">
-                      <span>No hay solicitudes.</span>
+                      <span>No requests</span>
                     </div>
                   </>
                 ) : (
@@ -107,12 +128,12 @@ const RequestMessagesScreen = () => {
             <div className="conversation-default-screen">
               <Avatar size={110} icon={<FaUserPlus />} />
               <span className="conversation-default-screen-ttl">
-                Solicitudes de mensajes
+                Message requests
               </span>
               <span className="conversation-default-screen-subttl">
-                Estos mensajes son de personas que has restringido o a las que
-                no sigues. No sabrán que has visto su solicitud hasta que les
-                permitas enviarte mensajes.
+                These messages are from people you've restricted or don't
+                follow. They won't know you've seen their request until you
+                allow them to send you messages.
               </span>
             </div>
           )}

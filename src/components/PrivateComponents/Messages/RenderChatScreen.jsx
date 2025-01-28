@@ -63,9 +63,6 @@ const RenderChatScreen = () => {
           )}
         </>
       )}
-      {/**
-       * Si encuentro una conversacion entonces renderizo el ChatComponent si no: renderizo renderizo otro qque es especificamente para conversaciones inexistentes
-       */}
     </>
   );
 };

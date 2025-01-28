@@ -14,6 +14,9 @@ import {
 } from "../../../slice/conversationSlice";
 import { sendMessage } from "../../../data/api/messageApi";
 import { socket } from "../../../router/PrivateRoutes";
+import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
+import { FaRegImage } from "react-icons/fa6";
+import { MdInsertEmoticon } from "react-icons/md";
 
 const ChatComponentNewConversation = ({ userData }) => {
   const { theme } = useTheme();
@@ -147,13 +150,13 @@ const ChatComponentNewConversation = ({ userData }) => {
               {userData.name} {userData.lastname}
             </span>
             <span>@{userData.username}</span>
-            <Button
+            <AntdSecondaryBtnComponent
+              theme={theme}
               onClick={() => {
                 navigate(`/user/${userData._id}`);
               }}
-            >
-              Ver perfil
-            </Button>
+              label={"View Profile"}
+            />
           </div>
         ) : (
           <>
@@ -204,6 +207,20 @@ const ChatComponentNewConversation = ({ userData }) => {
           />
         </ConfigProvider>
 
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            boxSizing: "border-box",
+            gap: 8,
+            fontSize: 20,
+            color: "#4096ff",
+          }}
+        >
+          <MdInsertEmoticon />
+          <FaRegImage />
+        </div>
+
         <ConfigProvider
           theme={{
             components: {
@@ -233,6 +250,8 @@ const ChatComponentNewConversation = ({ userData }) => {
             Enviar
           </Button>
         </ConfigProvider>
+        {/*
+         */}
       </div>
     </div>
   );

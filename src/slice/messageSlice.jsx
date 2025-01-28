@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedConversationSlice: null,
-  nonReadMessages: 4,
+  nonReadMessages: 7,
 };
 
 export const messageSlice = createSlice({

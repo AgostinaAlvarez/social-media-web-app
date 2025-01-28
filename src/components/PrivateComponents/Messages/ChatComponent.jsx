@@ -6,7 +6,7 @@ import { useTheme } from "../../../context/ThemeContext";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { socket } from "../../../router/PrivateRoutes";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { sendMessage } from "../../../data/api/messageApi";
 import {
   addMessageToInbox,
@@ -15,11 +15,12 @@ import {
 
 import { FaRegImage } from "react-icons/fa6";
 import { MdInsertEmoticon } from "react-icons/md";
+import { tranformDateToHour } from "../../../data/utils/dates";
 
 const ChatComponent = ({ conversation }) => {
   const token = useSelector((state) => state.authSlice.token);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -81,7 +82,15 @@ const ChatComponent = ({ conversation }) => {
 
   return (
     <div className="chat-component-container">
-      <div className="chat-component-header">
+      <div
+        className="chat-component-header"
+        style={{
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          navigate(`/user/${userData._id}`);
+        }}
+      >
         {userData.avatar_img === "" || userData.avatar_img === undefined ? (
           <Avatar size={47} icon={<UserOutlined />} />
         ) : (
@@ -99,16 +108,24 @@ const ChatComponent = ({ conversation }) => {
         {messages.map((item) => (
           <>
             {myUserData._id === item.sender ? (
-              <div className="chat-component-message-container chat-component-message-container-reciber">
-                <div className="chat-component-message chat-component-message-reciber">
-                  {item.content}
+              <>
+                <div className="chat-component-message-container chat-component-message-container-reciber">
+                  <div className="chat-component-message chat-component-message-reciber">
+                    {item.content}
+                  </div>
+                  <span className="chat-component-message-time-span chat-component-message-time-span-reciber">
+                    {tranformDateToHour(item.createdAt)}
+                  </span>
                 </div>
-              </div>
+              </>
             ) : (
               <div className="chat-component-message-container chat-component-message-container-sender">
                 <div className="chat-component-message chat-component-message-sender">
                   {item.content}
                 </div>
+                <span className="chat-component-message-time-span chat-component-message-time-span-sender">
+                  {tranformDateToHour(item.createdAt)}
+                </span>
               </div>
             )}
           </>
@@ -150,36 +167,36 @@ const ChatComponent = ({ conversation }) => {
         >
           <MdInsertEmoticon />
           <FaRegImage />
-          {/*
-            <ConfigProvider
-              theme={{
-                components: {
-                  Button: {
-                    borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
-                  },
+          <ConfigProvider
+            theme={{
+              components: {
+                Button: {
+                  borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
                 },
-                token: {
-                  colorBgContainerDisabled:
-                    theme === "dark" ? "#244a6d" : "#bfe0fc",
-                  colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
-                },
+              },
+              token: {
+                colorBgContainerDisabled:
+                  theme === "dark" ? "#244a6d" : "#bfe0fc",
+                colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
+              },
+            }}
+          >
+            <Button
+              loading={loading ? true : false}
+              onClick={() => {
+                HandleSendMessage();
+              }}
+              type="primary"
+              disabled={query.trim() === "" ? true : false}
+              style={{
+                height: 40,
+                width: 100,
               }}
             >
-              <Button
-                loading={loading ? true : false}
-                onClick={() => {
-                  HandleSendMessage();
-                }}
-                type="primary"
-                disabled={query.trim() === "" ? true : false}
-                style={{
-                  height: 40,
-                  width: 100,
-                }}
-              >
-                Send
-              </Button>
-            </ConfigProvider>
+              Send
+            </Button>
+          </ConfigProvider>
+          {/*
             
             */}
         </div>

@@ -14,15 +14,98 @@ const NewMessageModal = ({
   loading,
   setLoading,
 }) => {
+  const test_array = [
+    {
+      _id: "67924d5994d6a0aafd290728",
+      username: "matthewGriffin",
+      name: "Matthew",
+      lastname: "Griffin",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1823799865962536960/OFhMVHbt_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "679253414db717ad2ba9e6fb",
+      username: "scarlettGray",
+      name: "Scarlett",
+      lastname: "Gray",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1863022344026865664/rGsC2RcH_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "679258a726434e5004a36f53",
+      username: "joshuaHoward",
+      name: "Joshua",
+      lastname: "Howard",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1450576617261215754/X_PXogRc_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "6792595e34911fc8234ac707",
+      username: "natalieWard",
+      name: "Natalie",
+      lastname: "Ward",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1589471094276296704/ScD4jIkE_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "67925a82b0654c0cdbf54db6",
+      username: "andrewCook",
+      name: "Andrew",
+      lastname: "Cook",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1530649060943794178/6QE0SnyC_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "67925b7a3ab4e5575409aa97",
+      username: "samanthaRivera",
+      name: "Samantha",
+      lastname: "Rivera",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1715626776976896000/P_o_YczX_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "67925c6780f8bb349e50d0a1",
+      username: "ryanRichardson",
+      name: "Ryan",
+      lastname: "Richardson",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1875718870641623040/EzICM6Py_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "67925cce5668f464817695e8",
+      username: "zoeyGonzalez",
+      name: "Zoey",
+      lastname: "Gonzalez",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1788927306624368640/pghYqR2S_400x400.jpg",
+      front_page_img: "",
+    },
+    {
+      _id: "67925d4da3336219b83db2f9",
+      username: "nathanBryant",
+      name: "Nathan",
+      lastname: "Bryant",
+      avatar_img:
+        "https://pbs.twimg.com/profile_images/1790831627402158080/hVFqbFwG_400x400.jpg",
+      front_page_img: "",
+    },
+  ];
   const { theme } = useTheme();
   const [query, setQuery] = useState("");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(test_array);
   const [selectedUser, setSelectedUser] = useState(null);
   const token = useSelector((state) => state.authSlice.token);
 
   useEffect(() => {
     if (query.trim() === "") {
-      setUsers([]);
+      setUsers(test_array);
       return;
     }
 
@@ -61,7 +144,7 @@ const NewMessageModal = ({
 
   const resetData = () => {
     setLoading(false);
-    setUsers([]);
+    setUsers(test_array);
     setSelectedUser(null);
     setQuery("");
   };
@@ -83,7 +166,7 @@ const NewMessageModal = ({
         }}
       >
         <Modal
-          title="Nuevo Mensaje"
+          title="New Message"
           open={isModalOpen}
           onCancel={() => {
             resetData();
@@ -144,7 +227,7 @@ const NewMessageModal = ({
                       color: theme === "dark" ? "white" : "black",
                       padding: "7px 10px",
                     }}
-                    placeholder="Para..."
+                    placeholder="For..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
@@ -158,7 +241,7 @@ const NewMessageModal = ({
             </div>
           ) : (
             <div className="new-message-modal-search-user-container">
-              <span>Para:</span>
+              <span>For:</span>
               <div className="new-message-modal-user-selected-container ">
                 <div
                   className="new-message-modal-user-selected-quit-icon"

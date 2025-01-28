@@ -4,12 +4,16 @@ import { UserOutlined } from "@ant-design/icons";
 import "../../../styles/userItem.css";
 import { GoDotFill } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import { tranformDateToHour } from "../../../data/utils/dates";
+import {
+  messageSenderByMe,
+  renderLastMessageConversationItem,
+} from "../../../data/utils/messages";
 
-const UserConversationItem = ({ conversation, selectConversation }) => {
+const UserConversationItem = ({ conversation, selectConversation, hour }) => {
   const userData = conversation?.conversation.user;
   const lastMessage = conversation?.messages.messages[0];
   const navigate = useNavigate();
-
   const ConversationStatus = (lastMessage) => {
     if (lastMessage.receiver !== userData._id && lastMessage.isRead === false) {
       return true;
@@ -51,15 +55,21 @@ const UserConversationItem = ({ conversation, selectConversation }) => {
         <span className="user-item-conversation-info-username">
           {userData.name} {userData.lastname}
         </span>
-        <span
+        <div
+          style={{ width: "100%" }}
           className={`user-item-conversation-info-message ${
             ConversationStatus(lastMessage) === true
               ? "user-item-conversation-info-message-cta"
               : ""
           }`}
         >
-          {lastMessage.content}
-        </span>
+          {messageSenderByMe(lastMessage.receiver, userData._id)
+            ? "You: "
+            : null}
+          {renderLastMessageConversationItem(lastMessage.content)}
+          {/*lastMessage.content*/}
+          <span style={{ marginLeft: 10, fontSize: 12 }}>{hour}</span>
+        </div>
       </div>
       <div
         style={{

@@ -8,6 +8,7 @@ import { useTheme } from "../../context/ThemeContext";
 import ProfileCard from "../../components/PrivateComponents/Home/ProfileCard";
 import YouMightLikeCard from "../../components/PrivateComponents/User/YouMightLikeCard";
 import { users_recomendation_3 } from "../../../tester_data";
+import AntdSecondaryBtnComponent from "../../components/BasicComponents/AntdSecondaryBtnComponent";
 
 const UserScreen = () => {
   const params = useParams();
@@ -45,6 +46,7 @@ const UserScreen = () => {
 
     if (user_response) {
       setTimeout(() => {
+        console.log(user_response.user);
         setUserData(user_response.user);
         setLoading(false);
       }, 1000);
@@ -109,8 +111,19 @@ const UserScreen = () => {
                             height: "100%",
                             borderRadius: "50%",
                           }}
-                          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                          src={userData.avatar_img}
                         />
+                        {/*
+                          <Image
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              borderRadius: "50%",
+                            }}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                          />
+                          
+                          */}
                       </div>
                     </div>
                     {/*Informacion del usuario*/}
@@ -134,7 +147,7 @@ const UserScreen = () => {
                               1
                             </span>
                             <span className="user-screen-info-box-data-label">
-                              Seguidores
+                              Followers
                             </span>
                           </div>
                           <div className="user-screen-info-box-data">
@@ -142,7 +155,7 @@ const UserScreen = () => {
                               20
                             </span>
                             <span className="user-screen-info-box-data-label">
-                              Siguiendo
+                              Following
                             </span>
                           </div>
                           <div className="user-screen-info-box-data">
@@ -162,15 +175,25 @@ const UserScreen = () => {
                         }}
                       >
                         <Button type="primary">Seguir</Button>
-                        <ConfigProvider theme={theme_button}>
-                          <Button
-                            onClick={() => {
-                              navigate(`/messages/inbox/${userData._id}`);
-                            }}
-                          >
-                            Mensaje
-                          </Button>
-                        </ConfigProvider>
+                        <AntdSecondaryBtnComponent
+                          onClick={() => {
+                            navigate(`/messages/inbox/${userData._id}`);
+                          }}
+                          theme={theme}
+                          label={"Message"}
+                        />
+                        {/*
+                          <ConfigProvider theme={theme_button}>
+                            <Button
+                              onClick={() => {
+                                navigate(`/messages/inbox/${userData._id}`);
+                              }}
+                            >
+                              Mensaje
+                            </Button>
+                          </ConfigProvider>
+                          
+                          */}
                       </div>
                     </div>
                   </div>

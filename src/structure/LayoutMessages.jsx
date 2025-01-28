@@ -185,7 +185,7 @@ const LayoutMessages = ({ children }) => {
                 navigate("/messages/inbox");
               }}
             >
-              <Badge count={7}>
+              <Badge count={nonReadMessages}>
                 <Avatar
                   shape="square"
                   size={30}
@@ -202,7 +202,7 @@ const LayoutMessages = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge count={nonReadMessages}>
+              <Badge count={4}>
                 <Avatar
                   shape="square"
                   size={30}

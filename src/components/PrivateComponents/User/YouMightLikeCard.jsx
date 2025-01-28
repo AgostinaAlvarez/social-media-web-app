@@ -50,7 +50,7 @@ const YouMightLikeCard = ({ users }) => {
                       </span>
                     </div>
                   </div>
-                  <AntdPrimaryBtnComponent theme={theme} label={"Folo"} />
+                  <AntdPrimaryBtnComponent theme={theme} label={"Follow"} />
                 </div>
               ))}
             </>

@@ -129,7 +129,7 @@ const LayoutPrivate = ({ children }) => {
                 navigate("/messages/inbox");
               }}
             >
-              <Badge count={7}>
+              <Badge count={nonReadMessages}>
                 <Avatar
                   size={30}
                   shape="square"
@@ -147,7 +147,7 @@ const LayoutPrivate = ({ children }) => {
                 showDrawer("notifications");
               }}
             >
-              <Badge count={nonReadMessages}>
+              <Badge count={4}>
                 <Avatar
                   size={30}
                   shape="square"

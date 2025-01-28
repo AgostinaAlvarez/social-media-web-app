@@ -16,6 +16,7 @@ import {
 import { store } from "../../store/store";
 import RenderChatScreen from "../../components/PrivateComponents/Messages/RenderChatScreen";
 import { setConversationsInbox } from "../../slice/conversationSlice";
+import { FaRegEdit } from "react-icons/fa";
 
 const MessagesScreen = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,11 @@ const MessagesScreen = () => {
   const conversationsInbox = useSelector(
     (state) => state.conversationSlice.conversationsInbox
   );
+
+  useEffect(() => {
+    console.log(conversationsInbox);
+  }, []);
+
   const userData = useSelector((state) => state.userSlice.userData);
   const token = useSelector((state) => state.authSlice.token);
 
@@ -48,6 +54,14 @@ const MessagesScreen = () => {
   const handleOk = (userData, resetData) => {
     setLoadingSelectConversationModal(true);
     console.log(userData);
+
+    setTimeout(() => {
+      navigate("/messages/inbox");
+    }, 1700);
+    setTimeout(() => {
+      navigate(`/messages/inbox/${userData._id}`);
+    }, 1800);
+
     setTimeout(() => {
       resetData();
       setIsModalOpen(false);
@@ -113,19 +127,50 @@ const MessagesScreen = () => {
     console.log(userData);
   }, []);
 
+  const hours = [
+    "17 min",
+    "2 h",
+    "5 h",
+    "7 h",
+    "12 h",
+    "19 h",
+    "1 d",
+    "2 d",
+    "3 d",
+    "6 d",
+    "1 wk",
+    "2 wk",
+    "2 wk",
+  ];
+
   return (
     <>
       <div className="messages-screen-container">
         <div className="messages-aside">
           <div className="messages-aside-header">
             <div className="messages-aside-header-name">
-              {userData.avatar_img === "" ||
-              userData.avatar_img === undefined ? (
-                <Avatar size={42} icon={<UserOutlined />} />
-              ) : (
-                <Avatar size={42} src={userData.avatar_img} />
-              )}
-              <span>{userData.username} </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 7,
+                  boxSizing: "border-box",
+                }}
+              >
+                {userData.avatar_img === "" ||
+                userData.avatar_img === undefined ? (
+                  <Avatar size={42} icon={<UserOutlined />} />
+                ) : (
+                  <Avatar size={42} src={userData.avatar_img} />
+                )}
+                <span>{userData.username} </span>
+              </div>
+              <FaRegEdit
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  showModal();
+                }}
+              />
             </div>
             <div className="messages-aside-header-nav">
               <span
@@ -137,9 +182,6 @@ const MessagesScreen = () => {
               <span
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  console.log(
-                    "seteando conversacion a nula desde MESSAGE SCREEN"
-                  );
                   dispatch(setSelectedConversationSlice(null));
                   navigate("/messages/requests");
                 }}
@@ -166,8 +208,9 @@ const MessagesScreen = () => {
                   </>
                 ) : (
                   <>
-                    {conversationsInbox.map((item) => (
+                    {conversationsInbox.map((item, index) => (
                       <UserConversationItem
+                        hour={hours[index]}
                         conversation={item}
                         selectConversation={HandleSelectConversation}
                       />
@@ -191,10 +234,10 @@ const MessagesScreen = () => {
                     <div className="conversation-default-screen">
                       <Avatar size={110} icon={<LuMessageCirclePlus />} />
                       <span className="conversation-default-screen-ttl">
-                        Tus mensajes
+                        Your messages
                       </span>
                       <span className="conversation-default-screen-subttl">
-                        Envía fotos y mensajes privados a un amigo o grupo
+                        Send photos and private messages to a friend or group.
                       </span>
                       <Button
                         type="primary"
@@ -202,7 +245,7 @@ const MessagesScreen = () => {
                           showModal();
                         }}
                       >
-                        Enviar mensaje
+                        Send message
                       </Button>
                     </div>
                   )}

@@ -13,12 +13,17 @@ const UserItem = ({ userData, onSelectUser }) => {
         }
       }}
     >
-      <Avatar
-        icon={<UserOutlined />}
-        style={{
-          backgroundColor: "#87d068",
-        }}
-      />
+      {userData.avatar_img === "" ? (
+        <Avatar
+          style={{
+            backgroundColor: "#87d068",
+          }}
+        >
+          {userData.name[0]}
+        </Avatar>
+      ) : (
+        <Avatar src={userData.avatar_img} />
+      )}
       <div className="user-item-info">
         <span>
           {userData?.name} {userData?.lastname}
