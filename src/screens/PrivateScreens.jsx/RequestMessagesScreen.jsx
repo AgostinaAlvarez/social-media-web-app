@@ -13,8 +13,11 @@ import { setLoading } from "../../slice/authSlice";
 import ChatComponent from "../../components/PrivateComponents/Messages/ChatComponent";
 import { setSelectedConversationSlice } from "../../slice/messageSlice";
 import { FaRegEdit } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 const RequestMessagesScreen = () => {
+  const { theme } = useTheme();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -126,7 +129,19 @@ const RequestMessagesScreen = () => {
             <ChatComponent conversation={selectedConversation} />
           ) : (
             <div className="conversation-default-screen">
-              <Avatar size={110} icon={<FaUserPlus />} />
+              <Avatar
+                size={110}
+                icon={
+                  <FaUserPlus
+                    style={{
+                      color: theme === "dark" ? "#ffffffe1" : "#ffffff",
+                    }}
+                  />
+                }
+                style={{
+                  backgroundColor: theme === "dark" ? "#232323" : "#00000040",
+                }}
+              />
               <span className="conversation-default-screen-ttl">
                 Message requests
               </span>

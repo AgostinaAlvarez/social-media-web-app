@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserConversationItem from "../../components/PrivateComponents/User/UserConversationItem";
 import { MessageOutlined } from "@ant-design/icons";
 import { LuMessageCirclePlus } from "react-icons/lu";
-import { Avatar, Button, ConfigProvider, Modal, Spin } from "antd";
+import { Avatar, Button, ConfigProvider, Modal, Spin, theme } from "antd";
 import NewMessageModal from "../../components/PrivateComponents/Messages/NewMessageModal";
 import { useDispatch, useSelector } from "react-redux";
 import { UserOutlined } from "@ant-design/icons";
@@ -17,10 +17,13 @@ import { store } from "../../store/store";
 import RenderChatScreen from "../../components/PrivateComponents/Messages/RenderChatScreen";
 import { setConversationsInbox } from "../../slice/conversationSlice";
 import { FaRegEdit } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 const MessagesScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { theme } = useTheme();
 
   const [switchConversation, setSwitchConversation] = useState(false);
   //slices data
@@ -127,21 +130,7 @@ const MessagesScreen = () => {
     console.log(userData);
   }, []);
 
-  const hours = [
-    "17 min",
-    "2 h",
-    "5 h",
-    "7 h",
-    "12 h",
-    "19 h",
-    "1 d",
-    "2 d",
-    "3 d",
-    "6 d",
-    "1 wk",
-    "2 wk",
-    "2 wk",
-  ];
+  const hours = useSelector((state) => state.conversationSlice.testeHours);
 
   return (
     <>
@@ -232,7 +221,20 @@ const MessagesScreen = () => {
                     <></>
                   ) : (
                     <div className="conversation-default-screen">
-                      <Avatar size={110} icon={<LuMessageCirclePlus />} />
+                      <Avatar
+                        size={110}
+                        icon={
+                          <LuMessageCirclePlus
+                            style={{
+                              color: theme === "dark" ? "#ffffffe1" : "#ffffff",
+                            }}
+                          />
+                        }
+                        style={{
+                          backgroundColor:
+                            theme === "dark" ? "#232323" : "#00000040",
+                        }}
+                      />
                       <span className="conversation-default-screen-ttl">
                         Your messages
                       </span>

@@ -11,11 +11,21 @@ import { sendMessage } from "../../../data/api/messageApi";
 import {
   addMessageToInbox,
   addMessageToRequest,
+  addNewHour,
 } from "../../../slice/conversationSlice";
+import { IoMdLink } from "react-icons/io";
 
 import { FaRegImage } from "react-icons/fa6";
 import { MdInsertEmoticon } from "react-icons/md";
 import { tranformDateToHour } from "../../../data/utils/dates";
+import { LuLink } from "react-icons/lu";
+import { RiEmojiStickerLine } from "react-icons/ri";
+
+import okSticker from "../../../assets/okey.png";
+import corazonSticker from "../../../assets/corazon.png";
+
+import { LuSticker } from "react-icons/lu";
+import { TbSticker2 } from "react-icons/tb";
 
 const ChatComponent = ({ conversation }) => {
   const token = useSelector((state) => state.authSlice.token);
@@ -76,6 +86,7 @@ const ChatComponent = ({ conversation }) => {
   };
 
   const HandleAddNewMessage = (newMessage) => {
+    dispatch(addNewHour());
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
     setQuery("");
   };
@@ -104,15 +115,20 @@ const ChatComponent = ({ conversation }) => {
         </div>
       </div>
       <div className="chat-component-content">
-        {/**Mensajes */}
         {messages.map((item) => (
           <>
             {myUserData._id === item.sender ? (
               <>
                 <div className="chat-component-message-container chat-component-message-container-reciber">
+                  {item._id === "67980083df283a734fed534f" ? (
+                    <img className="message-sticker" src={okSticker} />
+                  ) : (
+                    <></>
+                  )}
                   <div className="chat-component-message chat-component-message-reciber">
                     {item.content}
                   </div>
+
                   <span className="chat-component-message-time-span chat-component-message-time-span-reciber">
                     {tranformDateToHour(item.createdAt)}
                   </span>
@@ -123,6 +139,43 @@ const ChatComponent = ({ conversation }) => {
                 <div className="chat-component-message chat-component-message-sender">
                   {item.content}
                 </div>
+                {item._id === "679800c7df283a734fed5379" ? (
+                  <div className="message-link-preview-container">
+                    <img
+                      style={{ borderRadius: "10px" }}
+                      src="https://crimejunkiepodcast.com/wp-content/uploads/2020/12/Crime-Junkie-Podcast-feature.png"
+                      className="message-link-preview-image-container"
+                    />
+                    <div className="message-link-preview-data-container">
+                      <span>Crime Junkie Podcast</span>
+                      <p className="message-link-preview-description-p">
+                        Ashley Flowers is the Founder and CFO of audiochuck. A
+                        media and podcast production company known for its
+                        standout content and storytelling.
+                      </p>
+                      <div className="message-link-preview-url-container">
+                        <LuLink />
+                        <span>https://crimejunkiepodcast.com/</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {item._id === "679800b2df283a734fed536d" ? (
+                  <>
+                    <div className="chat-component-message chat-component-message-sender">
+                      They are my favorites
+                    </div>
+                    <img
+                      className="message-sticker-like"
+                      src={corazonSticker}
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
+
                 <span className="chat-component-message-time-span chat-component-message-time-span-sender">
                   {tranformDateToHour(item.createdAt)}
                 </span>
@@ -135,10 +188,11 @@ const ChatComponent = ({ conversation }) => {
         <ConfigProvider
           theme={{
             token: {
-              colorTextPlaceholder:
-                theme === "dark" ? "rgb(189, 189, 189)" : "rgb(99, 99, 99)",
+              colorTextPlaceholder: theme === "dark" ? "#727272ea" : "#929292",
               colorBgContainer:
-                theme === "dark" ? "#282828" : "rgba(239,239,239,255)",
+                theme === "dark"
+                  ? "rgba(54,54,54,255)"
+                  : "rgba(239,239,239,255)",
             },
           }}
         >
@@ -147,12 +201,14 @@ const ChatComponent = ({ conversation }) => {
               border: "none",
               boxShadow: "none",
               color: theme === "dark" ? "white" : "black",
-              //padding: "0px 10px",
               height: 40,
             }}
-            //placeholder="Para..."
+            placeholder="Write a message..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onPressEnter={() => {
+              HandleSendMessage();
+            }}
           />
         </ConfigProvider>
         <div
@@ -161,43 +217,45 @@ const ChatComponent = ({ conversation }) => {
             alignItems: "center",
             boxSizing: "border-box",
             gap: 8,
-            fontSize: 20,
+            fontSize: 21,
             color: "#4096ff",
+            cursor: "pointer",
           }}
         >
           <MdInsertEmoticon />
+          <TbSticker2 />
           <FaRegImage />
-          <ConfigProvider
-            theme={{
-              components: {
-                Button: {
-                  borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
-                },
-              },
-              token: {
-                colorBgContainerDisabled:
-                  theme === "dark" ? "#244a6d" : "#bfe0fc",
-                colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
-              },
-            }}
-          >
-            <Button
-              loading={loading ? true : false}
-              onClick={() => {
-                HandleSendMessage();
-              }}
-              type="primary"
-              disabled={query.trim() === "" ? true : false}
-              style={{
-                height: 40,
-                width: 100,
-              }}
-            >
-              Send
-            </Button>
-          </ConfigProvider>
           {/*
             
+            <ConfigProvider
+              theme={{
+                components: {
+                  Button: {
+                    borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
+                  },
+                },
+                token: {
+                  colorBgContainerDisabled:
+                    theme === "dark" ? "#244a6d" : "#bfe0fc",
+                  colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
+                },
+              }}
+            >
+              <Button
+                loading={loading ? true : false}
+                onClick={() => {
+                  HandleSendMessage();
+                }}
+                type="primary"
+                disabled={query.trim() === "" ? true : false}
+                style={{
+                  height: 40,
+                  width: 100,
+                }}
+              >
+                Send
+              </Button>
+            </ConfigProvider>
             */}
         </div>
       </div>

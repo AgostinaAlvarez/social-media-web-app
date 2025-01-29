@@ -935,6 +935,97 @@ Layout Private
   color: var(--light-text-color);
 }
 
+/*LINK PREVIEW*/
+
+.message-link-preview-container {
+  box-sizing: border-box;
+  width: 56%;
+  background-color: var(--message-link-bg);
+  padding: 9px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.message-link-preview-image-container {
+  width: 130px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.message-link-preview-data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  justify-content: center;
+}
+
+.message-link-preview-url-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  color: #67acff;
+}
+
+.message-link-preview-description-p {
+  margin: 0;
+  color: var(--light-text-color);
+}
+
+/*STICKER MESSAGE*/
+
+.message-sticker {
+  width: 80px;
+  margin: 12px 10px;
+  animation: thumbShake 1.5s infinite ease-in-out;
+}
+
+.message-sticker-like {
+  width: 80px;
+  margin: 12px 10px;
+  animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+/* Keyframes para el efecto de latido */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Keyframes para el movimiento lateral (como diciendo "ok") */
+@keyframes thumbShake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  75% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+}
+
 /*CHAT COMPONENT*/
 
 .chat-component-container {
@@ -1068,12 +1159,13 @@ Layout Private
       var(--c3) 0
     );
   background-size: calc(var(--s) * sqrt(3)) var(--s);
+
   */
 
   --s: 60px; /* control the size*/
-  --c1: #101010;
-  --c2: #1b1b1b;
-  --c3: #080808;
+  --c1: var(--message-bg-c1);
+  --c2: var(--message-bg-c2);
+  --c3: var(--message-bg-c3);
 
   --_g: 0 120deg, #0000 0;
   background: conic-gradient(
@@ -1122,7 +1214,7 @@ Layout Private
   align-items: center;
   padding: 0px 20px;
   gap: 7px;
-  background-color: #121212;
+  background-color: var(--background-color);
 }
 
 .chat-component-header-user-info {
@@ -1175,7 +1267,7 @@ Layout Private
 }
 
 .chat-component-message-sender {
-  background-color: var(--hover-color);
+  background-color: var(--message-sender-bg);
   color: var(--sender-message-color);
 }
 
@@ -1183,12 +1275,12 @@ Layout Private
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  padding: 30px 0px;
+  padding: 25px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 7px;
   font-size: 13px;
   color: var(--light-text-color);
 }

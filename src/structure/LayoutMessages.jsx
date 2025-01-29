@@ -100,13 +100,13 @@ const LayoutMessages = ({ children }) => {
     {
       key: "2",
       icon: <SettingOutlined />,
-      label: "Configuracion",
+      label: "Settings",
       style: item_style,
     },
     {
       key: "3",
       icon: theme === "dark" ? <SunOutlined /> : <MoonOutlined />,
-      label: "Cambiar aspecto",
+      label: "Change appearance",
       style: item_style,
     },
     {

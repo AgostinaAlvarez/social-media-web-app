@@ -5,6 +5,23 @@ const initialState = {
   conversationsRequest: [],
   loadingConversationsInbox: true,
   loadingConversationsRequest: true,
+
+  testeHours: [
+    "11 h",
+    "11 h",
+    "12 h",
+    "13 h",
+    "13 h",
+    "15 h",
+    "19 h",
+    "1 d",
+    "1 d",
+    "2 d",
+    "3 d",
+    "1 wk",
+    "1 wk",
+    "1 wk",
+  ],
 };
 
 export const conversationSlice = createSlice({
@@ -50,12 +67,16 @@ export const conversationSlice = createSlice({
     // Nueva función para agregar una conversación al inbox
     addConversationToInbox: (state, action) => {
       const newConversation = action.payload;
-      state.conversationsInbox.push(newConversation);
+      state.conversationsInbox.unshift(newConversation);
     },
     // Nueva función para agregar una conversación a las requests
     addConversationToRequest: (state, action) => {
       const newConversationRequest = action.payload;
-      state.conversationsRequest.push(newConversationRequest);
+      state.conversationsRequest.unshift(newConversationRequest);
+    },
+
+    addNewHour: (state, action) => {
+      state.testeHours.unshift("1 min");
     },
   },
 });
@@ -69,6 +90,7 @@ export const {
   addMessageToRequest,
   addConversationToInbox,
   addConversationToRequest,
+  addNewHour,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

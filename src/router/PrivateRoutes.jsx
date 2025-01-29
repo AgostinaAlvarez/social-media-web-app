@@ -32,6 +32,7 @@ import MyCommentsScreen from "../screens/PrivateScreens.jsx/Profile/MyCommentsSc
 import MyLikesScreen from "../screens/PrivateScreens.jsx/Profile/MyLikesScreen";
 import MySavedScreen from "../screens/PrivateScreens.jsx/Profile/MySavedScreen";
 import TesterScreen from "../screens/TesterScreen";
+import LinkPreview from "../../LinkPreview";
 export const socket = io("http://localhost:8002");
 
 const PrivateRoutes = () => {
@@ -128,6 +129,7 @@ const PrivateRoutes = () => {
     >
       {contextHolder}
       <Routes>
+        <Route path="/test" element={<LinkPreview />} />
         <Route
           path="/"
           element={

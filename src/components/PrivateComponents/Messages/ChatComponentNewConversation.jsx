@@ -11,12 +11,15 @@ import {
   addConversationToRequest,
   addMessageToInbox,
   addMessageToRequest,
+  addNewHour,
 } from "../../../slice/conversationSlice";
 import { sendMessage } from "../../../data/api/messageApi";
 import { socket } from "../../../router/PrivateRoutes";
 import AntdSecondaryBtnComponent from "../../BasicComponents/AntdSecondaryBtnComponent";
 import { FaRegImage } from "react-icons/fa6";
 import { MdInsertEmoticon } from "react-icons/md";
+import { tranformDateToHour } from "../../../data/utils/dates";
+import { TbSticker2 } from "react-icons/tb";
 
 const ChatComponentNewConversation = ({ userData }) => {
   const { theme } = useTheme();
@@ -112,6 +115,7 @@ const ChatComponentNewConversation = ({ userData }) => {
   };
 
   const HandleAddNewMessage = (newMessage) => {
+    dispatch(addNewHour());
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
     setQuery("");
   };
@@ -123,13 +127,12 @@ const ChatComponentNewConversation = ({ userData }) => {
   return (
     <div className="chat-component-container">
       <div className="chat-component-header">
-        <Avatar
-          icon={<UserOutlined />}
-          size={47}
-          style={{
-            backgroundColor: "#87d068",
-          }}
-        />
+        {userData.avatar_img === "" || userData.avatar_img === undefined ? (
+          <Avatar size={47} icon={<UserOutlined />} />
+        ) : (
+          <Avatar size={47} src={userData.avatar_img} />
+        )}
+
         <div className="chat-component-header-user-info">
           <span>
             {userData?.name} {userData?.lastname}
@@ -139,17 +142,24 @@ const ChatComponentNewConversation = ({ userData }) => {
       <div className="chat-component-content">
         {messages.length === 0 ? (
           <div className="chat-defaul-bg ">
-            <Avatar
-              icon={<UserOutlined />}
-              size={110}
-              style={{
-                backgroundColor: "#87d068",
-              }}
-            />
-            <span className="chat-defaul-bg-ttl">
+            {userData.avatar_img === "" || userData.avatar_img === undefined ? (
+              <Avatar size={110} icon={<UserOutlined />} />
+            ) : (
+              <Avatar size={110} src={userData.avatar_img} />
+            )}
+
+            <span
+              className="chat-defaul-bg-ttl info-name-lbl"
+              style={{ marginTop: 7 }}
+            >
               {userData.name} {userData.lastname}
             </span>
-            <span>@{userData.username}</span>
+            <span
+              className="info-username-lbl"
+              style={{ fontSize: 15, marginBottom: 7 }}
+            >
+              @{userData.username}
+            </span>
             <AntdSecondaryBtnComponent
               theme={theme}
               onClick={() => {
@@ -163,16 +173,24 @@ const ChatComponentNewConversation = ({ userData }) => {
             {messages.map((item) => (
               <>
                 {myUserData._id === item.sender ? (
-                  <div className="chat-component-message-container chat-component-message-container-reciber">
-                    <div className="chat-component-message chat-component-message-reciber">
-                      {item.content}
+                  <>
+                    <div className="chat-component-message-container chat-component-message-container-reciber">
+                      <div className="chat-component-message chat-component-message-reciber">
+                        {item.content}
+                      </div>
+                      <span className="chat-component-message-time-span chat-component-message-time-span-reciber">
+                        {tranformDateToHour("2025-01-28T14:39:58.168Z")}
+                      </span>
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <div className="chat-component-message-container chat-component-message-container-sender">
                     <div className="chat-component-message chat-component-message-sender">
                       {item.content}
                     </div>
+                    <span className="chat-component-message-time-span chat-component-message-time-span-sender">
+                      {tranformDateToHour("2025-01-28T14:39:58.168Z")}
+                    </span>
                   </div>
                 )}
               </>
@@ -184,8 +202,7 @@ const ChatComponentNewConversation = ({ userData }) => {
         <ConfigProvider
           theme={{
             token: {
-              colorTextPlaceholder:
-                theme === "dark" ? "rgb(189, 189, 189)" : "rgb(99, 99, 99)",
+              colorTextPlaceholder: theme === "dark" ? "#727272ea" : "#929292",
               colorBgContainer:
                 theme === "dark"
                   ? "rgba(54,54,54,255)"
@@ -198,12 +215,14 @@ const ChatComponentNewConversation = ({ userData }) => {
               border: "none",
               boxShadow: "none",
               color: theme === "dark" ? "white" : "black",
-              //padding: "0px 10px",
               height: 40,
             }}
-            //placeholder="Para..."
+            placeholder="Write a message..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onPressEnter={() => {
+              HandleSendMessage();
+            }}
           />
         </ConfigProvider>
 
@@ -218,39 +237,42 @@ const ChatComponentNewConversation = ({ userData }) => {
           }}
         >
           <MdInsertEmoticon />
+          <TbSticker2 />
           <FaRegImage />
         </div>
 
-        <ConfigProvider
-          theme={{
-            components: {
-              Button: {
-                borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
-              },
-            },
-            token: {
-              colorBgContainerDisabled:
-                theme === "dark" ? "#244a6d" : "#bfe0fc",
-              colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
-            },
-          }}
-        >
-          <Button
-            loading={loading ? true : false}
-            onClick={() => {
-              HandleSendMessage();
-            }}
-            type="primary"
-            disabled={query.trim() === "" ? true : false}
-            style={{
-              height: 40,
-              width: 100,
-            }}
-          >
-            Enviar
-          </Button>
-        </ConfigProvider>
         {/*
+
+<ConfigProvider
+  theme={{
+    components: {
+      Button: {
+        borderColorDisabled: theme === "dark" ? "#244a6d" : "#bfe0fc",
+      },
+    },
+    token: {
+      colorBgContainerDisabled:
+        theme === "dark" ? "#244a6d" : "#bfe0fc",
+      colorTextDisabled: theme === "dark" ? "#4b5e6f" : "#e0f0fe",
+    },
+  }}
+>
+  <Button
+    loading={loading ? true : false}
+    onClick={() => {
+      HandleSendMessage();
+    }}
+    type="primary"
+    disabled={query.trim() === "" ? true : false}
+    style={{
+      height: 40,
+      width: 100,
+    }}
+  >
+    Enviar
+  </Button>
+</ConfigProvider>
+
          */}
       </div>
     </div>
