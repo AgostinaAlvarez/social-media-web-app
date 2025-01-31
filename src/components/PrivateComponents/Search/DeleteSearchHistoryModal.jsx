@@ -48,8 +48,32 @@ const DeleteSearchHistoryModal = ({
             you clear your search history, you may still see accounts you've
             searched for as suggested results.
           </p>
-          <div onClick={handleAction}>Delete all</div>
-          <div onClick={handleCancel}>Not now</div>
+          <div
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+            }}
+          >
+            <AntdPrimaryBtnComponent
+              label={"Delete All"}
+              theme={theme}
+              style={{ border: "none" }}
+              danger={true}
+            />
+            <AntdPrimaryBtnComponent
+              label={"Not Now"}
+              theme={theme}
+              style={{ border: "none" }}
+            />
+          </div>
+          {/*
+            <div onClick={handleAction}>Delete all</div>
+            <div onClick={handleCancel}>Not now</div>
+            */}
         </div>
       </Modal>
     </ConfigProvider>

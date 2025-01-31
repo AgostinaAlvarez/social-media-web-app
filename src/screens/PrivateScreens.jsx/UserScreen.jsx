@@ -3,13 +3,25 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getUserDataById } from "../../data/api/userApi";
 import { useSelector } from "react-redux";
 import { getPosts } from "../../data/api/postApi";
-import { Avatar, Button, ConfigProvider, Image, Switch } from "antd";
+import {
+  Avatar,
+  Button,
+  ConfigProvider,
+  Image,
+  Spin,
+  Switch,
+  message,
+} from "antd";
 import { useTheme } from "../../context/ThemeContext";
 import ProfileCard from "../../components/PrivateComponents/Home/ProfileCard";
 import YouMightLikeCard from "../../components/PrivateComponents/User/YouMightLikeCard";
-import { users_recomendation_3 } from "../../../tester_data";
+import {
+  users_recomendation_3,
+  users_recomendation_4,
+} from "../../../tester_data";
 import AntdSecondaryBtnComponent from "../../components/BasicComponents/AntdSecondaryBtnComponent";
 import { PostFeedCard } from "../../components/PrivateComponents/Post/PostCard";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const UserScreen = () => {
   const params = useParams();
@@ -289,7 +301,7 @@ const UserScreen = () => {
         setUserData(user_response.user);
         setTesterPosts(transform_data_posts(user_response.user));
         setLoading(false);
-      }, 1000);
+      }, 1500);
     }
     if (post_response) {
       setTimeout(() => {
@@ -313,22 +325,41 @@ const UserScreen = () => {
     }
   };
 
-  const theme_button = {
-    token: {
-      /* here is your global tokens */
-      colorBgContainer: "pink",
-      /*
-      colorPrimaryHover: "red",
-      colorLinkActive: "red",
-      colorPrimary: "red",
-      */
-    },
+  const [isFollowingLoading, setIsFollowingLoading] = useState(false);
+  const [isRequestSend, setIsRequestSend] = useState(false);
+
+  const follow_function = () => {
+    setIsFollowingLoading(true);
+    setTimeout(() => {
+      setIsFollowingLoading(false);
+      setIsRequestSend(true);
+      message.success("Follow request send");
+    }, 1600);
   };
 
   return (
     <div>
       {loading ? (
-        <div>Loading</div>
+        <div
+          style={{
+            height: "100vh",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Spin
+            indicator={
+              <LoadingOutlined
+                spin
+                style={{
+                  fontSize: 70,
+                }}
+              />
+            }
+          />
+        </div>
       ) : (
         <>
           {error ? (
@@ -387,7 +418,9 @@ const UserScreen = () => {
                             //onClick={HandleOpenFriendModal}
                           >
                             <span className="user-screen-info-box-data-value">
-                              122
+                              {userData._id === "679cdd0c625a7f39140c39f7"
+                                ? "106"
+                                : "122"}
                             </span>
                             <span className="user-screen-info-box-data-label">
                               Followers
@@ -395,7 +428,9 @@ const UserScreen = () => {
                           </div>
                           <div className="user-screen-info-box-data">
                             <span className="user-screen-info-box-data-value">
-                              143
+                              {userData._id === "679cdd0c625a7f39140c39f7"
+                                ? "98"
+                                : "143"}
                             </span>
                             <span className="user-screen-info-box-data-label">
                               Following
@@ -403,7 +438,9 @@ const UserScreen = () => {
                           </div>
                           <div className="user-screen-info-box-data">
                             <span className="user-screen-info-box-data-value">
-                              58
+                              {userData._id === "679cdd0c625a7f39140c39f7"
+                                ? "33"
+                                : "58"}
                             </span>
                             <span className="user-screen-info-box-data-label">
                               Posts
@@ -417,42 +454,118 @@ const UserScreen = () => {
                           gap: 10,
                         }}
                       >
-                        <Button type="primary">Following</Button>
-                        <AntdSecondaryBtnComponent
-                          onClick={() => {
-                            navigate(`/messages/inbox/${userData._id}`);
-                          }}
-                          theme={theme}
-                          label={"Message"}
-                        />
+                        {userData._id === "679cdd0c625a7f39140c39f7" ? (
+                          <>
+                            <Button
+                              type="primary"
+                              loading={isFollowingLoading}
+                              onClick={follow_function}
+                            >
+                              {isRequestSend ? "Pending" : "Follow"}
+                            </Button>
+                            <AntdSecondaryBtnComponent
+                              onClick={() => {
+                                //navigate(`/messages/inbox/${userData._id}`);
+                              }}
+                              theme={theme}
+                              label={"Message"}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Button type="primary">Following</Button>
+                            <AntdSecondaryBtnComponent
+                              onClick={() => {
+                                navigate(`/messages/inbox/${userData._id}`);
+                              }}
+                              theme={theme}
+                              label={"Message"}
+                            />
+                          </>
+                        )}
                       </div>
                     </div>
                     {/*Content*/}
-                    <div className="post-list-container">
+                    <div
+                      className="post-list-container"
+                      style={
+                        userData._id === "679cdd0c625a7f39140c39f7"
+                          ? {
+                              backgroundColor:
+                                theme === "dark" ? "#101010" : "white",
+                              height: "60%",
+                            }
+                          : {}
+                      }
+                    >
                       {/*Posts*/}
-                      {testerPosts.map((item, index) => (
-                        <PostFeedCard
-                          item={item}
-                          index={index}
-                          HandleSelect={() => {
-                            console.log("select");
+                      {userData._id === "679cdd0c625a7f39140c39f7" ? (
+                        <div
+                          style={{
+                            width: "100%",
+                            boxSizing: "border-box",
+
+                            padding: "0px 120px",
+                            paddingTop: "55px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            gap: 15,
                           }}
-                          HandleOpenCommentsModal={() => {
-                            console.log("handle open comments");
-                          }}
-                          HandleOpenLikesModal={() => {
-                            console.log("handle open likes");
-                          }}
-                          stats={item.stats}
-                        />
-                      ))}
+                        >
+                          <span style={{ fontSize: 28, fontWeight: 600 }}>
+                            This Profile is private
+                          </span>
+                          <div
+                            style={{
+                              fontSize: 15,
+                              color: theme === "dark" ? "#727272ea" : "#8d8d8d",
+                              fontWeight: 400,
+                              lineHeight: 1.6,
+                            }}
+                          >
+                            Only approved folloers can see{" "}
+                            <span
+                              style={{
+                                color:
+                                  theme === "dark" ? "#9d9d9dea" : "#5f5f5f",
+                              }}
+                            >
+                              @{userData.username}'s
+                            </span>{" "}
+                            Posts. To request access, click Follow.{" "}
+                            <span style={{ color: "#4096ff" }}>Learn more</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          {testerPosts.map((item, index) => (
+                            <PostFeedCard
+                              item={item}
+                              index={index}
+                              HandleSelect={() => {
+                                console.log("select");
+                              }}
+                              HandleOpenCommentsModal={() => {
+                                console.log("handle open comments");
+                              }}
+                              HandleOpenLikesModal={() => {
+                                console.log("handle open likes");
+                              }}
+                              stats={item.stats}
+                            />
+                          ))}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 <div className="layout-private-aside">
                   <ProfileCard />
-                  <YouMightLikeCard users={users_recomendation_3} />
+                  <YouMightLikeCard users={users_recomendation_4} />
                 </div>
               </div>
             </>

@@ -126,7 +126,15 @@ const ChatComponentNewConversation = ({ userData }) => {
 
   return (
     <div className="chat-component-container">
-      <div className="chat-component-header">
+      <div
+        className="chat-component-header"
+        style={{
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          navigate(`/user/${userData._id}`);
+        }}
+      >
         {userData.avatar_img === "" || userData.avatar_img === undefined ? (
           <Avatar size={47} icon={<UserOutlined />} />
         ) : (

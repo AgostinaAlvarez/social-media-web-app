@@ -10,6 +10,7 @@ const AntdPrimaryBtnComponent = ({
   style,
   onClick,
   htmlType,
+  danger,
 }) => {
   return (
     <ConfigProvider
@@ -26,6 +27,7 @@ const AntdPrimaryBtnComponent = ({
       }}
     >
       <Button
+        danger={danger}
         loading={loading}
         disabled={disabled}
         key={key}

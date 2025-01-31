@@ -13,7 +13,7 @@ const UserItem = ({ userData, onSelectUser }) => {
         }
       }}
     >
-      {userData.avatar_img === "" ? (
+      {userData.avatar_img === "" || !userData.avatar_img ? (
         <Avatar
           style={{
             backgroundColor: "#87d068",

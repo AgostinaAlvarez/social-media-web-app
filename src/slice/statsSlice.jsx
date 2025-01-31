@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  followers: 294,
+  followers: 296,
   following: 276,
   posts: 0,
 };

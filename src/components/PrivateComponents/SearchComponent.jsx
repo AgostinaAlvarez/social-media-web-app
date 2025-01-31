@@ -54,8 +54,8 @@ const SearchComponent = ({ onCloseDrawer }) => {
 
         const result = users.filter(
           (user) =>
-            user.username.toLowerCase().includes(query) ||
-            user.name.toLowerCase().includes(query)
+            user.username.toLowerCase().startsWith(query) ||
+            user.name.toLowerCase().startsWith(query)
         );
         setUsers(result);
       }
@@ -68,7 +68,7 @@ const SearchComponent = ({ onCloseDrawer }) => {
   }, [query]);
 
   const selectUser = (userData) => {
-    navigate(`/user/${userData._id}`);
+    navigate(`/user/679cdd0c625a7f39140c39f7`);
     setQuery("");
     setUsers([]);
     onCloseDrawer();
@@ -109,8 +109,13 @@ const SearchComponent = ({ onCloseDrawer }) => {
                   boxSizing: "border-box",
                 }}
               >
-                <span style={{ fontWeight: 500 }}>Recientes</span>
-                <span onClick={showDeleteSearchHistoryModal}>Borrar todo</span>
+                <span style={{ fontWeight: 500 }}>Recent</span>
+                <span
+                  onClick={showDeleteSearchHistoryModal}
+                  style={{ cursor: "pointer" }}
+                >
+                  Delete all
+                </span>
               </div>
               {lastSearchs.map((item) => (
                 <UserItem userData={item} onSelectUser={selectUser} />
@@ -120,9 +125,9 @@ const SearchComponent = ({ onCloseDrawer }) => {
             <>
               {lastSearchs.length === 0 && query.trim() === "" ? (
                 <>
-                  <span className="search-component-empty-ttl ">Recientes</span>
+                  <span className="search-component-empty-ttl ">Recent</span>
                   <div className="search-component-empty-container">
-                    <span>No hay busquedas recientes.</span>
+                    <span>No recent searches</span>
                   </div>
                 </>
               ) : (
